@@ -104,6 +104,8 @@ stages:
       - job: DockerBuild
         displayName: "Build docker image"
         steps:
+          - script: |
+              echo $(RELEASE_TAG)
           - template: ./deploy/docker.yml
             parameters:
               imageName: "sharthak1995/blogsphere.identity.svc"
