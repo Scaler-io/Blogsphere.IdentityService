@@ -66,6 +66,7 @@ stages:
               echo "##vso[task.setvariable variable=RELEASE_TAG]$RELEASE_TAG"
 
             displayName: "Generate Release Tag"
+            name: setReleaseTag # Required for referencing in the next stage
           - task: GitHubRelease@1
             displayName: "Create GitHub Release"
             inputs:
@@ -80,6 +81,7 @@ stages:
 
   - stage: Docker
     displayName: "Docker build and push"
+    dependsOn: GithubRelease
     condition: |
       or(
         and(
@@ -95,6 +97,8 @@ stages:
             )
         )
       )
+    variables:
+      RELEASE_TAG: $[ dependencies.GithubRelease.outputs['CreateRelease.setReleaseTag.RELEASE_TAG'] ]
     jobs:
       - job: DockerBuild
         displayName: "Build docker image"
