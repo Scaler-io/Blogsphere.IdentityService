@@ -27,15 +27,15 @@ variables:
   cacheKey: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
 
 stages:
-  - stage: Build
-    jobs:
-      - job: build
-        displayName: "Build job"
-        steps:
-          - template: ./build/build.yml
-            parameters:
-              buildConfiguration: "Release"
-              buildPlatform: "Any CPU"
+  # - stage: Build
+  #   jobs:
+  #     - job: build
+  #       displayName: "Build job"
+  #       steps:
+  #         - template: ./build/build.yml
+  #           parameters:
+  #             buildConfiguration: "Release"
+  #             buildPlatform: "Any CPU"
 
   - stage: GithubRelease
     displayName: "Github Release"
@@ -72,7 +72,7 @@ stages:
               gitHubConnection: "github.com_sharthak1095"
               repositoryName: "Scaler-io/Blogsphere.IdentityService"
               action: "create"
-              tagSource: "manual"
+              tagSource: "userSpecifiedTag"
               tag: "$(RELEASE_TAG)"
               title: "Release $(RELEASE_TAG)"
               changeLogCompareToRelease: "lastFullRelease"
