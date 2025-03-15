@@ -28,7 +28,6 @@ variables:
 
 stages:
   - stage: Build
-    displayName: "Build stage"
     jobs:
       - job: build
         displayName: "Build job"
@@ -38,5 +37,9 @@ stages:
               buildConfiguration: "Release"
               buildPlatform: "Any CPU"
 
-  - stage: Docker build
-    displayName: "Build docker image"
+  - stage: Docker
+    displayName: "Docker build"
+    jobs:
+      job: DockerBuild
+      steps:
+        - script: "echo hello"
