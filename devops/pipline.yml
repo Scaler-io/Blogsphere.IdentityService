@@ -29,8 +29,8 @@ variables:
 stages:
   - stage: Build
     displayName: "Build"
-      steps:
-        - template: ./build/build.yml
-          parameters:
-            buildConfiguration: "Release"
-            buildPlatform: "Any CPU"
+    steps:
+      - template: ./build/build.yml
+        parameters:
+          buildConfiguration: "Release"
+          buildPlatform: "Any CPU"
