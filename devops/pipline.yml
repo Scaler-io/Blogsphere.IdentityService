@@ -55,7 +55,7 @@ stages:
         )
       )
     jobs:
-      - job: CreateRelase
+      - job: CreateRelease
         displayName: "Create Release Tag"
         steps:
           - checkout: self
