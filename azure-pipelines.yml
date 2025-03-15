@@ -4,69 +4,68 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
- batch: true
- branches:
+  batch: true
+  branches:
     include:
       - main
       - feature/**
-      - hotfix/**  
+      - hotfix/**
 
 pr:
- branches:
+  branches:
     include:
-        - main
-   
+      - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: "windows-latest"
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
-  buildConfiguration: 'Release'
-  dotnetVersion: '8.x'
+  solution: "**/*.sln"
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
+  dotnetVersion: "8.x"
   cacheKey: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
 
 steps:
-- task: UseDotNet@2
-  displayName: 'Install .NET SDK'
-  inputs:
-   packageType: 'sdk'
-   version: $(dotnetVersion)
+  - task: UseDotNet@2
+    displayName: "Install .NET SDK"
+    inputs:
+      packageType: "sdk"
+      version: $(dotnetVersion)
 
-- task: Cache@2
-  displayName: 'Cache NuGet Packages'
-  inputs:
-    key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
-    restoreKeys: |
+  - task: Cache@2
+    displayName: "Cache NuGet Packages"
+    inputs:
+      key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
+      restoreKeys: |
         nuget | "$(Agent.OS)"
         nuget
-    path: $(NUGET_PACKAGES)
+      path: $(NUGET_PACKAGES)
 
-- task: DotNetCoreCLI@2
-  displayName: 'Restore dependencies'
-  inputs:
-   command: 'restore'
-   projects: '**/IdentityService.csproj'
-
-- task: DotNetCoreCLI@2
-    displayName: 'Build solution'
+  - task: DotNetCoreCLI@2
+    displayName: "Restore dependencies"
     inputs:
-      command: 'build'
-      projects: '**/IdentityService.csproj'
-      arguments: '--configuration $(buildConfiguration) --platform $(buildPlatform)'
+      command: "restore"
+      projects: "**/IdentityService.csproj"
 
-- task: DotNetCoreCLI@2
-    displayName: 'Publish API'
+  - task: DotNetCoreCLI@2
+    displayName: "Build solution"
     inputs:
-      command: 'publish'
+      command: "build"
+      projects: "**/IdentityService.csproj"
+      arguments: "--configuration $(buildConfiguration) --platform $(buildPlatform)"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Publish API"
+    inputs:
+      command: "publish"
       publishWebProjects: false
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --platform $(buildPlatform) --output $(Build.ArtifactStagingDirectory)'
+      projects: "**/*.csproj"
+      arguments: "--configuration $(buildConfiguration) --platform $(buildPlatform) --output $(Build.ArtifactStagingDirectory)"
       zipAfterPublish: true
 
-- task: PublishBuildArtifacts@1
-    displayName: 'Publish build artifacts'
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish build artifacts"
     inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)'
-        artifactName: 'IdentiyServer'
+      pathToPublish: "$(Build.ArtifactStagingDirectory)"
+      artifactName: "IdentiyServer"
