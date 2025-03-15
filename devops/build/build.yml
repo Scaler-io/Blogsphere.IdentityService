@@ -32,9 +32,3 @@ steps:
       projects: "**/*.csproj"
       arguments: '--configuration $(buildConfiguration) /p:Platform="$(buildPlatform)"  --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: true
-
-  - task: PublishBuildArtifacts@1
-    displayName: "Publish build artifacts"
-    inputs:
-      pathToPublish: "$(Build.ArtifactStagingDirectory)"
-      artifactName: "IdentiyServer"

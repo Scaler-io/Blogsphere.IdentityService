@@ -38,8 +38,12 @@ stages:
               buildPlatform: "Any CPU"
 
   - stage: Docker
-    displayName: "Docker build"
+    displayName: "Docker build and push"
     jobs:
       - job: DockerBuild
+        displayNa: "Build docker image"
         steps:
-          - script: "echo hello"
+          - template: ./deploy/docker.yml
+            parameters:
+              imageName: "sharthak1995/blogsphere.identity.svc"
+              tag: "$(Build.BuildId)"
