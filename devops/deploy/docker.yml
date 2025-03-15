@@ -1,5 +1,6 @@
 parameters:
   - name: imageName
+    default: "sharthak1995/blogsphere.identity.svc"
   - name: tag
     default: "latest"
 
