@@ -1,0 +1,40 @@
+parameters:
+  - name: buildConfiguration
+    default: "Release"
+  - name: buildPlatform
+    default: "Any CPU"
+
+steps:
+  - task: UseDotNet@2
+    displayName: "Install .NET 8 SDK"
+    inputs:
+      packageType: "sdk"
+      version: $(dotnetVersion)
+
+  - task: DotNetCoreCLI@2
+    displayName: "Restore nuget dependencies"
+    inputs:
+      command: "restore"
+      projects: "**/IdentityService.csproj"
+
+  - task: DotNetCoreCLI@2
+    displayName: "Build IdentityServer project"
+    inputs:
+      command: "build"
+      projects: "**/IdentityService.csproj"
+      arguments: '--configuration $(buildConfiguration) /p:Platform="$(buildPlatform)"'
+
+  - task: DotNetCoreCLI@2
+    displayName: "Publish IdentityServer"
+    inputs:
+      command: "publish"
+      publishWebProjects: false
+      projects: "**/*.csproj"
+      arguments: '--configuration $(buildConfiguration) /p:Platform="$(buildPlatform)"  --output $(Build.ArtifactStagingDirectory)'
+      zipAfterPublish: true
+
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish build artifacts"
+    inputs:
+      pathToPublish: "$(Build.ArtifactStagingDirectory)"
+      artifactName: "IdentiyServer"

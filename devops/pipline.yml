@@ -1,0 +1,36 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+      - feature/**
+      - hotfix/**
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: "windows-latest"
+
+variables:
+  solution: "**/*.sln"
+  buildPlatform: "Any CPU"
+  buildConfiguration: "Release"
+  dotnetVersion: "8.x"
+  cacheKey: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
+
+stages:
+  - stage: Build
+    displayName: "Build"
+      steps:
+        - template: ./build/build.yml
+          parameters:
+            buildConfiguration: "Release"
+            buildPlatform: "Any CPU"
