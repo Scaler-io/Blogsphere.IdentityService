@@ -40,6 +40,6 @@ stages:
   - stage: Docker
     displayName: "Docker build"
     jobs:
-      job: DockerBuild
-      steps:
-        - script: "echo hello"
+      - job: DockerBuild
+        steps:
+          - script: "echo hello"
