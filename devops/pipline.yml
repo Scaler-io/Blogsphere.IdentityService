@@ -63,7 +63,7 @@ stages:
               echo "##[section] Generating release version"
               RELEASE_TAG="v1.0.$(Build.BuildId)"
               echo "Generated Release Tag: $RELEASE_TAG"
-              echo "##vso[task.setvariable variable=RELEASE_TAG]$RELEASE_TAG"
+              echo "##vso[task.setvariable variable=RELEASE_TAG;isOutput=true]$RELEASE_TAG"
 
             displayName: "Generate Release Tag"
             name: setReleaseTag # Required for referencing in the next stage
