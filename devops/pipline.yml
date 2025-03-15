@@ -27,74 +27,63 @@ variables:
   cacheKey: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
 
 stages:
-  # - stage: Build
-  #   jobs:
-  #     - job: build
-  #       displayName: "Build job"
-  #       steps:
-  #         - template: ./build/build.yml
-  #           parameters:
-  #             buildConfiguration: "Release"
-  #             buildPlatform: "Any CPU"
+  # Build and test dotnet app
+  - stage: Build
+    jobs:
+      - job: build
+        displayName: "Build job"
+        steps:
+          - template: ./build/build.yml
+            parameters:
+              buildConfiguration: "Release"
+              buildPlatform: "Any CPU"
 
+  # Create github release and tag
   - stage: GithubRelease
     displayName: "Github Release"
     condition: |
-      or(
-        and(
-            eq(variables['Build.Reason'], 'PullRequest'),
-            eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-        ),
-        and(
-            eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-            or(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(variables['Build.Reason'], 'IndividualCI'),
-                eq(variables['Build.Reason'], 'BatchedCI')
-            )
+      and(
+        succeeded(),
+        or(
+          and(
+              eq(variables['Build.Reason'], 'PullRequest'),
+              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+          ),
+          and(
+              eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+              or(
+                  eq(variables['Build.Reason'], 'Manual'),
+                  eq(variables['Build.Reason'], 'IndividualCI'),
+                  eq(variables['Build.Reason'], 'BatchedCI')
+              )
+          )
         )
       )
     jobs:
       - job: CreateRelease
         displayName: "Create Release Tag"
-        steps:
-          - checkout: self
-          - script: |
-              echo "##[section] Generating release version"
-              RELEASE_TAG="v1.0.$(Build.BuildId)"
-              echo "Generated Release Tag: $RELEASE_TAG"
-              echo "##vso[task.setvariable variable=RELEASE_TAG;isOutput=true]v1.0.$(Build.BuildId)"
-            displayName: "Generate Release Tag"
-            name: setReleaseTag # Required for referencing in the next stage
+        template: ./deploy/github-release.yml
 
-          - task: GitHubRelease@1
-            displayName: "Create GitHub Release"
-            inputs:
-              gitHubConnection: "github.com_sharthak1095"
-              repositoryName: "Scaler-io/Blogsphere.IdentityService"
-              action: "create"
-              tagSource: "userSpecifiedTag"
-              tag: "v1.0.$(Build.BuildId)"
-              title: "Release v1.0.$(Build.BuildId)"
-              changeLogCompareToRelease: "lastFullRelease"
-              changeLogType: "commitBased"
-
+  # Docker build and push
   - stage: Docker
     displayName: "Docker build and push"
     dependsOn: GithubRelease
     condition: |
-      or(
-        and(
-            eq(variables['Build.Reason'], 'PullRequest'),
-            eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-        ),
-        and(
-            eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-            or(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(variables['Build.Reason'], 'IndividualCI'),
-                eq(variables['Build.Reason'], 'BatchedCI')
-            )
+      and(
+        succeeded(),
+        or(
+          and(
+              eq(variables['Build.Reason'], 'PullRequest'),
+              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+          ),
+          and(
+              eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+              or(
+                  eq(variables['Build.Reason'], 'Manual'),
+                  eq(variables['Build.Reason'], 'IndividualCI'),
+                  eq(variables['Build.Reason'], 'BatchedCI')
+              )
+          )
         )
       )
     variables:
