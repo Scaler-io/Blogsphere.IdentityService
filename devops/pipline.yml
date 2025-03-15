@@ -37,3 +37,6 @@ stages:
             parameters:
               buildConfiguration: "Release"
               buildPlatform: "Any CPU"
+
+  - stage: Docker build
+    displayName: "Build docker image"
