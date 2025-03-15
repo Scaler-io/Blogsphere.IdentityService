@@ -3,7 +3,9 @@
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
+		<Nullable>disable</Nullable>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -11,6 +13,8 @@
 		<PackageReference Include="Duende.IdentityServer.AspNetIdentity" Version="7.0.4" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
+
+		<PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="8.0.14" />
 
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.13" />
 
@@ -20,6 +24,8 @@
 		</PackageReference>
 
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.13" />
+
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
 
 		<PackageReference Include="Serilog" Version="4.2.0" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.3" />
@@ -34,5 +40,24 @@
 
 	<ItemGroup>
 	  <Folder Include="Data\Migrations\" />
+	  <Folder Include="Pages\Account\Registration\User\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Using Include="Serilog.ILogger">
+	    <Alias>ILogger</Alias>
+	  </Using>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Update="keys\is-signing-key-710439A836765E191FB971B7860B0D8B.json">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="keys\key-4438b778-723b-4f2a-83bc-e47746fd30f6.xml">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>

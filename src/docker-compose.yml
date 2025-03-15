@@ -1,0 +1,17 @@
+services:
+  identityDb:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+  identityservice:
+    image: ${DOCKER_REGISTRY-}identityservice
+    build:
+      context: .
+      dockerfile: IdentityService/Dockerfile
+
+volumes:
+  identityDb_data:
+ 
+networks:
+  blogsphere_dev_net:
+    external: true
+  

@@ -29,14 +29,13 @@ public class IndexModel : PageModel
         var result = await _backchannelAuthenticationInteraction.GetLoginRequestByInternalIdAsync(id);
         if (result == null)
         {
-            _logger.InvalidBackchannelLoginId(id);
             return RedirectToPage("/Home/Error/Index");
         }
         else
         {
             LoginRequest = result;
         }
-        
+
         return Page();
     }
 }

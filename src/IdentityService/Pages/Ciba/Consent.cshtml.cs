@@ -56,7 +56,6 @@ public class Consent : PageModel
         var request = await _interaction.GetLoginRequestByInternalIdAsync(Input.Id ?? throw new ArgumentNullException(nameof(Input.Id)));
         if (request == null || request.Subject.GetSubjectId() != User.GetSubjectId())
         {
-            _logger.InvalidId(Input.Id);
             return RedirectToPage("/Home/Error/Index");
         }
 
@@ -133,7 +132,6 @@ public class Consent : PageModel
         }
         else
         {
-            _logger.NoMatchingBackchannelLoginRequest(id);
             return false;
         }
     }

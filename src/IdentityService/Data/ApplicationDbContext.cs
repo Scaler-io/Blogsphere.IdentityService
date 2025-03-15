@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using IdentityService.Data.Configurations;
+using IdentityService.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using IdentityService.Models;
 
 namespace IdentityService.Data;
 
@@ -14,8 +15,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        // Customize the ASP.NET Identity model and override the defaults if needed.
-        // For example, you can rename the ASP.NET Identity table names and more.
-        // Add your customizations after calling base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationPermissionEntityConfiguration).Assembly);
+        builder.Entity<ApplicationRolePermission>()
+            .HasKey(ck => new { ck.RoleId, ck.PermissionId });
     }
+
+    // permission sets
+    public DbSet<ApplicationPermission> Permissions { get; set; }
+    public DbSet<ApplicationRolePermission> RolePermissions { get; set; }
 }

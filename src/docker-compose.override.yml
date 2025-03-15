@@ -1,0 +1,37 @@
+services:
+  identityDb:
+    container_name: identityDb
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=P@ssw0rd
+      - MSSQL_PID=Express
+    ports:
+      - 1433:1433
+    volumes:
+      - identityDb_data:/var/opt/msssql
+    networks:
+      - blogsphere_dev_net
+
+  identityservice:
+    container_name: Blogsphere.IdentityServer
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - Logging__IncludeScopes=false
+      - "Logging__LogOutputTemplate=[{Timestamp:dd-MM-yyyy HH:mm:ss, fff}] {Level} {Properties} [CorrelationId:{CorrelationId}] [Machine: {MachineName}] {CallerType}:{MemberName} {Message}{NewLine}{Exception}{NewLine}"
+      - Logging__Console__Enabled=true
+      - Logging__Console__LogLevel=Debug
+      - Logging__Elastic__Enabled=true
+      - Logging__Elastic__LogLevel=Debug
+      - AppConfigurations__ApplicationIdentifier=Blogsphere.IdentityService
+      - AppConfigurations__ApplicationEnvironment=docker
+      # - ElasticSearch__Uri=http://elasticsearch:9200
+      - "ConnectionStrings__Sqlserver=Server=identityDb;Database=IdentityDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;"
+    ports:
+      - "5000:8080"
+    depends_on:
+      - identityDb
+    networks:
+      - blogsphere_dev_net
+
+
+
