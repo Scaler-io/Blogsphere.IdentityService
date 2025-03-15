@@ -33,8 +33,15 @@ namespace IdentityService.Data.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Lastname = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ImageId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_HasData = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    Image_Id = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image_Url = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Profile_HasData = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    Profile_Bio = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    Profile_WebsiteUrl = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Profile_LinkedIn = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Profile_Twitter = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
+                    Profile_Instagram = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: true),
                     LastLogin = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -66,7 +73,7 @@ namespace IdentityService.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -256,6 +263,13 @@ namespace IdentityService.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Permissions_Name",
+                table: "Permissions",
+                column: "Name",
+                unique: true,
+                filter: "[Name] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RolePermissions_PermissionId",

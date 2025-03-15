@@ -20,8 +20,10 @@ public class ApplicationUser : IdentityUser
 
     public string FirstName { get; set; }
     public string Lastname { get; set; }
-    public string Image { get; set; } = string.Empty;
-    public string ImageId { get; set; } = string.Empty;
+
+    public ImageDetails Image { get; set; } = new();
+    public ProfileDetails Profile { get; private set; } = new();
+
     public DateTime LastLogin { get; private set; }
     public bool IsActive { get; private set; } = true;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
@@ -37,6 +39,32 @@ public class ApplicationUser : IdentityUser
     public void SetUpdatedBy(string username) => UpdateBy = username;
     public void SetUpdationTime() => UpdatedAt = DateTime.UtcNow;
     public void SetLastLogin() => LastLogin = DateTime.UtcNow;
+
+    public void SetProfileDetails(
+        string bio = "",
+        string websiteUrl = "",
+        string linkedIn = "",
+        string twitter = "",
+        string instagram = "")
+    {
+        Profile = new()
+        {
+            Bio = bio,
+            WebsiteUrl = websiteUrl,
+            Instagram = instagram,
+            LinkedIn = linkedIn,
+            Twitter = twitter,
+        };
+    }
+
+    public void SetImageDetails(string id = "", string url = "")
+    {
+        Image = new()
+        {
+            Id = id,
+            Url = url,
+        };
+    }
 
     public void MarkEmailConfirmation() => EmailConfirmed = true;
     public void MarkPhoneConfirmation() => PhoneNumberConfirmed = true;

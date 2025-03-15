@@ -17,7 +17,41 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Appli
             .HasForeignKey(fk => fk.UserId)
             .IsRequired();
 
-        builder.Property(u => u.Image).IsRequired(false);
-        builder.Property(u => u.ImageId).IsRequired(false);
+        builder.OwnsOne(u => u.Image, image =>
+        {
+            image.Property(i => i.HasData)
+            .HasDefaultValue(true)
+            .IsRequired();
+
+            image.Property(i => i.Id).IsRequired(false);
+            image.Property(i => i.Url).IsRequired(false);
+        });
+
+        builder.OwnsOne(u => u.Profile, profile =>
+        {
+            profile.Property(p => p.HasData)
+            .HasDefaultValue(true)
+            .IsRequired();
+
+            profile.Property(p => p.Bio)
+                .HasMaxLength(500)
+                .IsRequired(false);
+
+            profile.Property(p => p.WebsiteUrl)
+                .HasMaxLength(255)
+                .IsRequired(false);
+
+            profile.Property(p => p.LinkedIn)
+                .HasMaxLength(255)
+                .IsRequired(false);
+
+            profile.Property(p => p.Twitter)
+                .HasMaxLength(255)
+                .IsRequired(false);
+
+            profile.Property(p => p.Instagram)
+                .HasMaxLength(255)
+                .IsRequired(false);
+        });
     }
 }

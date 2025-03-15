@@ -18,6 +18,9 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationPermissionEntityConfiguration).Assembly);
         builder.Entity<ApplicationRolePermission>()
             .HasKey(ck => new { ck.RoleId, ck.PermissionId });
+
+        builder.Owned<ProfileDetails>();
+        builder.Owned<ImageDetails>();
     }
 
     // permission sets

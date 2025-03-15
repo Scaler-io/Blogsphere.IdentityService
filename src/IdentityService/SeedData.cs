@@ -145,6 +145,8 @@ public class SeedData
         var authorUser = new ApplicationUser("david100", "David", "Warn", "david@blogshepere.com");
         var subscriberUser = new ApplicationUser("henry200", "Henry", "Matt", "henry@blogshepere.com");
 
+        authorUser.SetProfileDetails("A simple bio");
+
         try
         {
             await userManager.CreateAsync(adminUser, "P@ssw0rd");
