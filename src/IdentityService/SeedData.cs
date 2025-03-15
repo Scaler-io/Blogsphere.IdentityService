@@ -145,7 +145,11 @@ public class SeedData
         var authorUser = new ApplicationUser("david100", "David", "Warn", "david@blogshepere.com");
         var subscriberUser = new ApplicationUser("henry200", "Henry", "Matt", "henry@blogshepere.com");
 
+        adminUser.MarkEmailConfirmation();
+        editorUser.MarkEmailConfirmation();
         authorUser.SetProfileDetails("A simple bio");
+        authorUser.MarkEmailConfirmation();
+        subscriberUser.MarkEmailConfirmation();
 
         try
         {
