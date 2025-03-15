@@ -33,15 +33,6 @@ steps:
       packageType: "sdk"
       version: $(dotnetVersion)
 
-  - task: Cache@2
-    displayName: "Cache NuGet Packages"
-    inputs:
-      key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
-      restoreKeys: |
-        nuget | "$(Agent.OS)"
-        nuget
-      path: $(NUGET_PACKAGES)
-
   - task: DotNetCoreCLI@2
     displayName: "Restore dependencies"
     inputs:
