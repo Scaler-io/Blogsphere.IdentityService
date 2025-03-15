@@ -5,9 +5,6 @@
 
 trigger:
  batch: true
- tags:
-  include:
-   - * 
  branches:
     include:
       - main
