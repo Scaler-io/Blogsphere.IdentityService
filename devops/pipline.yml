@@ -37,76 +37,76 @@ stages:
   #             buildConfiguration: "Release"
   #             buildPlatform: "Any CPU"
 
-  - stage: GithubRelease
-    displayName: "Github Release"
-    condition: |
-      or(
-        and(
-            eq(variables['Build.Reason'], 'PullRequest'),
-            eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-        ),
-        and(
-            eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-            or(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(variables['Build.Reason'], 'IndividualCI'),
-                eq(variables['Build.Reason'], 'BatchedCI')
-            )
+  stages:
+    - stage: GithubRelease
+      displayName: "Github Release"
+      condition: |
+        or(
+          and(
+              eq(variables['Build.Reason'], 'PullRequest'),
+              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+          ),
+          and(
+              eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+              or(
+                  eq(variables['Build.Reason'], 'Manual'),
+                  eq(variables['Build.Reason'], 'IndividualCI'),
+                  eq(variables['Build.Reason'], 'BatchedCI')
+              )
+          )
         )
-      )
-    jobs:
-      - job: CreateRelease
-        displayName: "Create Release Tag"
-        steps:
-          - checkout: self
-          - script: |
-              echo "##[section] Generating release version"
-              RELEASE_TAG="v1.0.$(Build.BuildId)"
-              echo "Generated Release Tag: $RELEASE_TAG"
-              echo "##vso[task.setvariable variable=RELEASE_TAG]$RELEASE_TAG"
+      jobs:
+        - job: CreateRelease
+          displayName: "Create Release Tag"
+          steps:
+            - checkout: self
+            - script: |
+                echo "##[section] Generating release version"
+                RELEASE_TAG="v1.0.$(Build.BuildId)"
+                echo "Generated Release Tag: $RELEASE_TAG"
+                echo "##vso[task.setvariable variable=RELEASE_TAG;isOutput=true]$RELEASE_TAG"
+              displayName: "Generate Release Tag"
+              name: setReleaseTag
 
-            displayName: "Generate Release Tag"
-            name: setReleaseTag # Required for referencing in the next stage
+            - task: GitHubRelease@1
+              displayName: "Create GitHub Release"
+              inputs:
+                gitHubConnection: "github.com_sharthak1095"
+                repositoryName: "Scaler-io/Blogsphere.IdentityService"
+                action: "create"
+                tagSource: "userSpecifiedTag"
+                tag: "$(RELEASE_TAG)"
+                title: "Release $(RELEASE_TAG)"
+                changeLogCompareToRelease: "lastFullRelease"
+                changeLogType: "commitBased"
 
-          - task: GitHubRelease@1
-            displayName: "Create GitHub Release"
-            inputs:
-              gitHubConnection: "github.com_sharthak1095"
-              repositoryName: "Scaler-io/Blogsphere.IdentityService"
-              action: "create"
-              tagSource: "userSpecifiedTag"
-              tag: "$(RELEASE_TAG)"
-              title: "Release $(RELEASE_TAG)"
-              changeLogCompareToRelease: "lastFullRelease"
-              changeLogType: "commitBased"
-
-  - stage: Docker
-    displayName: "Docker build and push"
-    dependsOn: GithubRelease
-    condition: |
-      or(
-        and(
-            eq(variables['Build.Reason'], 'PullRequest'),
-            eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-        ),
-        and(
-            eq(variables['Build.SourceBranch'], 'refs/heads/main'),
-            or(
-                eq(variables['Build.Reason'], 'Manual'),
-                eq(variables['Build.Reason'], 'IndividualCI'),
-                eq(variables['Build.Reason'], 'BatchedCI')
-            )
+    - stage: Docker
+      displayName: "Docker build and push"
+      dependsOn: GithubRelease
+      condition: |
+        or(
+          and(
+              eq(variables['Build.Reason'], 'PullRequest'),
+              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
+          ),
+          and(
+              eq(variables['Build.SourceBranch'], 'refs/heads/main'),
+              or(
+                  eq(variables['Build.Reason'], 'Manual'),
+                  eq(variables['Build.Reason'], 'IndividualCI'),
+                  eq(variables['Build.Reason'], 'BatchedCI')
+              )
+          )
         )
-      )
-    variables:
-      RELEASE_TAG: $[ stageDependencies.GithubRelease.CreateRelease.outputs['setReleaseTag.RELEASE_TAG'] ]
-    jobs:
-      - job: DockerBuild
-        displayName: "Build docker image"
-        steps:
-          - script: |
-              echo $(RELEASE_TAG)
-          - template: ./deploy/docker.yml
-            parameters:
-              imageName: "sharthak1995/blogsphere.identity.svc"
-              tag: "$(RELEASE_TAG)"
+      variables:
+        RELEASE_TAG: $[ dependencies.GithubRelease.outputs['CreateRelease.setReleaseTag.RELEASE_TAG'] ]
+      jobs:
+        - job: DockerBuild
+          displayName: "Build docker image"
+          steps:
+            - script: |
+                echo $(RELEASE_TAG)
+            - template: ./deploy/docker.yml
+              parameters:
+                imageName: "sharthak1995/blogsphere.identity.svc"
+                tag: "$(RELEASE_TAG)"
