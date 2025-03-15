@@ -63,8 +63,7 @@ stages:
               echo "##[section] Generating release version"
               RELEASE_TAG="v1.0.$(Build.BuildId)"
               echo "Generated Release Tag: $RELEASE_TAG"
-              echo "##vso[task.setvariable variable=RELEASE_TAG;isOutput=true]$RELEASE_TAG"
-
+              echo "##vso[task.setvariable variable=RELEASE_TAG;isOutput=true]v1.0.$(Build.BuildId)"
             displayName: "Generate Release Tag"
             name: setReleaseTag # Required for referencing in the next stage
 
@@ -99,7 +98,7 @@ stages:
         )
       )
     variables:
-      RELEASE_TAG: $[ dependencies.GithubRelease.outputs['CreateRelease.setReleaseTag.RELEASE_TAG'] ]
+      RELEASE_TAG: $[ dependencies.GithubRelease.CreateRelease.outputs['CreateRelease.setReleaseTag.RELEASE_TAG'] ]
     jobs:
       - job: DockerBuild
         displayName: "Build docker image"
