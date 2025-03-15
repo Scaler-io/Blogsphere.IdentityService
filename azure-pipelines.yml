@@ -35,13 +35,13 @@ steps:
    version: $(dotnetVersion)
 
 - task: Cache@2
-    displayName: 'Cache NuGet Packages'
-    inputs:
-      key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
-      restoreKeys: |
-        nuget | "$(Agent.OS)"
-        nuget
-      path: $(NUGET_PACKAGES)
+  displayName: 'Cache NuGet Packages'
+  inputs:
+    key: 'nuget | "$(Agent.OS)" | **/packages.lock.json'
+    restoreKeys: |
+    nuget | "$(Agent.OS)"
+    nuget
+    path: $(NUGET_PACKAGES)
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore dependencies'
@@ -54,7 +54,7 @@ steps:
     inputs:
       command: 'build'
       projects: '**/IdentityService.csproj'
-      arguments: '--configuration $(buildConfiguration) --platform ${buildPlatform}'
+      arguments: '--configuration $(buildConfiguration) --platform $(buildPlatform)'
 
 - task: DotNetCoreCLI@2
     displayName: 'Publish API'
@@ -62,7 +62,7 @@ steps:
       command: 'publish'
       publishWebProjects: false
       projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --platform ${buildPlatform} --output $(Build.ArtifactStagingDirectory)'
+      arguments: '--configuration $(buildConfiguration) --platform $(buildPlatform) --output $(Build.ArtifactStagingDirectory)'
       zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
