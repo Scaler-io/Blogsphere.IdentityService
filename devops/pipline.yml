@@ -41,7 +41,7 @@ stages:
     displayName: "Docker build and push"
     jobs:
       - job: DockerBuild
-        displayNa: "Build docker image"
+        displayName: "Build docker image"
         steps:
           - template: ./deploy/docker.yml
             parameters:
