@@ -44,7 +44,7 @@ steps:
     inputs:
       command: "build"
       projects: "**/IdentityService.csproj"
-      arguments: "--configuration $(buildConfiguration) --platform $(buildPlatform)"
+      arguments: "--configuration $(buildConfiguration) /p:Platform='Any CPU'"
 
   - task: DotNetCoreCLI@2
     displayName: "Publish API"
@@ -52,7 +52,7 @@ steps:
       command: "publish"
       publishWebProjects: false
       projects: "**/*.csproj"
-      arguments: "--configuration $(buildConfiguration) --platform $(buildPlatform) --output $(Build.ArtifactStagingDirectory)"
+      arguments: "--configuration $(buildConfiguration) /p:Platform='Any CPU'  --output $(Build.ArtifactStagingDirectory)"
       zipAfterPublish: true
 
   - task: PublishBuildArtifacts@1
