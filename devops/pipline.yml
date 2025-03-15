@@ -98,7 +98,7 @@ stages:
         )
       )
     variables:
-      RELEASE_TAG: $[ dependencies.GithubRelease.CreateRelease.outputs['setReleaseTag.RELEASE_TAG'] ]
+      RELEASE_TAG: $[ stageDependencies.GithubRelease.CreateRelease.outputs['setReleaseTag.RELEASE_TAG'] ]
     jobs:
       - job: DockerBuild
         displayName: "Build docker image"
