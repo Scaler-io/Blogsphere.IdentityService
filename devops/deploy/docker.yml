@@ -14,8 +14,7 @@ steps:
     displayName: "Build Docker Image"
     inputs:
       command: "build"
-      Dockerfile: "$(Build.SourcesDirectory)/src/IdentityService/Dockerfile"
-      buildContext: "."
+      Dockerfile: "**/Dockerfile"
       tags: "${{ parameters.imageName }}:${{ parameters.tag }}"
 
   - task: Docker@2
