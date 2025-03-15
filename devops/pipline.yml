@@ -63,7 +63,7 @@ stages:
       - job: CreateRelease
         displayName: "Create Release Tag"
         steps:
-          template: ./deploy/github-release.yml
+          - template: ./deploy/github-release.yml
 
   # Docker build and push
   - stage: Docker
