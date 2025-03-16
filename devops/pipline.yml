@@ -45,7 +45,7 @@ stages:
       and(
         succeeded(),
         or(
-          eq(variables['Build.Reason'], 'PullRequest')
+          eq(variables['Build.Reason'], 'PullRequest'),
           and(
               eq(variables['Build.SourceBranch'], 'refs/heads/main'),
               or(
