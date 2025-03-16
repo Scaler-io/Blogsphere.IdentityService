@@ -41,6 +41,7 @@ stages:
   # Create github release and tag
   - stage: GithubRelease
     displayName: "Github Release"
+    environment: blogsphere-identity-svc-env
     condition: |
       and(
         succeeded(),
@@ -69,6 +70,7 @@ stages:
   - stage: Docker
     displayName: "Docker build and push"
     dependsOn: GithubRelease
+    environment: blogsphere-identity-svc-env
     condition: |
       and(
         succeeded(),
