@@ -45,10 +45,7 @@ stages:
       and(
         succeeded(),
         or(
-          and(
-              eq(variables['Build.Reason'], 'PullRequest'),
-              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-          ),
+          eq(variables['Build.Reason'], 'PullRequest'),
           and(
               eq(variables['Build.SourceBranch'], 'refs/heads/main'),
               or(
@@ -73,10 +70,7 @@ stages:
       and(
         succeeded(),
         or(
-          and(
-              eq(variables['Build.Reason'], 'PullRequest'),
-              eq(variables['System.PullRequest.TargetBranch'], 'refs/heads/main')
-          ),
+          eq(variables['Build.Reason'], 'PullRequest'),
           and(
               eq(variables['Build.SourceBranch'], 'refs/heads/main'),
               or(
