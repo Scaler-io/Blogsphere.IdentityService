@@ -15,7 +15,7 @@ services:
   identityservice:
     container_name: Blogsphere.IdentityServer
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
       - Logging__IncludeScopes=false
       - "Logging__LogOutputTemplate=[{Timestamp:dd-MM-yyyy HH:mm:ss, fff}] {Level} {Properties} [CorrelationId:{CorrelationId}] [Machine: {MachineName}] {CallerType}:{MemberName} {Message}{NewLine}{Exception}{NewLine}"
       - Logging__Console__Enabled=true
@@ -24,7 +24,7 @@ services:
       - Logging__Elastic__LogLevel=Debug
       - AppConfigurations__ApplicationIdentifier=Blogsphere.IdentityService
       - AppConfigurations__ApplicationEnvironment=docker
-      # - ElasticSearch__Uri=http://elasticsearch:9200
+      - ElasticSearch__Uri=http://elasticsearch:9200
       - "ConnectionStrings__Sqlserver=Server=identityDb;Database=IdentityDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;"
     ports:
       - "5000:8080"
@@ -32,6 +32,3 @@ services:
       - identityDb
     networks:
       - blogsphere_dev_net
-
-
-
