@@ -60,11 +60,14 @@ stages:
         )
       )
     jobs:
-      - job: CreateRelease
-        displayName: "Create Release Tag"
-        environment: blogsphere-identity-svc-env
-        steps:
-          - template: ./deploy/github-release.yml
+      - deployment:
+        displayName: "Github release"
+        environment: blogsphere-identity-svc-github-release-env
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - template: ./deploy/github-release.yml
 
   # Docker build and push
   - stage: Docker
@@ -91,13 +94,16 @@ stages:
     variables:
       RELEASE_TAG: $[ stageDependencies.GithubRelease.CreateRelease.outputs['setReleaseTag.RELEASE_TAG'] ]
     jobs:
-      - job: DockerBuild
+      - deployment:
         displayName: "Build docker image"
-        environment: blogsphere-identity-svc-env
-        steps:
-          - script: |
-              echo $(RELEASE_TAG)
-          - template: ./deploy/docker.yml
-            parameters:
-              imageName: "sharthak1995/blogsphere.identity.svc"
-              tag: "$(RELEASE_TAG)"
+        environment: blogsphere-identity-svc-docker-env
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo $(RELEASE_TAG)
+                - template: ./deploy/docker.yml
+                  parameters:
+                    imageName: "sharthak1995/blogsphere.identity.svc"
+                    tag: "$(RELEASE_TAG)"
