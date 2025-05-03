@@ -72,7 +72,7 @@ public class SeedData
         new("user:read"),        
         new("user:update"),     
         new("user:delete"),     
-
+    
         // Category & Tag Management
         new("category:create"),
         new("category:read"),
