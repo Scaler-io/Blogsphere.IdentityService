@@ -1,10 +1,13 @@
-parameters:
+﻿parameters:
   - name: buildConfiguration
     default: "Release"
   - name: buildPlatform
     default: "Any CPU"
 
 steps:
+  - checkout: self
+    persistCredentials: true  # 👈 ensures GitHub credentials persist for git fetch, etc.
+
   - task: UseDotNet@2
     displayName: "Install .NET 8 SDK"
     inputs:
