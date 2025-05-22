@@ -29,10 +29,17 @@ internal static class HostingExtensions
             .LogTo(Console.WriteLine, LogLevel.Information);
         });
 
+        builder.Services.AddDbContext<DataProtectionKeyContext>(options =>
+        {
+            options.UseSqlServer(builder.Configuration.GetConnectionString("Sqlserver"))
+            .LogTo(Console.WriteLine, LogLevel.Information);
+        });
+
         // Key store for data hash
         var appRootPath = Directory.GetCurrentDirectory();
         builder.Services.AddDataProtection()
-            .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(appRootPath, "keys")))
+            // .PersistKeysToFileSystem(new DirectoryInfo(Path.Combine(appRootPath, "keys")))
+            .PersistKeysToDbContext<DataProtectionKeyContext>()
             .SetApplicationName("blogsphere");
 
 

@@ -58,9 +58,12 @@ dlldata.c
 BenchmarkDotNet.Artifacts/
 
 # .NET Core
+*.swp
+*.*~
 project.lock.json
-project.fragment.lock.json
-artifacts/
+.DS_Store
+*.pyc
+nupkg/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -199,11 +202,11 @@ PublishScripts/
 # NuGet Symbol Packages
 *.snupkg
 # The packages folder can be ignored because of Package Restore
-**/[Pp]ackages/*
+**/packages/*
 # except build/, which is used as an MSBuild target.
-!**/[Pp]ackages/build/
+!**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
-#!**/[Pp]ackages/repositories.config
+#!**/packages/repositories.config
 # NuGet v3's project.json files produces more ignorable files
 *.nuget.props
 *.nuget.targets
@@ -398,3 +401,30 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Visual Studio Code
+.vscode
+
+# Rider
+.idea
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# Coverage results
+coverage/
+*.coverage
+*.coveragexml
