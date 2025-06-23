@@ -46,6 +46,47 @@
 
 ---
 
+## Architecture Diagram
+
+```mermaid
+flowchart TD
+    subgraph Client Applications
+        A1["Web App"]
+        A2["Mobile App"]
+        A3["API Consumer"]
+    end
+
+    subgraph Blogsphere.IdentityService
+        B1["ASP.NET Core 8\n(Razor Pages)"]
+        B2["Duende IdentityServer"]
+        B3["EF Core (DbContext)"]
+        B4["Serilog\n(Console/Elastic)"]
+        B5["Custom Services\n(User, Profile, etc.)"]
+    end
+
+    subgraph External Services
+        C1["SQL Server"]
+        C2["Elasticsearch (optional)"]
+        C3["External Auth Providers\n(Google, etc.)"]
+    end
+
+    A1-->|OpenID Connect/OAuth2|B2
+    A2-->|OpenID Connect/OAuth2|B2
+    A3-->|OAuth2|B2
+
+    B2-->|User/Token Management|B1
+    B2-->|User Data|B3
+    B2-->|External Auth|C3
+    B1-->|Logging|B4
+    B4-->|Log Data|C2
+    B3-->|Data|C1
+    B5-->|Business Logic|B1
+    B1-->|Static Content|A1
+    B1-->|Static Content|A2
+```
+
+---
+
 ## Getting Started
 
 ### Prerequisites
