@@ -5,14 +5,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
-    <title>Duende IdentityServer</title>
+    <title>Blogsphere Identity</title>
     
-    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
-    <link rel="shortcut icon" type="image/x-icon" href="~/favicon.ico" />
+    <!-- Modern favicon support -->
+    <link rel="icon" type="image/svg+xml" href="~/favicon.svg?v=@DateTime.Now.Ticks" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png?v=@DateTime.Now.Ticks" />
     
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap4-glyphicons/css/bootstrap-glyphicons.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css?v=@DateTime.Now.Ticks" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700&display=swap" />
 </head>
 <body>
     <partial name="_Nav" />
@@ -21,6 +23,9 @@
         @RenderBody()
     </div>
 
+    <footer class="footer">
+        <p>&copy; @DateTime.Now.Year Blogsphere. All rights reserved.</p>
+    </footer> 
     <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 

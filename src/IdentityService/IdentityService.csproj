@@ -59,4 +59,22 @@
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>
+
+	<!-- SCSS Compilation Targets -->
+	<ItemGroup>
+		<Watch Include="wwwroot/css/**/*.scss" />
+	</ItemGroup>
+
+	<Target Name="CompileSass" BeforeTargets="Build">
+		<Message Text="Compiling SCSS files..." Importance="high" />
+		<Exec Command="npx sass wwwroot/css/site.scss wwwroot/css/site.css --style=expanded --no-source-map" ContinueOnError="false" />
+		<Exec Command="npx sass wwwroot/css/site.scss wwwroot/css/site.min.css --style=compressed --no-source-map" ContinueOnError="false" />
+		<Exec Command="npx sass wwwroot/css/pages/ --style=expanded --no-source-map" ContinueOnError="false" />
+		<Message Text="SCSS compilation completed!" Importance="high" />
+	</Target>
+
+	<Target Name="WatchSass" AfterTargets="Build" Condition="'$(DotNetWatchBuild)' == 'true'">
+		<Message Text="Setting up SCSS file watching..." Importance="high" />
+	</Target>
+
 </Project>

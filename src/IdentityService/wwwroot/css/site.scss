@@ -1,50 +1,408 @@
+@import "./_colors";
+@import "./pages/welcome";
+@import "./pages/login";
+@import "./pages/emailverification";
+@import "./pages/logout";
+@import "./pages/grants";
+@import "./pages/error";
+
+// Bootstrap color overrides
+:root {
+    --bs-primary: #{$color-primary};
+    --bs-primary-rgb: 0, 51, 204;
+    --bs-secondary: #{$color-accent-yellow};
+    --bs-secondary-rgb: 255, 230, 0;
+    --bs-success: #{$color-accent-yellow};
+    --bs-info: #{$color-info};
+    --bs-warning: #{$color-warning};
+    --bs-danger: #{$color-error};
+    --bs-light: #{$color-surface};
+    --bs-dark: #{$color-text-primary};
+}
+
+// Override Bootstrap classes with our colors
+.text-primary {
+    color: $color-primary !important;
+}
+
+.text-secondary {
+    color: $color-text-secondary !important;
+}
+
+.text-muted {
+    color: $color-text-secondary !important;
+}
+
+.bg-primary {
+    background-color: $color-primary !important;
+}
+
+.bg-light {
+    background-color: $color-surface !important;
+}
+
+.btn-primary {
+    background-color: $color-primary !important;
+    border-color: $color-primary !important;
+    color: $color-surface !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: $color-button !important;
+        border-color: $color-button !important;
+        color: $color-surface !important;
+    }
+}
+
+.btn-outline-primary {
+    color: $color-primary !important;
+    border-color: $color-primary !important;
+
+    &:hover,
+    &:focus,
+    &:active {
+        background-color: $color-primary !important;
+        border-color: $color-primary !important;
+        color: $color-surface !important;
+    }
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "Titillium Web";
+    src: url("../fonts/Titillium_Web/TitilliumWeb-Regular.ttf")
+        format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Use swap for optimal performance */
+}
+
 .welcome-page {
-  .logo {
-    width: 64px;
-  }
+    .logo {
+        width: 64px;
+    }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: "Titillium Web", sans-serif;
+    background: none;
+}
+
+.container.body-container {
+    flex: 1 0 auto;
+    background: $color-surface;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0px 24px;
+    width: 100%;
+}
+
+.font-xs {
+    font-size: 12px;
+}
+.font-sm {
+    font-size: 14px;
+}
+.font-md {
+    font-size: 18px;
+}
+.font-lg {
+    font-size: 20px;
+}
+.blogsphere-link {
+    text-decoration: none;
+    color: $color-primary;
+
+    &:hover {
+        text-decoration: none !important;
+        font-weight: bold;
+        color: $color-accent-yellow;
+    }
+}
+
+height-10 {
+    height: 650px !important;
 }
 
 .icon-banner {
-  width: 32px;
+    width: 32px;
 }
 
-.body-container {
-  margin-top: 60px;
-  padding-bottom: 40px;
+.banner {
+    &--info,
+    &--success,
+    &--error {
+        border-radius: 15px !important;
+    }
+
+    &--info {
+        background: $color-info;
+        filter: opacity(0.2);
+    }
+
+    &--success {
+        background: $color-accent-yellow;
+        filter: opacity(0.2);
+    }
+
+    &--error {
+        background: $color-error;
+        filter: opacity(0.2);
+    }
+}
+
+.form-control {
+    &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        border: 1px solid $color-primary !important;
+    }
+}
+
+.btn {
+    font-size: 14px !important;
+    padding: 10px 18px !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2) !important;
+    transition: box-shadow 0.1s ease;
+
+    &:hover,
+    &:focus,
+    &:active {
+        outline: none !important;
+        border: none !important;
+    }
+
+    &:focus,
+    &:active {
+        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2) !important; /* Remove shadow on click */
+    }
+
+    &-primary {
+        background: $color-button !important;
+        color: $color-surface !important;
+        border: none;
+    }
+
+    &-primary:hover,
+    &-primary:focus {
+        background: $color-primary !important;
+        color: $color-accent-yellow !important;
+    }
+
+    &-secondary {
+        background: $color-accent-yellow !important;
+        color: $color-surface !important;
+    }
+
+    &-success {
+        background: $color-accent-yellow !important;
+        color: $color-text-primary !important;
+    }
+
+    &-warning {
+        background: $color-warning !important;
+        color: $color-text-primary !important;
+    }
+
+    &-error {
+        background: $color-error !important;
+        color: $color-surface !important;
+    }
+}
+
+.blogsphere-text-primary {
+    color: $color-primary;
+}
+
+.blogsphere-text-error {
+    color: $color-error;
+}
+
+.blogsphere-text-accent {
+    color: $color-accent-yellow;
 }
 
 .welcome-page {
-  li {
-    list-style: none;
-    padding: 4px;
-  }
+    li {
+        list-style: none;
+        padding: 4px;
+    }
+}
+
+.alert-success {
+    background: $color-accent-yellow !important;
+    background-color: $color-accent-yellow !important;
+    color: $color-text-primary !important;
 }
 
 .logged-out-page {
-  iframe {
-    display: none;
-    width: 0;
-    height: 0;
-  }
+    iframe {
+        display: none;
+        width: 0;
+        height: 0;
+    }
 }
 
 .grants-page {
-  .card {
-    margin-top: 20px;
-    border-bottom: 1px solid lightgray;
+    .card {
+        margin-top: 20px;
+        border-bottom: 1px solid lightgray;
 
-    .card-title {
-      img {
-        width: 100px;
-        height: 100px;
-      }
+        .card-title {
+            img {
+                width: 100px;
+                height: 100px;
+            }
 
-      font-size: 120%;
-      font-weight: bold;
+            font-size: 120%;
+            font-weight: bold;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    }
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: $color-surface !important;
+    color: $color-text-secondary;
+    text-align: center;
+    padding: 10px;
+    min-height: 48px;
+    &-brand {
+        margin-left: 15px;
+    }
+    &-links {
+        display: flex;
+        column-gap: 15px;
+        & div {
+            display: flex;
+            align-items: center;
+            column-gap: 10px;
+        }
+    }
+}
+
+// Navbar styles for vibrant modern color scheme
+.navbar {
+    background: $color-surface !important;
+    color: $color-primary !important;
+    border-bottom: 1px solid $color-border;
+    box-shadow: none;
+
+    .navbar-brand {
+        color: $color-primary !important;
+        font-weight: bold;
+        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        img {
+            margin-right: 8px;
+        }
     }
 
-    label {
-      font-weight: bold;
+    .nav-link,
+    .navbar-nav .nav-link {
+        color: $color-primary !important;
+        font-weight: 500;
+        transition: color 0.2s;
+        &:hover,
+        &:focus {
+            color: $color-accent-yellow !important;
+        }
     }
-  }
+
+    .dropdown-menu {
+        background: $color-surface;
+        border: 1px solid $color-border;
+        .dropdown-item {
+            color: $color-text-primary;
+            &:hover,
+            &:focus {
+                background: $color-accent-yellow;
+                color: $color-surface;
+            }
+        }
+    }
+
+    .nav-item.active > .nav-link,
+    .nav-link.active {
+        color: $color-accent-yellow !important;
+        font-weight: bold;
+    }
+}
+
+// Hero section specific overrides
+.hero-section {
+    &.bg-primary {
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            color: $color-surface !important;
+        }
+
+        p,
+        .lead {
+            color: $color-surface !important;
+        }
+
+        .text-white {
+            color: $color-surface !important;
+        }
+
+        .btn-light {
+            background-color: $color-surface !important;
+            color: $color-primary !important;
+            border-color: $color-surface !important;
+            font-weight: 600 !important;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: $color-accent-yellow !important;
+                color: $color-primary !important;
+                border-color: $color-accent-yellow !important;
+                transform: translateY(-1px);
+            }
+        }
+
+        .btn-outline-light {
+            color: $color-surface !important;
+            border-color: $color-surface !important;
+            background-color: transparent !important;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: $color-surface !important;
+                color: $color-primary !important;
+                border-color: $color-surface !important;
+                transform: translateY(-1px);
+            }
+        }
+    }
 }

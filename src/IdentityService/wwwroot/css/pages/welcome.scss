@@ -1,0 +1,136 @@
+@import "../_colors";
+
+.landing-page {
+    // Hero section customizations
+    .hero-section {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 51, 204, 0.03) 0%,
+            rgba(255, 230, 0, 0.03) 100%
+        );
+
+        .display-4 {
+            color: $color-primary !important;
+        }
+
+        .lead {
+            color: $color-text-secondary !important;
+            &.text-dark {
+                color: #000000 !important;
+            }
+        }
+    }
+
+    // Section headings
+    h2,
+    h3,
+    h4,
+    h5 {
+        color: $color-primary !important;
+
+        &.text-primary {
+            color: $color-primary !important;
+        }
+    }
+
+    // Custom button hover effects
+    .btn-primary {
+        background-color: $color-primary !important;
+        border-color: $color-primary !important;
+        color: $color-surface !important;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: $color-accent-yellow !important;
+            border-color: $color-accent-yellow !important;
+            color: $color-primary !important;
+            transform: translateY(-1px);
+        }
+    }
+
+    .btn-outline-primary {
+        color: $color-primary !important;
+        border-color: $color-primary !important;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: $color-accent-yellow !important;
+            border-color: $color-accent-yellow !important;
+            color: $color-primary !important;
+            transform: translateY(-1px);
+        }
+    }
+
+    // Card customizations
+    .card {
+        border: none !important;
+        box-shadow: 0 2px 12px rgba(0, 51, 204, 0.08) !important;
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 51, 204, 0.15) !important;
+        }
+
+        .card-title {
+            color: $color-primary !important;
+        }
+
+        .card-text {
+            color: $color-text-secondary !important;
+        }
+    }
+
+    // Quick access cards
+    a.card {
+        text-decoration: none !important;
+
+        &:hover {
+            background-color: rgba(255, 230, 0, 0.1) !important;
+
+            .card-title {
+                color: $color-primary !important;
+            }
+        }
+    }
+
+    // How it works section
+    .bg-primary {
+        background-color: $color-primary !important;
+    }
+
+    // Text color overrides
+    .text-muted {
+        color: $color-text-secondary !important;
+    }
+
+    .text-primary {
+        color: $color-primary !important;
+    }
+
+    // Numbered circles in How It Works
+    .rounded-circle {
+        background-color: $color-primary !important;
+
+        span {
+            color: $color-surface !important;
+        }
+    }
+
+    // Ensure SVG images maintain aspect ratio
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    // Light background sections
+    .bg-light {
+        background: linear-gradient(
+            135deg,
+            rgba(0, 51, 204, 0.02) 0%,
+            rgba(255, 230, 0, 0.02) 100%
+        ) !important;
+    }
+}

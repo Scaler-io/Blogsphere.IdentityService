@@ -1,0 +1,91 @@
+.landing-page .hero-section {
+  background: linear-gradient(135deg, rgba(0, 51, 204, 0.03) 0%, rgba(255, 230, 0, 0.03) 100%);
+}
+.landing-page .hero-section .display-4 {
+  color: #0033cc !important;
+}
+.landing-page .hero-section .lead {
+  color: #0033cc !important;
+}
+.landing-page .hero-section .lead.text-dark {
+  color: #000000 !important;
+}
+.landing-page h2,
+.landing-page h3,
+.landing-page h4,
+.landing-page h5 {
+  color: #0033cc !important;
+}
+.landing-page h2.text-primary,
+.landing-page h3.text-primary,
+.landing-page h4.text-primary,
+.landing-page h5.text-primary {
+  color: #0033cc !important;
+}
+.landing-page .btn-primary {
+  background-color: #0033cc !important;
+  border-color: #0033cc !important;
+  color: #ffffff !important;
+}
+.landing-page .btn-primary:hover, .landing-page .btn-primary:focus, .landing-page .btn-primary:active {
+  background-color: #ffe600 !important;
+  border-color: #ffe600 !important;
+  color: #0033cc !important;
+  transform: translateY(-1px);
+}
+.landing-page .btn-outline-primary {
+  color: #0033cc !important;
+  border-color: #0033cc !important;
+}
+.landing-page .btn-outline-primary:hover, .landing-page .btn-outline-primary:focus, .landing-page .btn-outline-primary:active {
+  background-color: #ffe600 !important;
+  border-color: #ffe600 !important;
+  color: #0033cc !important;
+  transform: translateY(-1px);
+}
+.landing-page .card {
+  border: none !important;
+  box-shadow: 0 2px 12px rgba(0, 51, 204, 0.08) !important;
+  transition: all 0.3s ease;
+}
+.landing-page .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 51, 204, 0.15) !important;
+}
+.landing-page .card .card-title {
+  color: #0033cc !important;
+}
+.landing-page .card .card-text {
+  color: #0033cc !important;
+}
+.landing-page a.card {
+  text-decoration: none !important;
+}
+.landing-page a.card:hover {
+  background-color: rgba(255, 230, 0, 0.1) !important;
+}
+.landing-page a.card:hover .card-title {
+  color: #0033cc !important;
+}
+.landing-page .bg-primary {
+  background-color: #0033cc !important;
+}
+.landing-page .text-muted {
+  color: #0033cc !important;
+}
+.landing-page .text-primary {
+  color: #0033cc !important;
+}
+.landing-page .rounded-circle {
+  background-color: #0033cc !important;
+}
+.landing-page .rounded-circle span {
+  color: #ffffff !important;
+}
+.landing-page img {
+  max-width: 100%;
+  height: auto;
+}
+.landing-page .bg-light {
+  background: linear-gradient(135deg, rgba(0, 51, 204, 0.02) 0%, rgba(255, 230, 0, 0.02) 100%) !important;
+}
