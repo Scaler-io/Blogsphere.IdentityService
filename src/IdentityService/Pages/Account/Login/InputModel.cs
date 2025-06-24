@@ -7,9 +7,9 @@ namespace IdentityService.Pages.Login;
 
 public class InputModel
 {
-    [Required]
+    [Required(ErrorMessage = "Email is required.")]
     public string Username { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Password is required.")]
     public string Password { get; set; }
     public bool RememberLogin { get; set; }
     public string ReturnUrl { get; set; }

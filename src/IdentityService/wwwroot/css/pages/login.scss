@@ -1,4 +1,477 @@
-// Login page-specific styles
-.login-page {
-    // Add login page styles here
+@import "../_colors";
+
+// Login page container
+.login-container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    // Left Section - Gradient Background with Illustration
+    .login-left-section {
+        flex: 1;
+        min-height: 100vh;
+        position: relative;
+        background: linear-gradient(
+            135deg,
+            $color-primary 0%,
+            $color-background 100%
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        .gradient-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                45deg,
+                rgba(255, 230, 0, 0.1) 0%,
+                rgba(0, 51, 204, 0.1) 100%
+            );
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            max-width: 400px;
+            padding: 2rem;
+
+            .brand-section {
+                margin-bottom: 3rem;
+
+                .brand-title {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    margin-bottom: 0.5rem;
+                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                }
+
+                .brand-subtitle {
+                    font-size: 1.1rem;
+                    opacity: 0.9;
+                    font-weight: 300;
+                }
+            }
+
+            .illustration-container {
+                margin: 2rem 0;
+
+                .login-illustration {
+                    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
+                    animation: float 6s ease-in-out infinite;
+                }
+            }
+
+            .feature-text {
+                margin-top: 2rem;
+
+                h3 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    margin-bottom: 1rem;
+                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                }
+
+                p {
+                    font-size: 1rem;
+                    opacity: 0.9;
+                    line-height: 1.6;
+                    font-weight: 300;
+                }
+            }
+        }
+    }
+
+    // Right Section - Login Form
+    .login-right-section {
+        flex: 1;
+        min-height: 100vh;
+        background: $color-surface;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+
+        .form-container {
+            width: 100%;
+            max-width: 420px;
+
+            .form-header {
+                text-align: center;
+                margin-bottom: 2.5rem;
+
+                h2 {
+                    font-size: 2rem;
+                    font-weight: 700;
+                    color: $color-primary !important;
+                    margin-bottom: 0.5rem;
+                }
+
+                p {
+                    font-size: 1rem;
+                    opacity: 0.8;
+                }
+            }
+
+            .login-form {
+                .form-group {
+                    margin-bottom: 1.5rem;
+
+                    .form-control {
+                        width: 100%;
+                        padding: 16px 20px;
+                        border: 1px solid #e5e5e5;
+                        border-radius: 8px;
+                        font-size: 1rem;
+                        transition: all 0.2s ease;
+                        background: $color-surface;
+                        color: $color-text-primary;
+
+                        &::placeholder {
+                            color: #9ca3af;
+                            opacity: 1;
+                        }
+
+                        &:focus {
+                            outline: none;
+                            border-color: $color-primary;
+                            box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
+                        }
+
+                        // Error state styling
+                        &.input-validation-error {
+                            border-color: $color-error;
+                            box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
+                        }
+                    }
+
+                    // Validation error styling
+                    .validation-error {
+                        display: block;
+                        margin-top: 0.5rem;
+                        font-size: 0.875rem;
+                        color: $color-error;
+                        font-weight: 400;
+
+                        &:empty {
+                            display: none;
+                        }
+                    }
+                }
+
+                .remember-section {
+                    margin-bottom: 2rem;
+
+                    .remember-checkbox {
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        font-size: 0.95rem;
+                        color: $color-text-secondary;
+
+                        input[type="checkbox"] {
+                            display: none;
+                        }
+
+                        .checkmark {
+                            width: 18px;
+                            height: 18px;
+                            border: 1px solid #d1d5db;
+                            border-radius: 3px;
+                            margin-right: 10px;
+                            position: relative;
+                            transition: all 0.2s ease;
+                            background: white;
+
+                            &::after {
+                                content: "";
+                                position: absolute;
+                                left: 5px;
+                                top: 2px;
+                                width: 5px;
+                                height: 9px;
+                                border: solid white;
+                                border-width: 0 2px 2px 0;
+                                transform: rotate(45deg);
+                                opacity: 0;
+                                transition: opacity 0.2s ease;
+                            }
+                        }
+
+                        input[type="checkbox"]:checked + .checkmark {
+                            background-color: $color-primary;
+                            border-color: $color-primary;
+
+                            &::after {
+                                opacity: 1;
+                            }
+                        }
+
+                        .remember-text {
+                            font-weight: 400;
+                        }
+                    }
+                }
+
+                .form-actions {
+                    margin-bottom: 2rem;
+
+                    .btn-continue {
+                        width: 100%;
+                        background: $color-primary;
+                        color: white;
+                        border: none;
+                        border-radius: 25px;
+                        padding: 16px 24px;
+                        font-size: 1rem;
+                        font-weight: 600;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+
+                        &:hover {
+                            background: darken($color-primary, 5%);
+                            transform: translateY(-1px);
+                        }
+
+                        &:active {
+                            transform: translateY(0);
+                        }
+                    }
+                }
+
+                .form-links {
+                    text-align: center;
+                    margin-bottom: 2rem;
+
+                    .signup-link {
+                        margin-bottom: 1rem;
+                        font-size: 0.95rem;
+
+                        .link-primary {
+                            color: $color-primary;
+                            text-decoration: none;
+                            font-weight: 500;
+
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+
+                    .forgot-link {
+                        .link-secondary {
+                            color: $color-primary;
+                            text-decoration: none;
+                            font-size: 0.9rem;
+
+                            &:hover {
+                                text-decoration: underline;
+                                color: $color-primary;
+                            }
+                        }
+                    }
+
+                    p {
+                        margin: 0;
+                    }
+                }
+
+                .external-providers {
+                    margin-top: 2rem;
+
+                    .divider {
+                        position: relative;
+                        text-align: center;
+                        margin: 1.5rem 0;
+
+                        span {
+                            background: $color-surface;
+                            padding: 0 1rem;
+                            color: $color-text-secondary;
+                            font-size: 0.9rem;
+                            position: relative;
+                            z-index: 1;
+                        }
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: 0;
+                            right: 0;
+                            height: 1px;
+                            background: $color-border;
+                        }
+                    }
+
+                    .external-buttons {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.75rem;
+
+                        .btn-external {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            padding: 12px 16px;
+                            border: 1px solid $color-border;
+                            border-radius: 8px;
+                            text-decoration: none;
+                            color: $color-text-primary;
+                            font-weight: 500;
+                            transition: all 0.2s ease;
+                            background: $color-surface;
+
+                            &:hover {
+                                border-color: $color-primary;
+                                background: rgba(0, 51, 204, 0.05);
+                                text-decoration: none;
+                                color: $color-text-primary;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Floating animation for the illustration
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+
+        .login-left-section {
+            min-height: 40vh;
+            flex: none;
+
+            .content-wrapper {
+                .brand-section .brand-title {
+                    font-size: 2rem;
+                }
+
+                .illustration-container {
+                    margin: 1rem 0;
+
+                    .login-illustration {
+                        width: 240px;
+                        height: 200px;
+                    }
+                }
+
+                .feature-text {
+                    h3 {
+                        font-size: 1.25rem;
+                    }
+
+                    p {
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+        }
+
+        .login-right-section {
+            min-height: 60vh;
+            padding: 1.5rem;
+
+            .form-container {
+                max-width: 100%;
+
+                .form-header {
+                    margin-bottom: 1.5rem;
+
+                    h2 {
+                        font-size: 1.75rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .login-container {
+        .login-left-section {
+            min-height: 35vh;
+
+            .content-wrapper {
+                padding: 1rem;
+
+                .brand-section {
+                    margin-bottom: 1.5rem;
+
+                    .brand-title {
+                        font-size: 1.75rem;
+                    }
+                }
+
+                .illustration-container {
+                    .login-illustration {
+                        width: 200px;
+                        height: 160px;
+                    }
+                }
+            }
+        }
+
+        .login-right-section {
+            padding: 1rem;
+
+            .form-container {
+                .form-header h2 {
+                    font-size: 1.5rem;
+                }
+            }
+        }
+    }
+}
+
+// Login page specific font overrides - Must come after global styles
+.login-container,
+.login-container * {
+    font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif !important;
+
+    .brand-title,
+    .brand-subtitle,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    span,
+    a,
+    label,
+    input,
+    button,
+    .form-control,
+    .btn-continue,
+    .remember-text,
+    .link-primary,
+    .link-secondary {
+        font-family: "Titillium Web", -apple-system, BlinkMacSystemFont,
+            "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+    }
 }
