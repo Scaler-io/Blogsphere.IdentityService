@@ -1,0 +1,47 @@
+<svg width="350" height="300" viewBox="0 0 350 300" fill="none" xmlns="http://www.w3.org/2000/svg" class="email-verification-illustration">
+    <!-- Background elements -->
+    <circle cx="175" cy="150" r="130" fill="rgba(255, 255, 255, 0.08)" />
+    <circle cx="175" cy="150" r="100" fill="rgba(255, 255, 255, 0.05)" />
+    
+    <!-- Blog post card -->
+    <rect x="100" y="80" width="150" height="140" rx="12" fill="rgba(255, 255, 255, 0.95)" stroke="rgba(255, 255, 255, 1)" stroke-width="2"/>
+    
+    <!-- Blog post header lines -->
+    <rect x="115" y="95" width="120" height="8" rx="4" fill="var(--color-primary, #0033cc)" opacity="0.8" />
+    <rect x="115" y="110" width="80" height="6" rx="3" fill="#666" opacity="0.6" />
+    
+    <!-- Blog post content lines -->
+    <rect x="115" y="130" width="110" height="4" rx="2" fill="#999" opacity="0.5" />
+    <rect x="115" y="140" width="100" height="4" rx="2" fill="#999" opacity="0.5" />
+    <rect x="115" y="150" width="85" height="4" rx="2" fill="#999" opacity="0.5" />
+    <rect x="115" y="160" width="95" height="4" rx="2" fill="#999" opacity="0.5" />
+    
+    <!-- Verification checkmark overlay -->
+    <circle cx="200" cy="120" r="25" fill="#10B981" opacity="0.9" />
+    <path d="M190 120L197 127L210 113" stroke="white" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    
+    <!-- Floating blog elements -->
+    <!-- Heart (likes) -->
+    <path d="M80 70C80 65 85 60 90 60C95 60 100 65 100 70C100 75 90 85 90 85S80 75 80 70Z" fill="#FF6B6B" opacity="0.8" />
+    
+    <!-- Comment bubble -->
+    <circle cx="270" cy="90" r="12" fill="#4ECDC4" opacity="0.7" />
+    <path d="M265 95L270 100L275 95" fill="#4ECDC4" opacity="0.7" />
+    
+    <!-- Share icon -->
+    <circle cx="90" cy="230" r="10" fill="#FFE66D" opacity="0.8" />
+    <path d="M85 230L95 230M90 225L90 235M87 227L93 233" stroke="white" stroke-width="2" stroke-linecap="round" />
+    
+    <!-- Bookmark -->
+    <path d="M280 200L280 240L290 235L300 240L300 200Z" fill="#A8E6CF" opacity="0.7" />
+    
+    <!-- Connection lines (content flow) -->
+    <path d="M90 85L175 150L270 102" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2" stroke-dasharray="4,4"/>
+    <path d="M100 230L175 150L290 220" stroke="rgba(255, 255, 255, 0.3)" stroke-width="2" stroke-dasharray="4,4"/>
+    
+    <!-- Floating text bubbles -->
+    <circle cx="60" cy="160" r="8" fill="rgba(255, 255, 255, 0.3)" />
+    <circle cx="310" cy="170" r="6" fill="rgba(255, 255, 255, 0.3)" />
+    <circle cx="50" cy="120" r="5" fill="rgba(255, 255, 255, 0.3)" />
+    <circle cx="320" cy="130" r="7" fill="rgba(255, 255, 255, 0.3)" />
+</svg> 

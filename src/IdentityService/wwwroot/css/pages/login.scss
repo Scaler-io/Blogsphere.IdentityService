@@ -1,4 +1,5 @@
-@import "../_colors";
+@use "sass:color";
+@use "../_colors" as colors;
 
 // Login page container
 .login-container {
@@ -15,8 +16,8 @@
         position: relative;
         background: linear-gradient(
             135deg,
-            $color-primary 0%,
-            $color-background 100%
+            colors.$color-primary 0%,
+            colors.$color-background 100%
         );
         display: flex;
         align-items: center;
@@ -67,6 +68,8 @@
                 .login-illustration {
                     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
                     animation: float 6s ease-in-out infinite;
+                    max-width: 100%;
+                    height: auto;
                 }
             }
 
@@ -88,13 +91,22 @@
                 }
             }
         }
+
+        .btn-primary {
+            &:hover {
+                background: color.adjust(
+                    colors.$color-primary,
+                    $lightness: -5%
+                ) !important;
+            }
+        }
     }
 
     // Right Section - Login Form
     .login-right-section {
         flex: 1;
         min-height: 100vh;
-        background: $color-surface;
+        background: colors.$color-surface;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -111,7 +123,7 @@
                 h2 {
                     font-size: 2rem;
                     font-weight: 700;
-                    color: $color-primary !important;
+                    color: colors.$color-primary !important;
                     margin-bottom: 0.5rem;
                 }
 
@@ -132,8 +144,8 @@
                         border-radius: 8px;
                         font-size: 1rem;
                         transition: all 0.2s ease;
-                        background: $color-surface;
-                        color: $color-text-primary;
+                        background: colors.$color-surface;
+                        color: colors.$color-text-primary;
 
                         &::placeholder {
                             color: #9ca3af;
@@ -142,13 +154,13 @@
 
                         &:focus {
                             outline: none;
-                            border-color: $color-primary;
+                            border-color: colors.$color-primary;
                             box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
                         }
 
                         // Error state styling
                         &.input-validation-error {
-                            border-color: $color-error;
+                            border-color: colors.$color-error;
                             box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
                         }
                     }
@@ -158,7 +170,7 @@
                         display: block;
                         margin-top: 0.5rem;
                         font-size: 0.875rem;
-                        color: $color-error;
+                        color: colors.$color-error;
                         font-weight: 400;
 
                         &:empty {
@@ -175,7 +187,7 @@
                         align-items: center;
                         cursor: pointer;
                         font-size: 0.95rem;
-                        color: $color-text-secondary;
+                        color: colors.$color-text-secondary;
 
                         input[type="checkbox"] {
                             display: none;
@@ -207,8 +219,8 @@
                         }
 
                         input[type="checkbox"]:checked + .checkmark {
-                            background-color: $color-primary;
-                            border-color: $color-primary;
+                            background-color: colors.$color-primary;
+                            border-color: colors.$color-primary;
 
                             &::after {
                                 opacity: 1;
@@ -226,7 +238,7 @@
 
                     .btn-continue {
                         width: 100%;
-                        background: $color-primary;
+                        background: colors.$color-primary;
                         color: white;
                         border: none;
                         border-radius: 25px;
@@ -237,7 +249,10 @@
                         transition: all 0.2s ease;
 
                         &:hover {
-                            background: darken($color-primary, 5%);
+                            background: color.adjust(
+                                colors.$color-primary,
+                                $lightness: -5%
+                            );
                             transform: translateY(-1px);
                         }
 
@@ -256,7 +271,7 @@
                         font-size: 0.95rem;
 
                         .link-primary {
-                            color: $color-primary;
+                            color: colors.$color-primary;
                             text-decoration: none;
                             font-weight: 500;
 
@@ -268,13 +283,13 @@
 
                     .forgot-link {
                         .link-secondary {
-                            color: $color-primary;
+                            color: colors.$color-primary;
                             text-decoration: none;
                             font-size: 0.9rem;
 
                             &:hover {
                                 text-decoration: underline;
-                                color: $color-primary;
+                                color: colors.$color-primary;
                             }
                         }
                     }
@@ -293,9 +308,9 @@
                         margin: 1.5rem 0;
 
                         span {
-                            background: $color-surface;
+                            background: colors.$color-surface;
                             padding: 0 1rem;
-                            color: $color-text-secondary;
+                            color: colors.$color-text-secondary;
                             font-size: 0.9rem;
                             position: relative;
                             z-index: 1;
@@ -308,7 +323,7 @@
                             left: 0;
                             right: 0;
                             height: 1px;
-                            background: $color-border;
+                            background: colors.$color-border;
                         }
                     }
 
@@ -322,19 +337,19 @@
                             align-items: center;
                             justify-content: center;
                             padding: 12px 16px;
-                            border: 1px solid $color-border;
+                            border: 1px solid colors.$color-border;
                             border-radius: 8px;
                             text-decoration: none;
-                            color: $color-text-primary;
+                            color: colors.$color-text-primary;
                             font-weight: 500;
                             transition: all 0.2s ease;
-                            background: $color-surface;
+                            background: colors.$color-surface;
 
                             &:hover {
-                                border-color: $color-primary;
+                                border-color: colors.$color-primary;
                                 background: rgba(0, 51, 204, 0.05);
                                 text-decoration: none;
-                                color: $color-text-primary;
+                                color: colors.$color-text-primary;
                             }
                         }
                     }

@@ -1,0 +1,25 @@
+<svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="login-illustration">
+    <!-- Background circles -->
+    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+    
+    <!-- Shield with lock -->
+    <path d="M160 50L120 70V120C120 145 135 165 160 170C185 165 200 145 200 120V70L160 50Z" 
+          fill="rgba(255, 255, 255, 0.9)" stroke="rgba(255, 255, 255, 1)" stroke-width="2"/>
+    
+    <!-- Lock icon inside shield -->
+    <rect x="150" y="105" width="20" height="25" rx="2" fill="#0033cc" />
+    <path d="M145 105V100C145 95 150 90 160 90C170 90 175 95 175 100V105" 
+          stroke="#0033cc" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <circle cx="160" cy="115" r="2" fill="white"/>
+    
+    <!-- Floating elements -->
+    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)" />
+    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)" />
+    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)" />
+    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)" />
+    
+    <!-- Connection lines -->
+    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+</svg> 

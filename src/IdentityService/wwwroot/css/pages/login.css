@@ -51,6 +51,8 @@
 .login-container .login-left-section .content-wrapper .illustration-container .login-illustration {
   filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
   animation: float 6s ease-in-out infinite;
+  max-width: 100%;
+  height: auto;
 }
 .login-container .login-left-section .content-wrapper .feature-text {
   margin-top: 2rem;
@@ -66,6 +68,9 @@
   opacity: 0.9;
   line-height: 1.6;
   font-weight: 300;
+}
+.login-container .login-left-section .btn-primary:hover {
+  background: rgb(0, 44.625, 178.5) !important;
 }
 .login-container .login-right-section {
   flex: 1;

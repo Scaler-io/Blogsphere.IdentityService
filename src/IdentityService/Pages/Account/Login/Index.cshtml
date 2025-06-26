@@ -1,7 +1,8 @@
 @page
 @model IdentityService.Pages.Login.Index
 @{
-    Layout = "_LoginLayout";
+    ViewData["Title"] = "Sign In";
+    Layout = "_SinglePageLayout";
 }
 
 <div class="login-container">
@@ -60,6 +61,7 @@
 
 
             <form asp-page="/Account/Login/Index" class="login-form">
+            
                 <input type="hidden" asp-for="Input.ReturnUrl" />
                 
                 <div class="form-group">

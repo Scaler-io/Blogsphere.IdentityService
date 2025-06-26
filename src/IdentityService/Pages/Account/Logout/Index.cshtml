@@ -1,17 +1,84 @@
 @page
 @model IdentityService.Pages.Logout.Index
+@{
+    ViewData["Title"] = "Logout";
+    Layout = "_SinglePageLayout";
+}
 
-<div class="logout-page">
-    <div class="lead">
-        <h1>Logout</h1>
-        <p>Would you like to logout of IdentityServer?</p>
-    </div>
-
-    <form asp-page="/Account/Logout/Index">
-        <input type="hidden" name="logoutId" value="@Model.LogoutId"  />
-        
-        <div class="form-group">
-            <button class="btn btn-primary">Yes</button>
+<div class="container logout-container">
+    <div class="logout-card">
+        <div class="logout-header">
+            <div class="logout-icon">
+                <!-- Animated logout/exit SVG -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="logout-svg">
+                    <!-- Door frame -->
+                    <rect x="3" y="3" width="14" height="18" rx="2" fill="none" stroke="#0033cc" stroke-width="2" class="door-frame"/>
+                    <!-- Door -->
+                    <rect x="5" y="5" width="10" height="14" rx="1" fill="#0033cc" opacity="0.1" class="door"/>
+                    <!-- Door handle -->
+                    <circle cx="13" cy="12" r="1" fill="#0033cc" class="door-handle"/>
+                    <!-- Exit arrow -->
+                    <g class="exit-arrow">
+                        <path d="M14 12h7m-3-3l3 3-3 3" stroke="#0033cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
+                    <!-- Floating particles -->
+                    <g class="logout-particles">
+                        <circle cx="20" cy="8" r="1" fill="#0033cc" opacity="0.6"/>
+                        <circle cx="22" cy="6" r="0.5" fill="#0033cc" opacity="0.4"/>
+                        <circle cx="19" cy="16" r="0.8" fill="#0033cc" opacity="0.5"/>
+                    </g>
+                </svg>
+            </div>
+            <h1>Sign Out</h1>
+            <p class="logout-subtitle">Are you sure you want to sign out?</p>
         </div>
-    </form>
+
+        <div class="logout-content">
+            <div class="logout-info">
+                <p class="logout-description">
+                    You will be signed out of your Blogsphere account and redirected to the login page.
+                </p>
+                
+                <!-- Decorative elements -->
+                <div class="decorative-elements">
+                    <svg width="180" height="60" viewBox="0 0 180 60" fill="none" xmlns="http://www.w3.org/2000/svg" class="decoration-svg">
+                        <!-- Security shield -->
+                        <g class="security-group">
+                            <path d="M30 15L30 25C30 30 35 35 40 35C45 35 50 30 50 25L50 15L40 12L30 15Z" fill="#0033cc" opacity="0.2"/>
+                            <path d="M37 25L39 27L43 23" stroke="#0033cc" stroke-width="2" stroke-linecap="round" class="shield-check"/>
+                        </g>
+                        
+                        <!-- User profile icons floating away -->
+                        <g class="profile-group">
+                            <circle cx="90" cy="20" r="8" fill="#0033cc" opacity="0.3"/>
+                            <path d="M90 15C88 15 86 17 86 19C86 21 88 23 90 23C92 23 94 21 94 19C94 17 92 15 90 15Z" fill="white"/>
+                            <path d="M90 24C85 24 85 27 85 27H95S95 24 90 24Z" fill="white"/>
+                        </g>
+                        
+                        <!-- Session timeout visualization -->
+                        <g class="session-group">
+                            <circle cx="130" cy="25" r="12" fill="none" stroke="#0033cc" stroke-width="2" opacity="0.4" class="session-circle"/>
+                            <path d="M130 18V25L135 30" stroke="#0033cc" stroke-width="2" stroke-linecap="round" class="session-hand"/>
+                        </g>
+                        
+                        <!-- Floating dots -->
+                        <circle cx="15" cy="35" r="1.5" fill="#0033cc" opacity="0.3" class="float-dot"/>
+                        <circle cx="165" cy="40" r="1" fill="#0033cc" opacity="0.4" class="float-dot"/>
+                        <circle cx="25" cy="45" r="1.2" fill="#0033cc" opacity="0.3" class="float-dot"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="logout-actions">
+            <form asp-page="/Account/Logout/Index">
+                <input type="hidden" name="logoutId" value="@Model.LogoutId" />
+                
+                <div class="button-group">
+                    <button type="submit" class="btn-confirm">Yes, Sign Out</button>
+                    <a href="/" class="btn-cancel">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
