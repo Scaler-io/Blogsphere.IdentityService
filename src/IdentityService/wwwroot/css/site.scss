@@ -1,70 +1,71 @@
-@import "./_colors";
-@import "./pages/welcome";
-@import "./pages/login";
-@import "./pages/emailverification";
-@import "./pages/logout";
-@import "./pages/grants";
-@import "./pages/error";
+@use "sass:color";
+@use "./_colors" as colors;
+@use "./pages/welcome";
+@use "./pages/login";
+@use "./pages/logout";
+@use "./pages/grants";
+@use "./pages/error";
+@use "./pages/emailverification";
 
 // Bootstrap color overrides
 :root {
-    --bs-primary: #{$color-primary};
+    --bs-primary: #{colors.$color-primary};
     --bs-primary-rgb: 0, 51, 204;
-    --bs-secondary: #{$color-accent-yellow};
+    --bs-secondary: #{colors.$color-accent-yellow};
     --bs-secondary-rgb: 255, 230, 0;
-    --bs-success: #{$color-accent-yellow};
-    --bs-info: #{$color-info};
-    --bs-warning: #{$color-warning};
-    --bs-danger: #{$color-error};
-    --bs-light: #{$color-surface};
-    --bs-dark: #{$color-text-primary};
+    --bs-success: #{colors.$color-accent-yellow};
+    --bs-info: #{colors.$color-info};
+    --bs-warning: #{colors.$color-warning};
+    --bs-danger: #{colors.$color-error};
+    --bs-light: #{colors.$color-surface};
+    --bs-dark: #{colors.$color-text-primary};
 }
 
 // Override Bootstrap classes with our colors
 .text-primary {
-    color: $color-primary !important;
+    color: colors.$color-primary !important;
 }
 
 .text-secondary {
-    color: $color-text-secondary !important;
+    color: colors.$color-text-secondary !important;
 }
 
 .text-muted {
-    color: $color-text-secondary !important;
+    color: colors.$color-text-secondary !important;
 }
 
 .bg-primary {
-    background-color: $color-primary !important;
+    background-color: colors.$color-primary !important;
 }
 
 .bg-light {
-    background-color: $color-surface !important;
+    background-color: colors.$color-surface !important;
 }
 
 .btn-primary {
-    background-color: $color-primary !important;
-    border-color: $color-primary !important;
-    color: $color-surface !important;
+    background-color: colors.$color-primary !important;
+    border-color: colors.$color-primary !important;
+    color: colors.$color-surface !important;
 
     &:hover,
     &:focus,
     &:active {
-        background-color: $color-button !important;
-        border-color: $color-button !important;
-        color: $color-surface !important;
+        background-color: colors.$color-button !important;
+        border-color: colors.$color-button !important;
+        color: colors.$color-surface !important;
     }
 }
 
 .btn-outline-primary {
-    color: $color-primary !important;
-    border-color: $color-primary !important;
+    color: colors.$color-primary !important;
+    border-color: colors.$color-primary !important;
 
     &:hover,
     &:focus,
     &:active {
-        background-color: $color-primary !important;
-        border-color: $color-primary !important;
-        color: $color-surface !important;
+        background-color: colors.$color-primary !important;
+        border-color: colors.$color-primary !important;
+        color: colors.$color-surface !important;
     }
 }
 
@@ -74,13 +75,32 @@
     box-sizing: border-box;
 }
 
-@font-face {
-    font-family: "Titillium Web";
-    src: url("../fonts/Titillium_Web/TitilliumWeb-Regular.ttf")
-        format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap; /* Use swap for optimal performance */
+// Local font import for Titillium Web - fallback to system fonts if not available
+@import url("../fonts/titillium-web/titillium-web.css");
+
+// Global font declaration - highest priority
+html {
+    font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+body {
+    font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif !important;
+}
+
+// Apply to all elements to ensure consistency
+* {
+    font-family: inherit !important;
+}
+
+// Specific overrides for form elements
+input,
+textarea,
+select,
+button {
+    font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, "Helvetica Neue", Arial, sans-serif !important;
 }
 
 .welcome-page {
@@ -98,13 +118,12 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    font-family: "Titillium Web", sans-serif;
     background: none;
 }
 
 .container.body-container {
     flex: 1 0 auto;
-    background: $color-surface;
+    background: colors.$color-surface;
     box-shadow: none;
     border-radius: 0;
     padding: 0px 24px;
@@ -125,12 +144,12 @@ body {
 }
 .blogsphere-link {
     text-decoration: none;
-    color: $color-primary;
+    color: colors.$color-primary;
 
     &:hover {
         text-decoration: none !important;
         font-weight: bold;
-        color: $color-accent-yellow;
+        color: colors.$color-accent-yellow;
     }
 }
 
@@ -150,17 +169,17 @@ height-10 {
     }
 
     &--info {
-        background: $color-info;
+        background: colors.$color-info;
         filter: opacity(0.2);
     }
 
     &--success {
-        background: $color-accent-yellow;
+        background: colors.$color-accent-yellow;
         filter: opacity(0.2);
     }
 
     &--error {
-        background: $color-error;
+        background: colors.$color-error;
         filter: opacity(0.2);
     }
 }
@@ -169,7 +188,7 @@ height-10 {
     &:focus {
         outline: none !important;
         box-shadow: none !important;
-        border: 1px solid $color-primary !important;
+        border: 1px solid colors.$color-primary !important;
     }
 }
 
@@ -194,48 +213,48 @@ height-10 {
     }
 
     &-primary {
-        background: $color-button !important;
-        color: $color-surface !important;
+        background: colors.$color-button !important;
+        color: colors.$color-surface !important;
         border: none;
     }
 
     &-primary:hover,
     &-primary:focus {
-        background: $color-primary !important;
-        color: $color-accent-yellow !important;
+        background: colors.$color-primary !important;
+        color: colors.$color-accent-yellow !important;
     }
 
     &-secondary {
-        background: $color-accent-yellow !important;
-        color: $color-surface !important;
+        background: colors.$color-accent-yellow !important;
+        color: colors.$color-surface !important;
     }
 
     &-success {
-        background: $color-accent-yellow !important;
-        color: $color-text-primary !important;
+        background: colors.$color-accent-yellow !important;
+        color: colors.$color-text-primary !important;
     }
 
     &-warning {
-        background: $color-warning !important;
-        color: $color-text-primary !important;
+        background: colors.$color-warning !important;
+        color: colors.$color-text-primary !important;
     }
 
     &-error {
-        background: $color-error !important;
-        color: $color-surface !important;
+        background: colors.$color-error !important;
+        color: colors.$color-surface !important;
     }
 }
 
 .blogsphere-text-primary {
-    color: $color-primary;
+    color: colors.$color-primary;
 }
 
 .blogsphere-text-error {
-    color: $color-error;
+    color: colors.$color-error;
 }
 
 .blogsphere-text-accent {
-    color: $color-accent-yellow;
+    color: colors.$color-accent-yellow;
 }
 
 .welcome-page {
@@ -246,9 +265,9 @@ height-10 {
 }
 
 .alert-success {
-    background: $color-accent-yellow !important;
-    background-color: $color-accent-yellow !important;
-    color: $color-text-primary !important;
+    background: colors.$color-accent-yellow !important;
+    background-color: colors.$color-accent-yellow !important;
+    color: colors.$color-text-primary !important;
 }
 
 .logged-out-page {
@@ -285,8 +304,8 @@ height-10 {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    background: $color-surface !important;
-    color: $color-text-secondary;
+    background: colors.$color-surface !important;
+    color: colors.$color-text-secondary;
     text-align: center;
     padding: 10px;
     min-height: 48px;
@@ -306,13 +325,13 @@ height-10 {
 
 // Navbar styles for vibrant modern color scheme
 .navbar {
-    background: $color-surface !important;
-    color: $color-primary !important;
-    border-bottom: 1px solid $color-border;
+    background: colors.$color-surface !important;
+    color: colors.$color-primary !important;
+    border-bottom: 1px solid colors.$color-border;
     box-shadow: none;
 
     .navbar-brand {
-        color: $color-primary !important;
+        color: colors.$color-primary !important;
         font-weight: bold;
         font-size: 1.2rem;
         display: flex;
@@ -324,31 +343,31 @@ height-10 {
 
     .nav-link,
     .navbar-nav .nav-link {
-        color: $color-primary !important;
+        color: colors.$color-primary !important;
         font-weight: 500;
         transition: color 0.2s;
         &:hover,
         &:focus {
-            color: $color-accent-yellow !important;
+            color: colors.$color-accent-yellow !important;
         }
     }
 
     .dropdown-menu {
-        background: $color-surface;
-        border: 1px solid $color-border;
+        background: colors.$color-surface;
+        border: 1px solid colors.$color-border;
         .dropdown-item {
-            color: $color-text-primary;
+            color: colors.$color-text-primary;
             &:hover,
             &:focus {
-                background: $color-accent-yellow;
-                color: $color-surface;
+                background: colors.$color-accent-yellow;
+                color: colors.$color-surface;
             }
         }
     }
 
     .nav-item.active > .nav-link,
     .nav-link.active {
-        color: $color-accent-yellow !important;
+        color: colors.$color-accent-yellow !important;
         font-weight: bold;
     }
 }
@@ -362,45 +381,45 @@ height-10 {
         h4,
         h5,
         h6 {
-            color: $color-surface !important;
+            color: colors.$color-surface !important;
         }
 
         p,
         .lead {
-            color: $color-surface !important;
+            color: colors.$color-surface !important;
         }
 
         .text-white {
-            color: $color-surface !important;
+            color: colors.$color-surface !important;
         }
 
         .btn-light {
-            background-color: $color-surface !important;
-            color: $color-primary !important;
-            border-color: $color-surface !important;
+            background-color: colors.$color-surface !important;
+            color: colors.$color-primary !important;
+            border-color: colors.$color-surface !important;
             font-weight: 600 !important;
 
             &:hover,
             &:focus,
             &:active {
-                background-color: $color-accent-yellow !important;
-                color: $color-primary !important;
-                border-color: $color-accent-yellow !important;
+                background-color: colors.$color-accent-yellow !important;
+                color: colors.$color-primary !important;
+                border-color: colors.$color-accent-yellow !important;
                 transform: translateY(-1px);
             }
         }
 
         .btn-outline-light {
-            color: $color-surface !important;
-            border-color: $color-surface !important;
+            color: colors.$color-surface !important;
+            border-color: colors.$color-surface !important;
             background-color: transparent !important;
 
             &:hover,
             &:focus,
             &:active {
-                background-color: $color-surface !important;
-                color: $color-primary !important;
-                border-color: $color-surface !important;
+                background-color: colors.$color-surface !important;
+                color: colors.$color-primary !important;
+                border-color: colors.$color-surface !important;
                 transform: translateY(-1px);
             }
         }

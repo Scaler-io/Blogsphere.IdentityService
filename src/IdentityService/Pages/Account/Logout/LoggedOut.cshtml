@@ -1,25 +1,110 @@
 @page
 @model IdentityService.Pages.Logout.LoggedOut
+@{
+    ViewData["Title"] = "Logged Out";
+    Layout = "_SinglePageLayout";
+}
 
-<div class="logged-out-page">
-    <h1>
-        Logout
-        <small>You are now logged out</small>
-    </h1>
-
-    @if (Model.View.PostLogoutRedirectUri != null)
-    {
-        <div>
-            Click <a class="PostLogoutRedirectUri" href="@Model.View.PostLogoutRedirectUri">here</a> to return to the
-            <span>@Model.View.ClientName</span> application.
+<div class="container logged-out-container">
+    <div class="logged-out-card">
+        <div class="logged-out-header">
+            <div class="success-icon">
+                <!-- Animated success/logout completed SVG -->
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="success-svg">
+                    <!-- Success circle -->
+                    <circle cx="12" cy="12" r="10" fill="#0033cc" opacity="0.1" class="success-circle"/>
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="#0033cc" stroke-width="2" class="success-ring"/>
+                    <!-- Checkmark -->
+                    <path d="M8 12l2 2 4-4" stroke="#0033cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="checkmark"/>
+                    <!-- Sparkle effects -->
+                    <g class="sparkles">
+                        <path d="M6 6l1 2 2 1-2 1-1 2-1-2-2-1 2-1 1-2z" fill="#0033cc" opacity="0.6"/>
+                        <path d="M18 8l0.5 1 1 0.5-1 0.5-0.5 1-0.5-1-1-0.5 1-0.5 0.5-1z" fill="#0033cc" opacity="0.7"/>
+                        <path d="M20 18l0.5 1 1 0.5-1 0.5-0.5 1-0.5-1-1-0.5 1-0.5 0.5-1z" fill="#0033cc" opacity="0.5"/>
+                    </g>
+                </svg>
+            </div>
+            <h1>Successfully Signed Out</h1>
+            <p class="success-subtitle">You have been safely logged out of Blogsphere</p>
         </div>
-    }
 
-    @if (Model.View.SignOutIframeUrl != null)
-    {
-        <iframe width="0" height="0" class="signout" src="@Model.View.SignOutIframeUrl"></iframe>
-    }
+        <div class="logged-out-content">
+            <div class="logout-message">
+                <p class="logout-text">
+                    Your session has been securely terminated. Thank you for using Blogsphere!
+                </p>
+                
+                <!-- Security & session visualization -->
+                <div class="decorative-elements">
+                    <svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" class="decoration-svg">
+                        <!-- Security lock (closed) -->
+                        <g class="security-lock">
+                            <rect x="25" y="35" width="20" height="15" rx="3" fill="#0033cc" opacity="0.2"/>
+                            <rect x="25" y="35" width="20" height="15" rx="3" fill="none" stroke="#0033cc" stroke-width="2"/>
+                            <path d="M30 35V30C30 27 32 25 35 25C38 25 40 27 40 30V35" stroke="#0033cc" stroke-width="2" fill="none"/>
+                            <circle cx="35" cy="42" r="2" fill="#0033cc"/>
+                        </g>
+                        
+                        <!-- Session terminated visualization -->
+                        <g class="session-ended">
+                            <circle cx="100" cy="40" r="15" fill="none" stroke="#0033cc" stroke-width="2" opacity="0.3" stroke-dasharray="5,5" class="session-circle"/>
+                            <text x="100" y="45" text-anchor="middle" font-family="Arial" font-size="8" fill="#0033cc" opacity="0.6">END</text>
+                        </g>
+                        
+                        <!-- Protected data visualization -->
+                        <g class="data-protection">
+                            <rect x="140" y="25" width="30" height="20" rx="3" fill="#0033cc" opacity="0.1"/>
+                            <rect x="145" y="30" width="5" height="2" fill="#0033cc" opacity="0.4"/>
+                            <rect x="145" y="33" width="8" height="2" fill="#0033cc" opacity="0.4"/>
+                            <rect x="145" y="36" width="6" height="2" fill="#0033cc" opacity="0.4"/>
+                            <rect x="145" y="39" width="4" height="2" fill="#0033cc" opacity="0.4"/>
+                            <!-- Shield overlay -->
+                            <path d="M175 32L175 38C175 41 172 44 169 44C166 44 163 41 163 38L163 32L169 30L175 32Z" fill="#0033cc" opacity="0.3"/>
+                        </g>
+                        
+                        <!-- Floating security particles -->
+                        <g class="security-particles">
+                            <circle cx="15" cy="20" r="1.5" fill="#0033cc" opacity="0.4"/>
+                            <circle cx="185" cy="25" r="1" fill="#0033cc" opacity="0.3"/>
+                            <circle cx="20" cy="60" r="1.2" fill="#0033cc" opacity="0.5"/>
+                            <circle cx="180" cy="65" r="0.8" fill="#0033cc" opacity="0.4"/>
+                        </g>
+                        
+                        <!-- Success indicators -->
+                        <g class="success-indicators">
+                            <circle cx="70" cy="20" r="3" fill="#0033cc" opacity="0.2"/>
+                            <path d="M68 20l1 1 2-2" stroke="#0033cc" stroke-width="1" stroke-linecap="round"/>
+                            <circle cx="130" cy="60" r="3" fill="#0033cc" opacity="0.2"/>
+                            <path d="M128 60l1 1 2-2" stroke="#0033cc" stroke-width="1" stroke-linecap="round"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="logged-out-actions">
+            @if (Model.View.PostLogoutRedirectUri != null)
+            {
+                <div class="redirect-info">
+                    <p class="redirect-text">Redirecting you back to <strong>@Model.View.ClientName</strong>...</p>
+                    <a href="@Model.View.PostLogoutRedirectUri" class="btn-redirect">Continue to @Model.View.ClientName</a>
+                </div>
+            }
+            else
+            {
+                <div class="action-buttons">
+                    <a href="/Account/Login" class="btn-login">Sign In Again</a>
+                    <a href="/" class="btn-home">Go to Homepage</a>
+                </div>
+            }
+        </div>
+    </div>
 </div>
+
+@if (Model.View.SignOutIframeUrl != null)
+{
+    <iframe width="0" height="0" class="signout" src="@Model.View.SignOutIframeUrl"></iframe>
+}
 
 @section scripts
 {

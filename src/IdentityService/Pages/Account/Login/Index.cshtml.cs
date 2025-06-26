@@ -95,6 +95,17 @@ public class Index : PageModel
             }
         }
 
+        // Check for required field validation
+        if (string.IsNullOrWhiteSpace(Input.Username))
+        {
+            ModelState.AddModelError("Input.Username", "Email is required.");
+        }
+        
+        if (string.IsNullOrWhiteSpace(Input.Password))
+        {
+            ModelState.AddModelError("Input.Password", "Password is required.");
+        }
+
         if (ModelState.IsValid)
         {
             var result = await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, lockoutOnFailure: true);
@@ -143,20 +154,41 @@ public class Index : PageModel
             const string error = "invalid credentials";
             await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, error, clientId: context?.Client.ClientId));
             Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
-            ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
+            ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
         }
 
-        // something went wrong, show form with error
-        await BuildModelAsync(Input.ReturnUrl);
+        // Only build model if we're not showing validation errors
+        if (ModelState.IsValid)
+        {
+            await BuildModelAsync(Input.ReturnUrl);
+        }
+        else
+        {
+            // We have validation errors, so we need to rebuild the View model but preserve Input
+            await BuildViewModelAsync(Input.ReturnUrl);
+        }
+        
         return Page();
     }
 
     private async Task BuildModelAsync(string? returnUrl)
     {
-        Input = new InputModel
+        // Preserve existing Input if we have validation errors
+        if (Input == null || ModelState.IsValid)
         {
-            ReturnUrl = returnUrl
-        };
+            Input = new InputModel
+            {
+                ReturnUrl = returnUrl
+            };
+        }
+        else
+        {
+            // Keep existing Input but ensure ReturnUrl is set
+            if (Input != null)
+            {
+                Input.ReturnUrl = returnUrl;
+            }
+        }
 
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
         if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
@@ -169,7 +201,11 @@ public class Index : PageModel
                 EnableLocalLogin = local,
             };
 
-            Input.Username = context.LoginHint;
+            // Only overwrite username if no validation errors
+            if (ModelState.IsValid && !string.IsNullOrEmpty(context.LoginHint))
+            {
+                Input.Username = context.LoginHint;
+            }
 
             if (!local)
             {
@@ -198,6 +234,48 @@ public class Index : PageModel
             ));
         providers.AddRange(dynamicSchemes);
 
+
+        var allowLocal = true;
+        var client = context?.Client;
+        if (client != null)
+        {
+            allowLocal = client.EnableLocalLogin;
+            if (client.IdentityProviderRestrictions != null && client.IdentityProviderRestrictions.Count != 0)
+            {
+                providers = providers.Where(provider => client.IdentityProviderRestrictions.Contains(provider.AuthenticationScheme)).ToList();
+            }
+        }
+
+        View = new ViewModel
+        {
+            AllowRememberLogin = LoginOptions.AllowRememberLogin,
+            EnableLocalLogin = allowLocal && LoginOptions.AllowLocalLogin,
+            ExternalProviders = providers.ToArray()
+        };
+    }
+
+    private async Task BuildViewModelAsync(string? returnUrl)
+    {
+        var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
+        
+        var schemes = await _schemeProvider.GetAllSchemesAsync();
+
+        var providers = schemes
+            .Where(x => x.DisplayName != null)
+            .Select(x => new ViewModel.ExternalProvider
+            (
+                authenticationScheme: x.Name,
+                displayName: x.DisplayName ?? x.Name
+            )).ToList();
+
+        var dynamicSchemes = (await _identityProviderStore.GetAllSchemeNamesAsync())
+            .Where(x => x.Enabled)
+            .Select(x => new ViewModel.ExternalProvider
+            (
+                authenticationScheme: x.Scheme,
+                displayName: x.DisplayName ?? x.Scheme
+            ));
+        providers.AddRange(dynamicSchemes);
 
         var allowLocal = true;
         var client = context?.Client;
