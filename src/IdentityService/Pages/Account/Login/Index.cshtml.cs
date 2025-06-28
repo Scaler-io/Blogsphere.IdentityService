@@ -1,6 +1,7 @@
 // Copyright (c) Duende Software. All rights reserved.
 // See LICENSE in the project root for license information.
 
+using Contracts.Events;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Extensions;
@@ -10,6 +11,7 @@ using Duende.IdentityServer.Stores;
 using IdentityService.Entities;
 using IdentityService.Extensions;
 using IdentityService.Models;
+using IdentityService.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,6 +31,7 @@ public class Index : PageModel
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
     private readonly ILogger _logger;
+    private readonly IPublishService _publishService;
 
     public ViewModel View { get; set; } = default!;
 
@@ -43,7 +46,8 @@ public class Index : PageModel
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         ILogger logger
-    )
+,
+        IPublishService publishService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -52,6 +56,7 @@ public class Index : PageModel
         _identityProviderStore = identityProviderStore;
         _events = events;
         _logger = logger;
+        _publishService = publishService;
     }
 
     public async Task<IActionResult> OnGet(string? returnUrl)
@@ -130,6 +135,11 @@ public class Index : PageModel
 
                 // Send code via email
                 _logger.Here().Information("Sending 2FA code to {code}", code);
+                await _publishService.PublishAsync(new AuthCodeSent
+                {
+                    Email = user.Email,
+                    Code = code                   
+                }, Guid.NewGuid().ToString());
 
                 TempData["2FA_UserEmail"] = user.Email;
                 TempData["2FA_ReturnUrl"] = Input.ReturnUrl;

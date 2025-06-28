@@ -163,7 +163,7 @@
   font-weight: 300;
 }
 .login-container .login-left-section .btn-primary:hover {
-  background: #002db3 !important;
+  background: rgb(0, 44.625, 178.5) !important;
 }
 .login-container .login-right-section {
   flex: 1;
@@ -290,7 +290,7 @@
   transition: all 0.2s ease;
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:hover {
-  background: #002db3;
+  background: rgb(0, 44.625, 178.5);
   transform: translateY(-1px);
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:active {
@@ -493,7 +493,7 @@
 .container.logout-container,
 .container.logged-out-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
+  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   display: flex !important;
   align-items: center !important;
@@ -528,7 +528,7 @@
   position: relative;
   backdrop-filter: blur(10px);
   animation: cardEntry 0.6s ease-out;
-  color: #0039e6;
+  color: rgb(0, 57.375, 229.5);
 }
 @media (max-width: 768px) {
   .logout-card,
@@ -624,7 +624,7 @@
 .logout-header .success-subtitle,
 .logged-out-header .logout-subtitle,
 .logged-out-header .success-subtitle {
-  color: #0039e6;
+  color: rgb(0, 57.375, 229.5);
   font-size: 1.25rem;
   margin: 0;
   font-weight: 500;
@@ -811,7 +811,7 @@
 .logged-out-actions .btn-redirect {
   display: inline-block;
   padding: 18px 36px;
-  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
+  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
   color: white;
   text-decoration: none;
   border: none;
@@ -879,7 +879,7 @@
   display: inline-block;
   padding: 18px 36px;
   background: rgba(255, 255, 255, 0.8);
-  color: #0039e6;
+  color: rgb(0, 57.375, 229.5);
   border: 2px solid rgba(0, 51, 204, 0.2);
   border-radius: 14px;
   font-size: 1.15rem;
@@ -1307,7 +1307,7 @@
 /* EmailVerification Page Styles - Blog Theme */
 .email-verification-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
+  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   display: flex;
   align-items: center;
@@ -2201,4 +2201,4 @@ height-10 {
   color: #0033cc !important;
   border-color: #ffffff !important;
   transform: translateY(-1px);
-}/*# sourceMappingURL=site.css.map */
+}
