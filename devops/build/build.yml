@@ -6,7 +6,11 @@
 
 steps:
   - checkout: self
-    persistCredentials: true  # 👈 ensures GitHub credentials persist for git fetch, etc.
+
+  - task: UseNode@1
+    displayName: "Use Node.js"
+    inputs:
+      version: "20.x"
 
   - task: UseDotNet@2
     displayName: "Install .NET 8 SDK"

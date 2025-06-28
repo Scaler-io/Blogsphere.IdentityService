@@ -331,6 +331,9 @@ height-10 {
     box-shadow: none;
 
     .navbar-brand {
+        a {
+            text-decoration: none !important;
+        }
         color: colors.$color-primary !important;
         font-weight: bold;
         font-size: 1.2rem;

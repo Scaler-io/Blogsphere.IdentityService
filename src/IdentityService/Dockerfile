@@ -11,6 +11,13 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
+# Install Node.js and npm
+RUN apt-get update && apt-get install -y \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g sass
+
 # Copy only the project file to leverage Docker caching for NuGet restore
 COPY IdentityService/IdentityService.csproj IdentityService/
 RUN --mount=type=cache,target=/root/.nuget/packages dotnet restore "IdentityService/IdentityService.csproj"

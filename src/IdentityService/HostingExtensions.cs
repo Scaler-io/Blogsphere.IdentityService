@@ -1,8 +1,10 @@
+using IdentityService.Configurations;
 using IdentityService.Data;
 using IdentityService.Entities;
 using IdentityService.Models;
 using IdentityService.Security;
 using IdentityService.Services;
+using MassTransit;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -26,13 +28,13 @@ internal static class HostingExtensions
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("Sqlserver"))
-            .LogTo(Console.WriteLine, LogLevel.Information);
+            .LogTo(System.Console.WriteLine, LogLevel.Information);
         });
 
         builder.Services.AddDbContext<DataProtectionKeyContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("Sqlserver"))
-            .LogTo(Console.WriteLine, LogLevel.Information);
+            .LogTo(System.Console.WriteLine, LogLevel.Information);
         });
 
         // Key store for data hash
@@ -48,10 +50,13 @@ internal static class HostingExtensions
             options.SignIn.RequireConfirmedEmail = true;
             options.Tokens.EmailConfirmationTokenProvider = Constants.CustomEmailTokenProvider;
             options.Tokens.PasswordResetTokenProvider = Constants.CustomPasswordResetTokenProvider;
+            options.Tokens.ProviderMap[Constants.CustomTwoFactorTokenProvider] = new TokenProviderDescriptor(typeof(TwoFactorAuthTokenProvider));
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders()
-        .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(Constants.CustomEmailTokenProvider);
+        .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(Constants.CustomEmailTokenProvider)
+        .AddTokenProvider<TwoFactorAuthTokenProvider>(Constants.CustomTwoFactorTokenProvider);
+
 
         builder.Services
             .AddIdentityServer(options =>
@@ -78,6 +83,20 @@ internal static class HostingExtensions
             options.Cookie.SameSite = SameSiteMode.Lax;
         });
 
+        builder.Services.AddMassTransit(configuration => {
+            configuration.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("identity", false));
+            configuration.UsingRabbitMq((context, cfg) => {
+                var eventBus = builder.Configuration.GetSection(EventBusConfigurations.OptionName).Get<EventBusConfigurations>();
+                cfg.Host(eventBus.Host, eventBus.VirtualHost, host => 
+                {
+                    host.Username(eventBus.Username);
+                    host.Password(eventBus.Password);
+                });
+                
+                cfg.ConfigureEndpoints(context);
+            });
+        });
+
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(Constants.AppCorsPolicy, policy =>
@@ -85,6 +104,8 @@ internal static class HostingExtensions
                 policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
             });
         });
+
+        builder.Services.AddScoped<IPublishService, PublishService>();
 
         return builder.Build();
     }
