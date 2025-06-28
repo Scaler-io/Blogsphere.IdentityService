@@ -163,7 +163,7 @@
   font-weight: 300;
 }
 .login-container .login-left-section .btn-primary:hover {
-  background: rgb(0, 44.625, 178.5) !important;
+  background: #002db3 !important;
 }
 .login-container .login-right-section {
   flex: 1;
@@ -290,7 +290,7 @@
   transition: all 0.2s ease;
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:hover {
-  background: rgb(0, 44.625, 178.5);
+  background: #002db3;
   transform: translateY(-1px);
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:active {
@@ -493,7 +493,7 @@
 .container.logout-container,
 .container.logged-out-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
+  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   display: flex !important;
   align-items: center !important;
@@ -528,7 +528,7 @@
   position: relative;
   backdrop-filter: blur(10px);
   animation: cardEntry 0.6s ease-out;
-  color: rgb(0, 57.375, 229.5);
+  color: #0039e6;
 }
 @media (max-width: 768px) {
   .logout-card,
@@ -624,7 +624,7 @@
 .logout-header .success-subtitle,
 .logged-out-header .logout-subtitle,
 .logged-out-header .success-subtitle {
-  color: rgb(0, 57.375, 229.5);
+  color: #0039e6;
   font-size: 1.25rem;
   margin: 0;
   font-weight: 500;
@@ -811,7 +811,7 @@
 .logged-out-actions .btn-redirect {
   display: inline-block;
   padding: 18px 36px;
-  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
+  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
   color: white;
   text-decoration: none;
   border: none;
@@ -879,7 +879,7 @@
   display: inline-block;
   padding: 18px 36px;
   background: rgba(255, 255, 255, 0.8);
-  color: rgb(0, 57.375, 229.5);
+  color: #0039e6;
   border: 2px solid rgba(0, 51, 204, 0.2);
   border-radius: 14px;
   font-size: 1.15rem;
@@ -1203,10 +1203,111 @@
     opacity: 0.4;
   }
 }
+.error-page {
+  min-height: calc(100vh - 120px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(0, 51, 204, 0.02) 0%, rgba(255, 230, 0, 0.02) 100%);
+}
+.error-page .error-card {
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 25px 60px rgba(0, 51, 204, 0.1), 0 10px 30px rgba(0, 51, 204, 0.08);
+  overflow: hidden;
+  border: 1px solid rgba(0, 51, 204, 0.1);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  padding: 3rem;
+}
+@media (max-width: 768px) {
+  .error-page .error-card {
+    border-radius: 20px;
+    padding: 2rem;
+    margin: 1rem;
+  }
+}
+.error-page .error-card .error-icon {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 2rem;
+  color: #ff5252;
+  opacity: 0.9;
+}
+@media (max-width: 768px) {
+  .error-page .error-card .error-icon {
+    width: 100px;
+    height: 100px;
+  }
+}
+.error-page .error-card .error-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #00205b;
+  margin-bottom: 1rem;
+}
+@media (max-width: 768px) {
+  .error-page .error-card .error-title {
+    font-size: 2rem;
+  }
+}
+.error-page .error-card .error-message {
+  font-size: 1.1rem;
+  color: #0033cc;
+  margin-bottom: 2rem;
+  padding: 0 1rem;
+}
+.error-page .error-card .error-message em {
+  color: #ff5252;
+  font-style: normal;
+  font-weight: 600;
+}
+.error-page .error-card .error-description {
+  font-size: 1rem;
+  color: #0033cc;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+.error-page .error-card .request-id {
+  font-size: 0.9rem;
+  color: #0033cc;
+  opacity: 0.7;
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 51, 204, 0.1);
+}
+.error-page .error-card .error-actions {
+  margin-top: 2rem;
+}
+.error-page .error-card .error-actions .btn-home {
+  display: inline-block;
+  padding: 12px 32px;
+  background: #0033cc;
+  color: #ffffff;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 51, 204, 0.1);
+}
+.error-page .error-card .error-actions .btn-home:hover {
+  background: #0057b8;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 51, 204, 0.15);
+}
+.error-page .error-card .error-actions .btn-home:active {
+  transform: translateY(0);
+}
+
 /* EmailVerification Page Styles - Blog Theme */
 .email-verification-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
+  background: linear-gradient(135deg, #0033cc 0%, #0040ff 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   display: flex;
   align-items: center;
@@ -2029,6 +2130,9 @@ height-10 {
   display: flex;
   align-items: center;
 }
+.navbar .navbar-brand a {
+  text-decoration: none !important;
+}
 .navbar .navbar-brand img {
   margin-right: 8px;
 }
@@ -2097,4 +2201,4 @@ height-10 {
   color: #0033cc !important;
   border-color: #ffffff !important;
   transform: translateY(-1px);
-}
+}/*# sourceMappingURL=site.css.map */

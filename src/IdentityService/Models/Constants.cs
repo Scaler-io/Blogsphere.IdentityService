@@ -7,6 +7,7 @@ public class Constants
     public const string AppCorsPolicy = "BlogSpahereIdentityCors";
     public const string CustomEmailTokenProvider = "BlogsphereEmailTokenProvider";
     public const string CustomPasswordResetTokenProvider = "BlogspherePassResetTokenProvider";
+    public const string CustomTwoFactorTokenProvider = "BlogsphereTwoFactorTokenProvider";
 }
 
 public class LoggerConstants

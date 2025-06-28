@@ -11,10 +11,11 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand navbar-light">
     <div class="nav navbar-nav">
-        <div class="navbar-brand"
-             aria-current="page">
-            <img src="/duende-logo.svg?v=@DateTime.Now.Ticks" alt="Blogsphere Logo" style="height:32px; vertical-align:middle; margin-right:8px;" />
-            <span class="blogsphere-text-primary font-weight-bold">logsphere</span>
+        <div class="navbar-brand" aria-current="page">
+            <a href="~/">
+                <img src="/duende-logo.svg?v=@DateTime.Now.Ticks" alt="Blogsphere Logo" style="height:32px; vertical-align:middle; margin-right:8px;" />
+                <span class="blogsphere-text-primary font-weight-bold">logsphere</span>
+            </a>
         </div>
         @if (!string.IsNullOrWhiteSpace(name))
         {

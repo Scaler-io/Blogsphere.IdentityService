@@ -48,10 +48,13 @@ internal static class HostingExtensions
             options.SignIn.RequireConfirmedEmail = true;
             options.Tokens.EmailConfirmationTokenProvider = Constants.CustomEmailTokenProvider;
             options.Tokens.PasswordResetTokenProvider = Constants.CustomPasswordResetTokenProvider;
+            options.Tokens.ProviderMap[Constants.CustomTwoFactorTokenProvider] = new TokenProviderDescriptor(typeof(TwoFactorAuthTokenProvider));
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders()
-        .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(Constants.CustomEmailTokenProvider);
+        .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(Constants.CustomEmailTokenProvider)
+        .AddTokenProvider<TwoFactorAuthTokenProvider>(Constants.CustomTwoFactorTokenProvider);
+
 
         builder.Services
             .AddIdentityServer(options =>

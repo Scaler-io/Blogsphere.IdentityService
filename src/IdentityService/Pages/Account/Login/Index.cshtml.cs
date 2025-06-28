@@ -3,10 +3,13 @@
 
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
+using Duende.IdentityServer.Extensions;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
 using IdentityService.Entities;
+using IdentityService.Extensions;
+using IdentityService.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,6 +28,7 @@ public class Index : PageModel
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
+    private readonly ILogger _logger;
 
     public ViewModel View { get; set; } = default!;
 
@@ -37,7 +41,9 @@ public class Index : PageModel
         IIdentityProviderStore identityProviderStore,
         IEventService events,
         UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        SignInManager<ApplicationUser> signInManager,
+        ILogger logger
+    )
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -45,10 +51,15 @@ public class Index : PageModel
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
         _events = events;
+        _logger = logger;
     }
 
     public async Task<IActionResult> OnGet(string? returnUrl)
     {
+        if(User.IsAuthenticated()){
+            return Redirect("~/");
+        }
+        
         await BuildModelAsync(returnUrl);
 
         if (View.IsExternalLoginOnly)
@@ -108,47 +119,23 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var result = await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, lockoutOnFailure: true);
-            if (result.Succeeded)
+            var user = await _userManager.FindByNameAsync(Input.Username);
+            
+            if(user != null && await _userManager.CheckPasswordAsync(user, Input.Password))
             {
-                var user = await _userManager.FindByNameAsync(Input.Username!);
+                var code = await _userManager.GenerateTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider);
 
-                user.SetLastLogin();
-                await _userManager.UpdateAsync(user);
+                await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACode", code);
+                await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
 
-                await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
-                Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+                // Send code via email
+                _logger.Here().Information("Sending 2FA code to {code}", code);
 
-                if (context != null)
-                {
-                    // This "can't happen", because if the ReturnUrl was null, then the context would be null
-                    ArgumentNullException.ThrowIfNull(Input.ReturnUrl, nameof(Input.ReturnUrl));
+                TempData["2FA_UserEmail"] = user.Email;
+                TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
+                TempData["2FA_RemberMe"] = Input.RememberLogin;
 
-                    if (context.IsNativeClient())
-                    {
-                        // The client is native, so this change in how to
-                        // return the response is for better UX for the end user.
-                        return this.LoadingPage(Input.ReturnUrl);
-                    }
-
-                    // we can trust model.ReturnUrl since GetAuthorizationContextAsync returned non-null
-                    return Redirect(Input.ReturnUrl ?? "~/");
-                }
-
-                // request for a local page
-                if (Url.IsLocalUrl(Input.ReturnUrl))
-                {
-                    return Redirect(Input.ReturnUrl);
-                }
-                else if (string.IsNullOrEmpty(Input.ReturnUrl))
-                {
-                    return Redirect("~/");
-                }
-                else
-                {
-                    // user might have clicked on a malicious link - should be logged
-                    throw new ArgumentException("invalid return URL");
-                }
+                return RedirectToPage("../TwoFactor/Index");
             }
 
             const string error = "invalid credentials";
@@ -156,6 +143,7 @@ public class Index : PageModel
             Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
             ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
         }
+
 
         // Only build model if we're not showing validation errors
         if (ModelState.IsValid)
