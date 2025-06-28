@@ -1,0 +1,236 @@
+@use "sass:color";
+@use "_colors" as colors;
+@use "_variables" as vars;
+
+// Form input mixin
+@mixin form-input {
+    width: 100%;
+    padding: vars.$spacing-lg vars.$spacing-xl;
+    border: 1px solid colors.$color-border;
+    border-radius: vars.$border-radius-sm;
+    font-size: vars.$font-size-sm;
+    transition: all vars.$transition-fast;
+    background: colors.$color-surface;
+    color: colors.$color-text-primary;
+
+    &::placeholder {
+        color: colors.$color-text-secondary;
+        opacity: 0.6;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: colors.$color-primary;
+        box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.1);
+    }
+
+    &.input-validation-error {
+        border-color: colors.$color-error;
+        box-shadow: 0 0 0 3px rgba(colors.$color-error, 0.1);
+    }
+}
+
+// Primary button mixin
+@mixin button-primary {
+    background: colors.$color-primary;
+    color: colors.$color-surface;
+    border: none;
+    border-radius: vars.$border-radius-lg;
+    padding: vars.$spacing-md vars.$spacing-xl;
+    font-size: vars.$font-size-sm;
+    font-weight: vars.$font-weight-semibold;
+    cursor: pointer;
+    transition: all vars.$transition-fast;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: vars.$spacing-sm;
+    text-decoration: none;
+    box-shadow: vars.$shadow-sm;
+
+    &:hover {
+        background: color.adjust(colors.$color-primary, $lightness: -5%);
+        transform: translateY(-1px);
+        box-shadow: vars.$shadow-md;
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: vars.$shadow-sm;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.3);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+// Secondary button mixin
+@mixin button-secondary {
+    background: colors.$color-surface;
+    color: colors.$color-text-primary;
+    border: 1px solid colors.$color-border;
+    border-radius: vars.$border-radius-lg;
+    padding: vars.$spacing-md vars.$spacing-xl;
+    font-size: vars.$font-size-sm;
+    font-weight: vars.$font-weight-semibold;
+    cursor: pointer;
+    transition: all vars.$transition-fast;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: vars.$spacing-sm;
+    text-decoration: none;
+    box-shadow: vars.$shadow-sm;
+
+    &:hover {
+        background: rgba(colors.$color-primary, 0.05);
+        border-color: colors.$color-primary;
+        transform: translateY(-1px);
+        box-shadow: vars.$shadow-md;
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: vars.$shadow-sm;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(colors.$color-primary, 0.1);
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+}
+
+// Card mixin
+@mixin card {
+    border: none;
+    border-radius: vars.$border-radius-md;
+    box-shadow: vars.$shadow-md;
+    background: colors.$color-surface;
+    overflow: hidden;
+}
+
+// Gradient background mixin
+@mixin gradient-background {
+    background: linear-gradient(
+        135deg,
+        colors.$color-primary 0%,
+        colors.$color-background 100%
+    );
+}
+
+// Validation error message mixin
+@mixin validation-error {
+    display: block;
+    margin-top: vars.$spacing-sm;
+    font-size: vars.$font-size-xs;
+    color: colors.$color-error;
+    font-weight: vars.$font-weight-normal;
+
+    &:empty {
+        display: none;
+    }
+}
+
+// Section title mixin
+@mixin section-title {
+    font-size: vars.$font-size-xl;
+    font-weight: vars.$font-weight-bold;
+    color: colors.$color-primary;
+    margin-bottom: vars.$spacing-sm;
+}
+
+// Section subtitle mixin
+@mixin section-subtitle {
+    font-size: vars.$font-size-md;
+    opacity: 0.8;
+    font-weight: vars.$font-weight-light;
+    margin-bottom: vars.$spacing-lg;
+}
+
+// Flex center mixin
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+// Full height container mixin
+@mixin full-height-container {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+// Loading spinner mixin
+@mixin spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid colors.$color-surface;
+    border-radius: 50%;
+    border-top-color: transparent;
+    display: inline-block;
+    margin-right: vars.$spacing-sm;
+    animation: spin 0.6s linear infinite;
+}
+
+// Alert message mixin
+@mixin alert {
+    padding: vars.$spacing-md vars.$spacing-lg;
+    border-radius: vars.$border-radius-sm;
+    margin-bottom: vars.$spacing-lg;
+    font-size: vars.$font-size-sm;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: vars.$spacing-md;
+
+    &.alert-success {
+        background-color: rgba(colors.$color-success, 0.1);
+        border: 1px solid rgba(colors.$color-success, 0.2);
+        color: colors.$color-success;
+    }
+
+    &.alert-danger {
+        background-color: rgba(colors.$color-error, 0.1);
+        border: 1px solid rgba(colors.$color-error, 0.2);
+        color: colors.$color-error;
+    }
+
+    .btn-close {
+        background: none;
+        border: none;
+        padding: 0;
+        font-size: vars.$font-size-lg;
+        line-height: 1;
+        opacity: 0.5;
+        cursor: pointer;
+        transition: opacity vars.$transition-fast;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+// Animation keyframes
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

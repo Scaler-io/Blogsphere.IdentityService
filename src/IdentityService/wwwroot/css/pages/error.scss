@@ -1,42 +1,40 @@
 @use "sass:color";
 @use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
 
 // Error page-specific styles
 .error-page {
     min-height: calc(100vh - 120px); // Account for header/footer
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+    @include mixins.flex-center;
+    padding: vars.$spacing-xl;
     background: linear-gradient(
         135deg,
-        rgba(0, 51, 204, 0.02) 0%,
-        rgba(255, 230, 0, 0.02) 100%
+        rgba(colors.$color-primary, 0.02) 0%,
+        rgba(colors.$color-accent-yellow, 0.02) 100%
     );
 
     .error-card {
-        background: colors.$color-surface;
-        border-radius: 24px;
-        box-shadow: 0 25px 60px rgba(0, 51, 204, 0.1),
-            0 10px 30px rgba(0, 51, 204, 0.08);
-        overflow: hidden;
-        border: 1px solid rgba(0, 51, 204, 0.1);
+        @include mixins.card;
+        border-radius: vars.$border-radius-lg;
+        box-shadow: vars.$shadow-lg;
+        border: 1px solid rgba(colors.$color-primary, 0.1);
         max-width: 600px;
         width: 100%;
         text-align: center;
         position: relative;
-        padding: 3rem;
+        padding: vars.$spacing-3xl;
 
         @media (max-width: 768px) {
-            border-radius: 20px;
-            padding: 2rem;
-            margin: 1rem;
+            border-radius: vars.$border-radius-md;
+            padding: vars.$spacing-xl;
+            margin: vars.$spacing-md;
         }
 
         .error-icon {
             width: 120px;
             height: 120px;
-            margin: 0 auto 2rem;
+            margin: 0 auto vars.$spacing-xl;
             color: colors.$color-error;
             opacity: 0.9;
 
@@ -47,65 +45,59 @@
         }
 
         .error-title {
-            font-size: 2.5rem;
-            font-weight: 700;
+            font-size: vars.$font-size-2xl;
+            font-weight: vars.$font-weight-bold;
             color: colors.$color-text-primary;
-            margin-bottom: 1rem;
+            margin-bottom: vars.$spacing-md;
 
             @media (max-width: 768px) {
-                font-size: 2rem;
+                font-size: vars.$font-size-xl;
             }
         }
 
         .error-message {
-            font-size: 1.1rem;
+            font-size: vars.$font-size-md;
             color: colors.$color-text-secondary;
-            margin-bottom: 2rem;
-            padding: 0 1rem;
+            margin-bottom: vars.$spacing-xl;
+            padding: 0 vars.$spacing-md;
 
             em {
                 color: colors.$color-error;
                 font-style: normal;
-                font-weight: 600;
+                font-weight: vars.$font-weight-semibold;
             }
         }
 
         .error-description {
-            font-size: 1rem;
+            font-size: vars.$font-size-sm;
             color: colors.$color-text-secondary;
-            margin-bottom: 2rem;
+            margin-bottom: vars.$spacing-xl;
             opacity: 0.9;
         }
 
         .request-id {
-            font-size: 0.9rem;
+            font-size: vars.$font-size-xs;
             color: colors.$color-text-secondary;
             opacity: 0.7;
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid rgba(0, 51, 204, 0.1);
+            margin-top: vars.$spacing-xl;
+            padding-top: vars.$spacing-md;
+            border-top: 1px solid rgba(colors.$color-primary, 0.1);
         }
 
         .error-actions {
-            margin-top: 2rem;
+            margin-top: vars.$spacing-xl;
 
             .btn-home {
-                display: inline-block;
-                padding: 12px 32px;
-                background: colors.$color-primary;
-                color: colors.$color-surface;
-                border-radius: 12px;
-                font-size: 1rem;
-                font-weight: 600;
-                text-decoration: none;
-                transition: all 0.3s ease;
-                border: none;
-                box-shadow: 0 4px 6px rgba(0, 51, 204, 0.1);
+                @include mixins.button-primary;
+                padding: vars.$spacing-md vars.$spacing-2xl;
+                border-radius: vars.$border-radius-md;
+                font-size: vars.$font-size-sm;
+                box-shadow: vars.$shadow-sm;
 
                 &:hover {
                     background: colors.$color-button;
                     transform: translateY(-2px);
-                    box-shadow: 0 6px 12px rgba(0, 51, 204, 0.15);
+                    box-shadow: vars.$shadow-md;
                 }
 
                 &:active {

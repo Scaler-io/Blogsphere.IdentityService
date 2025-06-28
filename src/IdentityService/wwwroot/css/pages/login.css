@@ -1,13 +1,21 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .login-container {
-  display: flex;
   min-height: 100vh;
   width: 100%;
   margin: 0;
   padding: 0;
+  display: flex;
 }
 .login-container .login-left-section {
   flex: 1;
   min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   position: relative;
   background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
   display: flex;
@@ -27,7 +35,7 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  color: white;
+  color: #ffffff;
   max-width: 400px;
   padding: 2rem;
 }
@@ -38,7 +46,7 @@
   font-size: 2.5rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .login-container .login-left-section .content-wrapper .brand-section .brand-subtitle {
   font-size: 1.1rem;
@@ -61,7 +69,7 @@
   font-size: 1.5rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .login-container .login-left-section .content-wrapper .feature-text p {
   font-size: 1rem;
@@ -69,12 +77,12 @@
   line-height: 1.6;
   font-weight: 300;
 }
-.login-container .login-left-section .btn-primary:hover {
-  background: rgb(0, 44.625, 178.5) !important;
-}
 .login-container .login-right-section {
   flex: 1;
   min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   background: #ffffff;
   display: flex;
   align-items: center;
@@ -92,20 +100,22 @@
 .login-container .login-right-section .form-container .form-header h2 {
   font-size: 2rem;
   font-weight: 700;
-  color: #0033cc !important;
+  color: #0033cc;
   margin-bottom: 0.5rem;
 }
 .login-container .login-right-section .form-container .form-header p {
-  font-size: 1rem;
+  font-size: 1.1rem;
   opacity: 0.8;
+  font-weight: 300;
+  margin-bottom: 1.5rem;
 }
 .login-container .login-right-section .form-container .login-form .form-group {
   margin-bottom: 1.5rem;
 }
 .login-container .login-right-section .form-container .login-form .form-group .form-control {
   width: 100%;
-  padding: 16px 20px;
-  border: 1px solid #e5e5e5;
+  padding: 1.5rem 2rem;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.2s ease;
@@ -113,8 +123,8 @@
   color: #00205b;
 }
 .login-container .login-right-section .form-container .login-form .form-group .form-control::placeholder {
-  color: #9ca3af;
-  opacity: 1;
+  color: #0033cc;
+  opacity: 0.6;
 }
 .login-container .login-right-section .form-container .login-form .form-group .form-control:focus {
   outline: none;
@@ -142,7 +152,7 @@
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: #0033cc;
 }
 .login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox input[type=checkbox] {
@@ -151,134 +161,185 @@
 .login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox .checkmark {
   width: 18px;
   height: 18px;
-  border: 1px solid #d1d5db;
-  border-radius: 3px;
-  margin-right: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  margin-right: 0.5rem;
   position: relative;
   transition: all 0.2s ease;
-  background: white;
 }
-.login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox .checkmark::after {
+.login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox .checkmark:after {
   content: "";
   position: absolute;
-  left: 5px;
+  display: none;
+  left: 6px;
   top: 2px;
   width: 5px;
-  height: 9px;
-  border: solid white;
+  height: 10px;
+  border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
-  opacity: 0;
-  transition: opacity 0.2s ease;
 }
 .login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox input[type=checkbox]:checked + .checkmark {
-  background-color: #0033cc;
+  background: #0033cc;
   border-color: #0033cc;
 }
-.login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox input[type=checkbox]:checked + .checkmark::after {
-  opacity: 1;
-}
-.login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox .remember-text {
-  font-weight: 400;
+.login-container .login-right-section .form-container .login-form .remember-section .remember-checkbox input[type=checkbox]:checked + .checkmark:after {
+  display: block;
 }
 .login-container .login-right-section .form-container .login-form .form-actions {
   margin-bottom: 2rem;
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue {
-  width: 100%;
   background: #0033cc;
-  color: white;
+  color: #ffffff;
   border: none;
   border-radius: 25px;
-  padding: 16px 24px;
+  padding: 1rem 2rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: 48px;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:hover {
   background: rgb(0, 44.625, 178.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 .login-container .login-right-section .form-container .login-form .form-actions .btn-continue:active {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.login-container .login-right-section .form-container .login-form .form-actions .btn-continue:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.login-container .login-right-section .form-container .login-form .form-actions .btn-continue:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 .login-container .login-right-section .form-container .login-form .form-links {
   text-align: center;
   margin-bottom: 2rem;
 }
-.login-container .login-right-section .form-container .login-form .form-links .signup-link {
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+.login-container .login-right-section .form-container .login-form .form-links .signup-link,
+.login-container .login-right-section .form-container .login-form .form-links .forgot-link {
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  color: #0033cc;
 }
-.login-container .login-right-section .form-container .login-form .form-links .signup-link .link-primary {
+.login-container .login-right-section .form-container .login-form .form-links .signup-link a,
+.login-container .login-right-section .form-container .login-form .form-links .forgot-link a {
   color: #0033cc;
   text-decoration: none;
   font-weight: 500;
+  transition: all 0.2s ease;
 }
-.login-container .login-right-section .form-container .login-form .form-links .signup-link .link-primary:hover {
+.login-container .login-right-section .form-container .login-form .form-links .signup-link a:hover,
+.login-container .login-right-section .form-container .login-form .form-links .forgot-link a:hover {
+  color: rgb(0, 38.25, 153);
   text-decoration: underline;
-}
-.login-container .login-right-section .form-container .login-form .form-links .forgot-link .link-secondary {
-  color: #0033cc;
-  text-decoration: none;
-  font-size: 0.9rem;
-}
-.login-container .login-right-section .form-container .login-form .form-links .forgot-link .link-secondary:hover {
-  text-decoration: underline;
-  color: #0033cc;
-}
-.login-container .login-right-section .form-container .login-form .form-links p {
-  margin: 0;
-}
-.login-container .login-right-section .form-container .login-form .external-providers {
-  margin-top: 2rem;
 }
 .login-container .login-right-section .form-container .login-form .external-providers .divider {
-  position: relative;
   text-align: center;
-  margin: 1.5rem 0;
-}
-.login-container .login-right-section .form-container .login-form .external-providers .divider span {
-  background: #ffffff;
-  padding: 0 1rem;
-  color: #0033cc;
-  font-size: 0.9rem;
+  margin: 2rem 0;
   position: relative;
-  z-index: 1;
 }
-.login-container .login-right-section .form-container .login-form .external-providers .divider::before {
+.login-container .login-right-section .form-container .login-form .external-providers .divider::before, .login-container .login-right-section .form-container .login-form .external-providers .divider::after {
   content: "";
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
+  width: calc(50% - 80px);
   height: 1px;
-  background: #e0e0e0;
+  background-color: #e0e0e0;
+}
+.login-container .login-right-section .form-container .login-form .external-providers .divider::before {
+  left: 0;
+}
+.login-container .login-right-section .form-container .login-form .external-providers .divider::after {
+  right: 0;
+}
+.login-container .login-right-section .form-container .login-form .external-providers .divider span {
+  background-color: #ffffff;
+  padding: 0 1rem;
+  color: #0033cc;
+  font-size: 1rem;
 }
 .login-container .login-right-section .form-container .login-form .external-providers .external-buttons {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 .login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external {
-  display: flex;
+  background: #0033cc;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 16px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  gap: 0.5rem;
   text-decoration: none;
-  color: #00205b;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff !important;
+  color: #00205b !important;
+  border: 1px solid #e0e0e0 !important;
+  width: 100%;
+  height: 48px;
+  font-size: 1.1rem;
+  position: relative;
+  padding-left: 48px;
 }
 .login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external:hover {
-  border-color: #0033cc;
-  background: rgba(0, 51, 204, 0.05);
-  text-decoration: none;
-  color: #00205b;
+  background: rgb(0, 44.625, 178.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external::before {
+  content: "";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+.login-container .login-right-section .form-container .login-form .external-providers .external-buttons .btn-external:hover {
+  background-color: rgb(242.25, 242.25, 242.25) !important;
+  border-color: #0033cc !important;
 }
 
 @keyframes float {

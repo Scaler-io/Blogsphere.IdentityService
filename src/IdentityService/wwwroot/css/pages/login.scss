@@ -1,27 +1,20 @@
 @use "sass:color";
 @use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
 
 // Login page container
 .login-container {
+    @include mixins.full-height-container;
     display: flex;
-    min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    padding: 0;
 
     // Left Section - Gradient Background with Illustration
     .login-left-section {
         flex: 1;
-        min-height: 100vh;
+        @include mixins.full-height-container;
         position: relative;
-        background: linear-gradient(
-            135deg,
-            colors.$color-primary 0%,
-            colors.$color-background 100%
-        );
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        @include mixins.gradient-background;
+        @include mixins.flex-center;
         overflow: hidden;
 
         .gradient-overlay {
@@ -39,65 +32,57 @@
 
         .content-wrapper {
             position: relative;
-            z-index: 2;
+            z-index: vars.$z-index-overlay;
             text-align: center;
-            color: white;
+            color: colors.$color-surface;
             max-width: 400px;
-            padding: 2rem;
+            padding: vars.$spacing-xl;
 
             .brand-section {
-                margin-bottom: 3rem;
+                margin-bottom: vars.$spacing-3xl;
 
                 .brand-title {
-                    font-size: 2.5rem;
-                    font-weight: 700;
-                    margin-bottom: 0.5rem;
-                    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                    font-size: vars.$font-size-2xl;
+                    font-weight: vars.$font-weight-bold;
+                    margin-bottom: vars.$spacing-sm;
+                    text-shadow: vars.$shadow-sm;
                 }
 
                 .brand-subtitle {
-                    font-size: 1.1rem;
+                    font-size: vars.$font-size-md;
                     opacity: 0.9;
-                    font-weight: 300;
+                    font-weight: vars.$font-weight-light;
                 }
             }
 
             .illustration-container {
-                margin: 2rem 0;
+                margin: vars.$spacing-xl 0;
 
                 .login-illustration {
-                    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.1));
-                    animation: float 6s ease-in-out infinite;
+                    filter: drop-shadow(vars.$shadow-lg);
+                    animation: float vars.$animation-duration-long ease-in-out
+                        infinite;
                     max-width: 100%;
                     height: auto;
                 }
             }
 
             .feature-text {
-                margin-top: 2rem;
+                margin-top: vars.$spacing-xl;
 
                 h3 {
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    margin-bottom: 1rem;
-                    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                    font-size: vars.$font-size-lg;
+                    font-weight: vars.$font-weight-semibold;
+                    margin-bottom: vars.$spacing-md;
+                    text-shadow: vars.$shadow-sm;
                 }
 
                 p {
-                    font-size: 1rem;
+                    font-size: vars.$font-size-sm;
                     opacity: 0.9;
                     line-height: 1.6;
-                    font-weight: 300;
+                    font-weight: vars.$font-weight-light;
                 }
-            }
-        }
-
-        .btn-primary {
-            &:hover {
-                background: color.adjust(
-                    colors.$color-primary,
-                    $lightness: -5%
-                ) !important;
             }
         }
     }
@@ -105,12 +90,10 @@
     // Right Section - Login Form
     .login-right-section {
         flex: 1;
-        min-height: 100vh;
+        @include mixins.full-height-container;
         background: colors.$color-surface;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 2rem;
+        @include mixins.flex-center;
+        padding: vars.$spacing-xl;
 
         .form-container {
             width: 100%;
@@ -118,75 +101,38 @@
 
             .form-header {
                 text-align: center;
-                margin-bottom: 2.5rem;
+                margin-bottom: vars.$spacing-2xl;
 
                 h2 {
-                    font-size: 2rem;
-                    font-weight: 700;
-                    color: colors.$color-primary !important;
-                    margin-bottom: 0.5rem;
+                    @include mixins.section-title;
                 }
 
                 p {
-                    font-size: 1rem;
-                    opacity: 0.8;
+                    @include mixins.section-subtitle;
                 }
             }
 
             .login-form {
                 .form-group {
-                    margin-bottom: 1.5rem;
+                    margin-bottom: vars.$spacing-lg;
 
                     .form-control {
-                        width: 100%;
-                        padding: 16px 20px;
-                        border: 1px solid #e5e5e5;
-                        border-radius: 8px;
-                        font-size: 1rem;
-                        transition: all 0.2s ease;
-                        background: colors.$color-surface;
-                        color: colors.$color-text-primary;
-
-                        &::placeholder {
-                            color: #9ca3af;
-                            opacity: 1;
-                        }
-
-                        &:focus {
-                            outline: none;
-                            border-color: colors.$color-primary;
-                            box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
-                        }
-
-                        // Error state styling
-                        &.input-validation-error {
-                            border-color: colors.$color-error;
-                            box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
-                        }
+                        @include mixins.form-input;
                     }
 
-                    // Validation error styling
                     .validation-error {
-                        display: block;
-                        margin-top: 0.5rem;
-                        font-size: 0.875rem;
-                        color: colors.$color-error;
-                        font-weight: 400;
-
-                        &:empty {
-                            display: none;
-                        }
+                        @include mixins.validation-error;
                     }
                 }
 
                 .remember-section {
-                    margin-bottom: 2rem;
+                    margin-bottom: vars.$spacing-xl;
 
                     .remember-checkbox {
                         display: flex;
                         align-items: center;
                         cursor: pointer;
-                        font-size: 0.95rem;
+                        font-size: vars.$font-size-sm;
                         color: colors.$color-text-secondary;
 
                         input[type="checkbox"] {
@@ -196,160 +142,143 @@
                         .checkmark {
                             width: 18px;
                             height: 18px;
-                            border: 1px solid #d1d5db;
-                            border-radius: 3px;
-                            margin-right: 10px;
+                            border: 1px solid colors.$color-border;
+                            border-radius: vars.$border-radius-sm;
+                            margin-right: vars.$spacing-sm;
                             position: relative;
-                            transition: all 0.2s ease;
-                            background: white;
+                            transition: all vars.$transition-fast;
 
-                            &::after {
+                            &:after {
                                 content: "";
                                 position: absolute;
-                                left: 5px;
+                                display: none;
+                                left: 6px;
                                 top: 2px;
                                 width: 5px;
-                                height: 9px;
-                                border: solid white;
+                                height: 10px;
+                                border: solid colors.$color-surface;
                                 border-width: 0 2px 2px 0;
                                 transform: rotate(45deg);
-                                opacity: 0;
-                                transition: opacity 0.2s ease;
                             }
                         }
 
                         input[type="checkbox"]:checked + .checkmark {
-                            background-color: colors.$color-primary;
+                            background: colors.$color-primary;
                             border-color: colors.$color-primary;
 
-                            &::after {
-                                opacity: 1;
+                            &:after {
+                                display: block;
                             }
-                        }
-
-                        .remember-text {
-                            font-weight: 400;
                         }
                     }
                 }
 
                 .form-actions {
-                    margin-bottom: 2rem;
+                    margin-bottom: vars.$spacing-xl;
 
                     .btn-continue {
+                        @include mixins.button-primary;
                         width: 100%;
-                        background: colors.$color-primary;
-                        color: white;
-                        border: none;
-                        border-radius: 25px;
-                        padding: 16px 24px;
-                        font-size: 1rem;
-                        font-weight: 600;
-                        cursor: pointer;
-                        transition: all 0.2s ease;
-
-                        &:hover {
-                            background: color.adjust(
-                                colors.$color-primary,
-                                $lightness: -5%
-                            );
-                            transform: translateY(-1px);
-                        }
-
-                        &:active {
-                            transform: translateY(0);
-                        }
+                        height: 48px;
+                        font-size: vars.$font-size-md;
+                        letter-spacing: 0.5px;
                     }
                 }
 
                 .form-links {
                     text-align: center;
-                    margin-bottom: 2rem;
+                    margin-bottom: vars.$spacing-xl;
 
-                    .signup-link {
-                        margin-bottom: 1rem;
-                        font-size: 0.95rem;
-
-                        .link-primary {
-                            color: colors.$color-primary;
-                            text-decoration: none;
-                            font-weight: 500;
-
-                            &:hover {
-                                text-decoration: underline;
-                            }
-                        }
-                    }
-
+                    .signup-link,
                     .forgot-link {
-                        .link-secondary {
+                        margin: vars.$spacing-sm 0;
+                        font-size: vars.$font-size-sm;
+                        color: colors.$color-text-secondary;
+
+                        a {
                             color: colors.$color-primary;
                             text-decoration: none;
-                            font-size: 0.9rem;
+                            font-weight: vars.$font-weight-medium;
+                            transition: all vars.$transition-fast;
 
                             &:hover {
+                                color: color.adjust(
+                                    colors.$color-primary,
+                                    $lightness: -10%
+                                );
                                 text-decoration: underline;
-                                color: colors.$color-primary;
                             }
                         }
-                    }
-
-                    p {
-                        margin: 0;
                     }
                 }
 
                 .external-providers {
-                    margin-top: 2rem;
-
                     .divider {
-                        position: relative;
                         text-align: center;
-                        margin: 1.5rem 0;
+                        margin: vars.$spacing-xl 0;
+                        position: relative;
 
-                        span {
-                            background: colors.$color-surface;
-                            padding: 0 1rem;
-                            color: colors.$color-text-secondary;
-                            font-size: 0.9rem;
-                            position: relative;
-                            z-index: 1;
-                        }
-
-                        &::before {
+                        &::before,
+                        &::after {
                             content: "";
                             position: absolute;
                             top: 50%;
-                            left: 0;
-                            right: 0;
+                            width: calc(50% - 80px);
                             height: 1px;
-                            background: colors.$color-border;
+                            background-color: colors.$color-border;
+                        }
+
+                        &::before {
+                            left: 0;
+                        }
+
+                        &::after {
+                            right: 0;
+                        }
+
+                        span {
+                            background-color: colors.$color-surface;
+                            padding: 0 vars.$spacing-md;
+                            color: colors.$color-text-secondary;
+                            font-size: vars.$font-size-sm;
                         }
                     }
 
                     .external-buttons {
                         display: flex;
                         flex-direction: column;
-                        gap: 0.75rem;
+                        gap: vars.$spacing-md;
 
                         .btn-external {
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            padding: 12px 16px;
-                            border: 1px solid colors.$color-border;
-                            border-radius: 8px;
-                            text-decoration: none;
-                            color: colors.$color-text-primary;
-                            font-weight: 500;
-                            transition: all 0.2s ease;
-                            background: colors.$color-surface;
+                            @include mixins.button-primary;
+                            background-color: colors.$color-surface !important;
+                            color: colors.$color-text-primary !important;
+                            border: 1px solid colors.$color-border !important;
+                            width: 100%;
+                            height: 48px;
+                            font-size: vars.$font-size-md;
+                            position: relative;
+                            padding-left: 48px;
+
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                left: vars.$spacing-md;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                width: 24px;
+                                height: 24px;
+                                background-size: contain;
+                                background-repeat: no-repeat;
+                                background-position: center;
+                            }
 
                             &:hover {
-                                border-color: colors.$color-primary;
-                                background: rgba(0, 51, 204, 0.05);
-                                text-decoration: none;
-                                color: colors.$color-text-primary;
+                                background-color: color.adjust(
+                                    colors.$color-surface,
+                                    $lightness: -5%
+                                ) !important;
+                                border-color: colors.$color-primary !important;
                             }
                         }
                     }

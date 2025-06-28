@@ -5,14 +5,15 @@ using Microsoft.Extensions.Options;
 
 namespace IdentityService.Security;
 
-public class EmailConfirmationTokenProvider<TUser> : DataProtectorTokenProvider<TUser>
+public class EmailConfirmationTokenProviderOptions : DataProtectionTokenProviderOptions
+{
+}
+
+public class EmailConfirmationTokenProvider<TUser>(
+    IDataProtectionProvider dataProtectionProvider, 
+    IOptions<EmailConfirmationTokenProviderOptions> options,
+    ILogger<DataProtectorTokenProvider<TUser>> logger
+    ) : DataProtectorTokenProvider<TUser>(dataProtectionProvider, options, logger)
     where TUser : ApplicationUser
 {
-    public EmailConfirmationTokenProvider(
-        IDataProtectionProvider dataProtectionProvider, IOptions<DataProtectionTokenProviderOptions> options,
-        ILogger<DataProtectorTokenProvider<TUser>> logger
-    ) : base(dataProtectionProvider, options, logger)
-    {
-        options.Value.TokenLifespan = TimeSpan.FromSeconds(3600);
-    }
 }

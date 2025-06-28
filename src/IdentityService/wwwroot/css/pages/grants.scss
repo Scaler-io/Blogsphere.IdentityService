@@ -1,7 +1,132 @@
 @use "sass:color";
 @use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
 
 .grants-page {
-    // ... existing code ...
+    min-height: calc(100vh - 150px);
+    padding: vars.$spacing-xl;
+
+    .lead {
+        text-align: center;
+        margin-bottom: vars.$spacing-xl;
+
+        h1 {
+            @include mixins.section-title;
+            margin-bottom: vars.$spacing-md;
+        }
+
+        p {
+            color: colors.$color-text-secondary;
+            font-size: vars.$font-size-md;
+            line-height: 1.6;
+        }
+    }
+
+    .grants-container {
+        max-width: 800px;
+        margin: 0 auto;
+
+        .grant-item {
+            @include mixins.card;
+            margin-bottom: vars.$spacing-lg;
+            padding: vars.$spacing-xl;
+
+            .grant-info {
+                display: flex;
+                align-items: flex-start;
+                gap: vars.$spacing-lg;
+
+                .client-logo {
+                    width: 64px;
+                    height: 64px;
+                    border-radius: vars.$border-radius-sm;
+                    background: rgba(colors.$color-primary, 0.1);
+                    @include mixins.flex-center;
+
+                    img {
+                        max-width: 40px;
+                        height: auto;
+                    }
+                }
+
+                .grant-details {
+                    flex: 1;
+
+                    .client-name {
+                        font-size: vars.$font-size-lg;
+                        font-weight: vars.$font-weight-semibold;
+                        color: colors.$color-text-primary;
+                        margin-bottom: vars.$spacing-sm;
+                    }
+
+                    .grant-description {
+                        font-size: vars.$font-size-sm;
+                        color: colors.$color-text-secondary;
+                        margin-bottom: vars.$spacing-md;
+                    }
+
+                    .grant-scopes {
+                        margin: vars.$spacing-md 0;
+
+                        .scope-item {
+                            display: inline-flex;
+                            align-items: center;
+                            background: rgba(colors.$color-primary, 0.05);
+                            padding: vars.$spacing-xs vars.$spacing-sm;
+                            border-radius: vars.$border-radius-sm;
+                            margin: 0 vars.$spacing-xs vars.$spacing-xs 0;
+                            font-size: vars.$font-size-xs;
+                            color: colors.$color-primary;
+
+                            &:hover {
+                                background: rgba(colors.$color-primary, 0.1);
+                            }
+                        }
+                    }
+
+                    .grant-date {
+                        font-size: vars.$font-size-xs;
+                        color: colors.$color-text-secondary;
+                        opacity: 0.7;
+                    }
+                }
+            }
+
+            .grant-actions {
+                margin-top: vars.$spacing-lg;
+                padding-top: vars.$spacing-lg;
+                border-top: 1px solid rgba(colors.$color-primary, 0.1);
+                display: flex;
+                justify-content: flex-end;
+                gap: vars.$spacing-md;
+
+                .btn-revoke {
+                    @include mixins.button-primary;
+                    background-color: colors.$color-error !important;
+
+                    &:hover {
+                        background-color: color.adjust(
+                            colors.$color-error,
+                            $lightness: -10%
+                        ) !important;
+                    }
+                }
+            }
+        }
+
+        .no-grants {
+            text-align: center;
+            padding: vars.$spacing-2xl;
+            color: colors.$color-text-secondary;
+            font-size: vars.$font-size-md;
+
+            .empty-icon {
+                font-size: vars.$font-size-2xl;
+                color: colors.$color-primary;
+                opacity: 0.5;
+                margin-bottom: vars.$spacing-md;
+            }
+        }
+    }
 }
-// ... existing code ...

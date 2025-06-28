@@ -1,3 +1,8 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .diagnostics-page {
   min-height: calc(100vh - 150px);
   padding: 2rem;
@@ -7,12 +12,14 @@
   margin-bottom: 2rem;
 }
 .diagnostics-page .lead h1 {
+  font-size: 2rem;
+  font-weight: 700;
   color: #0033cc;
-  font-weight: 600;
+  margin-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
 .diagnostics-page .lead p {
-  color: #666;
+  color: #0033cc;
   font-size: 1.1rem;
 }
 .diagnostics-page .row {
@@ -22,18 +29,19 @@
 .diagnostics-page .card {
   border: none;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
   overflow: hidden;
+  margin-bottom: 2rem;
   height: 100%;
 }
 .diagnostics-page .card .card-header {
-  background: linear-gradient(45deg, #0033cc, rgb(25.5, 82.875, 255));
+  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
   border: none;
-  padding: 1.25rem;
+  padding: 1.5rem;
 }
 .diagnostics-page .card .card-header h2 {
-  color: white;
+  color: #ffffff;
   font-size: 1.5rem;
   margin: 0;
   display: flex;
@@ -46,7 +54,7 @@
 }
 .diagnostics-page .card .card-body {
   padding: 1.5rem;
-  background-color: white;
+  background-color: #ffffff;
 }
 .diagnostics-page .card .card-body dl {
   margin: 0;
@@ -56,7 +64,7 @@
   align-items: baseline;
 }
 .diagnostics-page .card .card-body dl dt {
-  color: #666;
+  color: #0033cc;
   font-weight: 600;
   position: relative;
   padding-left: 1rem;
@@ -73,7 +81,8 @@
   background-color: #0033cc;
 }
 .diagnostics-page .card .card-body dl dd {
-  color: #333;
+  color: #00205b;
   margin: 0;
   word-break: break-all;
+  font-size: 1rem;
 }

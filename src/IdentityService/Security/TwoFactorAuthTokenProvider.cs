@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IdentityService.Security;
 
-public class TwoFactorAuthTokenProvider : IUserTwoFactorTokenProvider<ApplicationUser>
+public class TwoFactorAuthTokenProvider :  IUserTwoFactorTokenProvider<ApplicationUser>
 {
     public Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<ApplicationUser> manager, ApplicationUser user)
     {

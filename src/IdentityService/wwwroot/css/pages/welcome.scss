@@ -1,23 +1,32 @@
 @use "sass:color";
 @use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
 
 .landing-page {
     // Hero section customizations
     .hero-section {
         background: linear-gradient(
             135deg,
-            rgba(0, 51, 204, 0.03) 0%,
-            rgba(255, 230, 0, 0.03) 100%
+            rgba(colors.$color-primary, 0.03) 0%,
+            rgba(colors.$color-accent-yellow, 0.03) 100%
         );
 
         .display-4 {
             color: colors.$color-primary !important;
+            font-size: calc(vars.$font-size-2xl * 1.5);
+            font-weight: vars.$font-weight-bold;
+            margin-bottom: vars.$spacing-md;
         }
 
         .lead {
             color: colors.$color-text-secondary !important;
+            font-size: vars.$font-size-lg;
+            font-weight: vars.$font-weight-normal;
+            margin-bottom: vars.$spacing-xl;
+
             &.text-dark {
-                color: #000000 !important;
+                color: colors.$color-text-primary !important;
             }
         }
     }
@@ -28,6 +37,7 @@
     h4,
     h5 {
         color: colors.$color-primary !important;
+        margin-bottom: vars.$spacing-md;
 
         &.text-primary {
             color: colors.$color-primary !important;
@@ -36,9 +46,7 @@
 
     // Custom button hover effects
     .btn-primary {
-        background-color: colors.$color-primary !important;
-        border-color: colors.$color-primary !important;
-        color: colors.$color-surface !important;
+        @include mixins.button-primary;
 
         &:hover,
         &:focus,
@@ -51,8 +59,10 @@
     }
 
     .btn-outline-primary {
+        @include mixins.button-primary;
+        background: transparent !important;
         color: colors.$color-primary !important;
-        border-color: colors.$color-primary !important;
+        border: 2px solid colors.$color-primary !important;
 
         &:hover,
         &:focus,
@@ -66,21 +76,24 @@
 
     // Card customizations
     .card {
-        border: none !important;
-        box-shadow: 0 2px 12px rgba(0, 51, 204, 0.08) !important;
-        transition: all 0.3s ease;
+        @include mixins.card;
+        transition: all vars.$transition-normal;
+        padding: vars.$spacing-lg;
 
         &:hover {
             transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(0, 51, 204, 0.15) !important;
+            box-shadow: vars.$shadow-lg;
         }
 
         .card-title {
-            color: colors.$color-primary !important;
+            @include mixins.section-title;
+            font-size: vars.$font-size-lg;
         }
 
         .card-text {
             color: colors.$color-text-secondary !important;
+            font-size: vars.$font-size-sm;
+            line-height: 1.6;
         }
     }
 
@@ -89,7 +102,7 @@
         text-decoration: none !important;
 
         &:hover {
-            background-color: rgba(255, 230, 0, 0.1) !important;
+            background-color: rgba(colors.$color-accent-yellow, 0.1) !important;
 
             .card-title {
                 color: colors.$color-primary !important;
@@ -99,7 +112,7 @@
 
     // How it works section
     .bg-primary {
-        background-color: colors.$color-primary !important;
+        @include mixins.gradient-background;
     }
 
     // Text color overrides
@@ -114,9 +127,16 @@
     // Numbered circles in How It Works
     .rounded-circle {
         background-color: colors.$color-primary !important;
+        width: 40px;
+        height: 40px;
+        @include mixins.flex-center;
+        border-radius: 50%;
+        margin-bottom: vars.$spacing-md;
 
         span {
             color: colors.$color-surface !important;
+            font-size: vars.$font-size-md;
+            font-weight: vars.$font-weight-bold;
         }
     }
 
@@ -130,8 +150,9 @@
     .bg-light {
         background: linear-gradient(
             135deg,
-            rgba(0, 51, 204, 0.02) 0%,
-            rgba(255, 230, 0, 0.02) 100%
+            rgba(colors.$color-primary, 0.02) 0%,
+            rgba(colors.$color-accent-yellow, 0.02) 100%
         ) !important;
+        padding: vars.$spacing-2xl 0;
     }
 }

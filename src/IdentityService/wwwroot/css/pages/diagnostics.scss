@@ -1,22 +1,24 @@
-@import "../_colors.scss";
+@use "sass:color";
+@use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
 
 .diagnostics-page {
     min-height: calc(100vh - 150px);
-    padding: 2rem;
+    padding: vars.$spacing-xl;
 
     .lead {
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: vars.$spacing-xl;
 
         h1 {
-            color: $color-primary;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            @include mixins.section-title;
+            margin-bottom: vars.$spacing-md;
         }
 
         p {
-            color: #666;
-            font-size: 1.1rem;
+            color: colors.$color-text-secondary;
+            font-size: vars.$font-size-md;
         }
     }
 
@@ -26,29 +28,22 @@
     }
 
     .card {
-        border: none;
-        border-radius: 12px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
-        overflow: hidden;
+        @include mixins.card;
+        margin-bottom: vars.$spacing-xl;
         height: 100%;
 
         .card-header {
-            background: linear-gradient(
-                45deg,
-                $color-primary,
-                lighten($color-primary, 15%)
-            );
+            @include mixins.gradient-background;
             border: none;
-            padding: 1.25rem;
+            padding: vars.$spacing-lg;
 
             h2 {
-                color: white;
-                font-size: 1.5rem;
+                color: colors.$color-surface;
+                font-size: vars.$font-size-lg;
                 margin: 0;
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
+                gap: vars.$spacing-sm;
 
                 svg {
                     width: 24px;
@@ -58,21 +53,21 @@
         }
 
         .card-body {
-            padding: 1.5rem;
-            background-color: white;
+            padding: vars.$spacing-lg;
+            background-color: colors.$color-surface;
 
             dl {
                 margin: 0;
                 display: grid;
                 grid-template-columns: auto 1fr;
-                gap: 1rem 2rem;
+                gap: vars.$spacing-md vars.$spacing-xl;
                 align-items: baseline;
 
                 dt {
-                    color: #666;
-                    font-weight: 600;
+                    color: colors.$color-text-secondary;
+                    font-weight: vars.$font-weight-semibold;
                     position: relative;
-                    padding-left: 1rem;
+                    padding-left: vars.$spacing-md;
 
                     &::before {
                         content: "";
@@ -83,14 +78,15 @@
                         width: 4px;
                         height: 4px;
                         border-radius: 50%;
-                        background-color: $color-primary;
+                        background-color: colors.$color-primary;
                     }
                 }
 
                 dd {
-                    color: #333;
+                    color: colors.$color-text-primary;
                     margin: 0;
                     word-break: break-all;
+                    font-size: vars.$font-size-sm;
                 }
             }
         }

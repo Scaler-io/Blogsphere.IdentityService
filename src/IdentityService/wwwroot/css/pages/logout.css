@@ -1,12 +1,17 @@
 /* Logout & Logged Out Pages Styles - Blogsphere Theme */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .container.logout-container,
 .container.logged-out-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
+  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 2rem !important;
   max-width: none !important;
   width: 100% !important;
@@ -26,10 +31,13 @@
 
 .logout-card,
 .logged-out-card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   background: #ffffff;
-  border-radius: 24px;
-  box-shadow: 0 25px 60px rgba(0, 51, 204, 0.2), 0 10px 30px rgba(0, 51, 204, 0.12);
   overflow: hidden;
+  border-radius: 25px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.1);
   max-width: 540px;
   width: 100%;
@@ -42,14 +50,14 @@
 @media (max-width: 768px) {
   .logout-card,
   .logged-out-card {
-    border-radius: 20px;
+    border-radius: 12px;
     max-width: 480px;
   }
 }
 @media (max-width: 480px) {
   .logout-card,
   .logged-out-card {
-    border-radius: 16px;
+    border-radius: 8px;
     max-width: 95%;
     margin: 0 auto;
   }
@@ -58,7 +66,7 @@
 .logout-header,
 .logged-out-header {
   padding: 3rem 3rem 2rem 3rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%);
   border-bottom: 1px solid rgba(0, 51, 204, 0.1);
   position: relative;
 }
@@ -71,7 +79,7 @@
 @media (max-width: 480px) {
   .logout-header,
   .logged-out-header {
-    padding: 2rem 1.5rem 1.25rem 1.5rem;
+    padding: 2rem 1.5rem 1rem 1.5rem;
   }
 }
 .logout-header .logout-icon,
@@ -111,7 +119,7 @@
 .logout-header h1,
 .logged-out-header h1 {
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #00205b;
   margin: 0 0 1rem 0;
   line-height: 1.1;
@@ -134,7 +142,7 @@
 .logged-out-header .logout-subtitle,
 .logged-out-header .success-subtitle {
   color: rgb(0, 57.375, 229.5);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   margin: 0;
   font-weight: 500;
   opacity: 0.9;
@@ -144,7 +152,7 @@
   .logout-header .success-subtitle,
   .logged-out-header .logout-subtitle,
   .logged-out-header .success-subtitle {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
   }
 }
 @media (max-width: 480px) {
@@ -152,7 +160,7 @@
   .logout-header .success-subtitle,
   .logged-out-header .logout-subtitle,
   .logged-out-header .success-subtitle {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
 }
 
@@ -163,7 +171,7 @@
 @media (max-width: 768px) {
   .logout-content,
   .logged-out-content {
-    padding: 1.75rem 2rem;
+    padding: 1.5rem 2rem;
   }
 }
 @media (max-width: 480px) {
@@ -176,8 +184,8 @@
 .logout-content .logout-text,
 .logged-out-content .logout-description,
 .logged-out-content .logout-text {
-  color: #6b7280;
-  font-size: 1.15rem;
+  color: #0033cc;
+  font-size: 1.1rem;
   margin: 0 0 2rem 0;
   font-weight: 400;
   line-height: 1.7;
@@ -188,7 +196,7 @@
   .logout-content .logout-text,
   .logged-out-content .logout-description,
   .logged-out-content .logout-text {
-    font-size: 1.05rem;
+    font-size: 1rem;
     margin: 0 0 1.5rem 0;
   }
 }
@@ -230,226 +238,320 @@
 }
 .logout-content .decorative-elements .decoration-svg .session-group .session-hand,
 .logged-out-content .decorative-elements .decoration-svg .session-group .session-hand {
-  animation: handTick 1s ease-in-out infinite;
+  animation: handTick 3s steps(12) infinite;
 }
-.logout-content .decorative-elements .decoration-svg .float-dot,
-.logged-out-content .decorative-elements .decoration-svg .float-dot {
-  animation: dotFloat 3s ease-in-out infinite;
+.logout-content .logout-actions,
+.logout-content .logged-out-actions,
+.logged-out-content .logout-actions,
+.logged-out-content .logged-out-actions {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.logout-content .decorative-elements .decoration-svg .float-dot:nth-child(2),
-.logged-out-content .decorative-elements .decoration-svg .float-dot:nth-child(2) {
-  animation-delay: -1s;
+.logout-content .logout-actions .btn-primary,
+.logout-content .logged-out-actions .btn-primary,
+.logged-out-content .logout-actions .btn-primary,
+.logged-out-content .logged-out-actions .btn-primary {
+  background: #0033cc;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.logout-content .decorative-elements .decoration-svg .float-dot:nth-child(3),
-.logged-out-content .decorative-elements .decoration-svg .float-dot:nth-child(3) {
-  animation-delay: -2s;
+.logout-content .logout-actions .btn-primary:hover,
+.logout-content .logged-out-actions .btn-primary:hover,
+.logged-out-content .logout-actions .btn-primary:hover,
+.logged-out-content .logged-out-actions .btn-primary:hover {
+  background: rgb(0, 44.625, 178.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-.logout-content .decorative-elements .decoration-svg .security-lock,
-.logged-out-content .decorative-elements .decoration-svg .security-lock {
-  animation: lockPulse 3s ease-in-out infinite;
+.logout-content .logout-actions .btn-primary:active,
+.logout-content .logged-out-actions .btn-primary:active,
+.logged-out-content .logout-actions .btn-primary:active,
+.logged-out-content .logged-out-actions .btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.logout-content .decorative-elements .decoration-svg .session-ended .session-circle,
-.logged-out-content .decorative-elements .decoration-svg .session-ended .session-circle {
-  animation: sessionEnd 4s ease-in-out infinite;
+.logout-content .logout-actions .btn-primary:focus,
+.logout-content .logged-out-actions .btn-primary:focus,
+.logged-out-content .logout-actions .btn-primary:focus,
+.logged-out-content .logged-out-actions .btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
 }
-.logout-content .decorative-elements .decoration-svg .data-protection,
-.logged-out-content .decorative-elements .decoration-svg .data-protection {
-  animation: dataProtect 5s ease-in-out infinite;
+.logout-content .logout-actions .btn-primary:disabled,
+.logout-content .logged-out-actions .btn-primary:disabled,
+.logged-out-content .logout-actions .btn-primary:disabled,
+.logged-out-content .logged-out-actions .btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
-.logout-content .decorative-elements .decoration-svg .security-particles circle,
-.logged-out-content .decorative-elements .decoration-svg .security-particles circle {
-  animation: particleMove 4s ease-in-out infinite;
+.logout-content .logout-actions .btn-secondary,
+.logout-content .logged-out-actions .btn-secondary,
+.logged-out-content .logout-actions .btn-secondary,
+.logged-out-content .logged-out-actions .btn-secondary {
+  background: #0033cc;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: transparent !important;
+  color: #0033cc !important;
+  border: 2px solid #0033cc !important;
 }
-.logout-content .decorative-elements .decoration-svg .security-particles circle:nth-child(2),
-.logged-out-content .decorative-elements .decoration-svg .security-particles circle:nth-child(2) {
-  animation-delay: -1s;
+.logout-content .logout-actions .btn-secondary:hover,
+.logout-content .logged-out-actions .btn-secondary:hover,
+.logged-out-content .logout-actions .btn-secondary:hover,
+.logged-out-content .logged-out-actions .btn-secondary:hover {
+  background: rgb(0, 44.625, 178.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-.logout-content .decorative-elements .decoration-svg .security-particles circle:nth-child(3),
-.logged-out-content .decorative-elements .decoration-svg .security-particles circle:nth-child(3) {
-  animation-delay: -2s;
+.logout-content .logout-actions .btn-secondary:active,
+.logout-content .logged-out-actions .btn-secondary:active,
+.logged-out-content .logout-actions .btn-secondary:active,
+.logged-out-content .logged-out-actions .btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.logout-content .decorative-elements .decoration-svg .security-particles circle:nth-child(4),
-.logged-out-content .decorative-elements .decoration-svg .security-particles circle:nth-child(4) {
-  animation-delay: -3s;
+.logout-content .logout-actions .btn-secondary:focus,
+.logout-content .logged-out-actions .btn-secondary:focus,
+.logged-out-content .logout-actions .btn-secondary:focus,
+.logged-out-content .logged-out-actions .btn-secondary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
 }
-.logout-content .decorative-elements .decoration-svg .success-indicators,
-.logged-out-content .decorative-elements .decoration-svg .success-indicators {
-  animation: successGlow 2.5s ease-in-out infinite;
+.logout-content .logout-actions .btn-secondary:disabled,
+.logout-content .logged-out-actions .btn-secondary:disabled,
+.logged-out-content .logout-actions .btn-secondary:disabled,
+.logged-out-content .logged-out-actions .btn-secondary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.logout-content .logout-actions .btn-secondary:hover,
+.logout-content .logged-out-actions .btn-secondary:hover,
+.logged-out-content .logout-actions .btn-secondary:hover,
+.logged-out-content .logged-out-actions .btn-secondary:hover {
+  background: rgba(0, 51, 204, 0.1) !important;
 }
 
-.logout-actions,
-.logged-out-actions {
-  padding: 2.5rem 3rem 3rem 3rem;
-  border-top: 1px solid rgba(0, 51, 204, 0.1);
-  background: linear-gradient(135deg, rgba(250, 251, 255, 0.8) 0%, rgba(245, 248, 255, 0.9) 100%);
+.logout-actions {
+  padding: 0 3rem 3rem;
 }
 @media (max-width: 768px) {
-  .logout-actions,
-  .logged-out-actions {
-    padding: 2rem 2rem 2.5rem 2rem;
+  .logout-actions {
+    padding: 0 2rem 2rem;
   }
 }
 @media (max-width: 480px) {
-  .logout-actions,
-  .logged-out-actions {
-    padding: 1.75rem 1.5rem 2rem 1.5rem;
+  .logout-actions {
+    padding: 0 1.5rem 1.5rem;
   }
 }
-.logout-actions .button-group,
-.logout-actions .action-buttons,
-.logged-out-actions .button-group,
-.logged-out-actions .action-buttons {
+.logout-actions .button-group {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
 }
 @media (max-width: 480px) {
-  .logout-actions .button-group,
-  .logout-actions .action-buttons,
-  .logged-out-actions .button-group,
-  .logged-out-actions .action-buttons {
+  .logout-actions .button-group {
     flex-direction: column;
-    gap: 1rem;
   }
 }
-.logout-actions .btn-confirm,
-.logout-actions .btn-redirect,
-.logged-out-actions .btn-confirm,
-.logged-out-actions .btn-redirect {
-  display: inline-block;
-  padding: 18px 36px;
-  background: linear-gradient(135deg, #0033cc 0%, rgb(0, 63.75, 255) 100%);
-  color: white;
+.logout-actions .button-group .btn-confirm,
+.logout-actions .button-group .btn-cancel {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
   text-decoration: none;
-  border: none;
-  border-radius: 14px;
-  font-size: 1.15rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 51, 204, 0.3), 0 4px 12px rgba(0, 51, 204, 0.2);
-  letter-spacing: 0.025em;
-  text-transform: none;
-  position: relative;
-  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
 }
 @media (max-width: 480px) {
-  .logout-actions .btn-confirm,
-  .logout-actions .btn-redirect,
-  .logged-out-actions .btn-confirm,
-  .logged-out-actions .btn-redirect {
-    padding: 16px 32px;
-    font-size: 1.05rem;
+  .logout-actions .button-group .btn-confirm,
+  .logout-actions .button-group .btn-cancel {
     width: 100%;
+    min-width: unset;
   }
 }
-.logout-actions .btn-confirm::before,
-.logout-actions .btn-redirect::before,
-.logged-out-actions .btn-confirm::before,
-.logged-out-actions .btn-redirect::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+.logout-actions .button-group .btn-confirm {
+  background-color: #0033cc;
+  color: #ffffff;
+  border: none;
 }
-.logout-actions .btn-confirm:hover,
-.logout-actions .btn-redirect:hover,
-.logged-out-actions .btn-confirm:hover,
-.logged-out-actions .btn-redirect:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 32px rgba(0, 51, 204, 0.4), 0 6px 16px rgba(0, 51, 204, 0.25);
-  text-decoration: none;
-  color: white;
+.logout-actions .button-group .btn-confirm:hover {
+  background-color: rgb(0, 38.25, 153);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 51, 204, 0.25);
 }
-.logout-actions .btn-confirm:hover::before,
-.logout-actions .btn-redirect:hover::before,
-.logged-out-actions .btn-confirm:hover::before,
-.logged-out-actions .btn-redirect:hover::before {
-  left: 100%;
+.logout-actions .button-group .btn-confirm:active {
+  transform: translateY(0);
+  box-shadow: none;
 }
-.logout-actions .btn-confirm:active,
-.logout-actions .btn-redirect:active,
-.logged-out-actions .btn-confirm:active,
-.logged-out-actions .btn-redirect:active {
+.logout-actions .button-group .btn-cancel {
+  background-color: transparent;
+  color: #0033cc;
+  border: 2px solid #0033cc;
+}
+.logout-actions .button-group .btn-cancel:hover {
+  background-color: rgba(0, 51, 204, 0.1);
   transform: translateY(-1px);
 }
-.logout-actions .btn-cancel,
-.logout-actions .btn-login,
-.logout-actions .btn-home,
-.logged-out-actions .btn-cancel,
-.logged-out-actions .btn-login,
-.logged-out-actions .btn-home {
-  display: inline-block;
-  padding: 18px 36px;
-  background: rgba(255, 255, 255, 0.8);
-  color: rgb(0, 57.375, 229.5);
-  border: 2px solid rgba(0, 51, 204, 0.2);
-  border-radius: 14px;
-  font-size: 1.15rem;
-  font-weight: 600;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  backdrop-filter: blur(5px);
-  letter-spacing: 0.025em;
-}
-@media (max-width: 480px) {
-  .logout-actions .btn-cancel,
-  .logout-actions .btn-login,
-  .logout-actions .btn-home,
-  .logged-out-actions .btn-cancel,
-  .logged-out-actions .btn-login,
-  .logged-out-actions .btn-home {
-    padding: 16px 32px;
-    font-size: 1.05rem;
-    text-align: center;
-    width: 100%;
-  }
-}
-.logout-actions .btn-cancel:hover,
-.logout-actions .btn-login:hover,
-.logout-actions .btn-home:hover,
-.logged-out-actions .btn-cancel:hover,
-.logged-out-actions .btn-login:hover,
-.logged-out-actions .btn-home:hover {
-  border-color: #0033cc;
-  color: #0033cc;
-  background: rgba(255, 255, 255, 0.95);
-  text-decoration: none;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 51, 204, 0.15);
-}
-.logout-actions .btn-cancel:active,
-.logout-actions .btn-login:active,
-.logout-actions .btn-home:active,
-.logged-out-actions .btn-cancel:active,
-.logged-out-actions .btn-login:active,
-.logged-out-actions .btn-home:active {
+.logout-actions .button-group .btn-cancel:active {
   transform: translateY(0);
 }
-.logout-actions .redirect-info .redirect-text,
-.logged-out-actions .redirect-info .redirect-text {
-  color: #6b7280;
-  font-size: 1rem;
-  margin: 0 0 1.5rem 0;
-  font-weight: 400;
+
+.logged-out-actions {
+  padding: 0 3rem 3rem;
 }
-.logout-actions .redirect-info .redirect-text strong,
-.logged-out-actions .redirect-info .redirect-text strong {
-  color: #0033cc;
-  font-weight: 600;
+@media (max-width: 768px) {
+  .logged-out-actions {
+    padding: 0 2rem 2rem;
+  }
 }
 @media (max-width: 480px) {
-  .logout-actions .redirect-info .redirect-text,
-  .logged-out-actions .redirect-info .redirect-text {
-    font-size: 0.95rem;
+  .logged-out-actions {
+    padding: 0 1.5rem 1.5rem;
   }
+}
+.logged-out-actions .redirect-info {
+  text-align: center;
+}
+.logged-out-actions .redirect-info .redirect-text {
+  color: #0033cc;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+.logged-out-actions .redirect-info .btn-redirect {
+  background: #0033cc;
+  color: #ffffff;
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+}
+.logged-out-actions .redirect-info .btn-redirect:hover {
+  background: rgb(0, 44.625, 178.5);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+.logged-out-actions .redirect-info .btn-redirect:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.logged-out-actions .redirect-info .btn-redirect:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.logged-out-actions .redirect-info .btn-redirect:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.logged-out-actions .redirect-info .btn-redirect:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 51, 204, 0.25);
+}
+.logged-out-actions .redirect-info .btn-redirect:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.logged-out-actions .action-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+@media (max-width: 480px) {
+  .logged-out-actions .action-buttons {
+    flex-direction: column;
+  }
+}
+.logged-out-actions .action-buttons .btn-login,
+.logged-out-actions .action-buttons .btn-home {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+}
+@media (max-width: 480px) {
+  .logged-out-actions .action-buttons .btn-login,
+  .logged-out-actions .action-buttons .btn-home {
+    width: 100%;
+    min-width: unset;
+  }
+}
+.logged-out-actions .action-buttons .btn-login {
+  background-color: #0033cc;
+  color: #ffffff;
+  border: none;
+}
+.logged-out-actions .action-buttons .btn-login:hover {
+  background-color: rgb(0, 38.25, 153);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 51, 204, 0.25);
+}
+.logged-out-actions .action-buttons .btn-login:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+.logged-out-actions .action-buttons .btn-home {
+  background-color: transparent;
+  color: #0033cc;
+  border: 2px solid #0033cc;
+}
+.logged-out-actions .action-buttons .btn-home:hover {
+  background-color: rgba(0, 51, 204, 0.1);
+  transform: translateY(-1px);
+}
+.logged-out-actions .action-buttons .btn-home:active {
+  transform: translateY(0);
 }
 
 .logout-svg .door-frame {

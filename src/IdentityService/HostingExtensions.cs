@@ -54,9 +54,25 @@ internal static class HostingExtensions
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
         .AddDefaultTokenProviders()
+        .AddTokenProvider<PasswordResetTokenProvider<ApplicationUser>>(Constants.CustomPasswordResetTokenProvider)  
         .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(Constants.CustomEmailTokenProvider)
         .AddTokenProvider<TwoFactorAuthTokenProvider>(Constants.CustomTwoFactorTokenProvider);
 
+        // Configure token provider options
+        builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromHours(1);
+        });
+
+        builder.Services.Configure<PasswordResetTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromHours(1);
+        });
+
+        builder.Services.Configure<EmailConfirmationTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromHours(1);
+        });
 
         builder.Services
             .AddIdentityServer(options =>

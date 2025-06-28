@@ -1,0 +1,137 @@
+@page
+@model IdentityService.Pages.Account.ResetPassword.Index
+@{
+    ViewData["Title"] = "Reset Password";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <!-- Left Section - Gradient Background with SVG Illustration -->
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+            
+            <!-- SVG Illustration -->
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <!-- Background circles -->
+                    <circle cx="160" cy="140" r="120" fill="rgba(0, 51, 204, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(0, 51, 204, 0.15)" />
+                    <circle cx="160" cy="140" r="60" fill="rgba(0, 51, 204, 0.2)" />
+                    
+                    <!-- Key illustration -->
+                    <!-- Key head -->
+                    <circle cx="160" cy="120" r="25" fill="white" stroke="rgba(0, 51, 204, 0.5)" stroke-width="2"/>
+                    <circle cx="160" cy="120" r="15" fill="#0033cc"/>
+                    
+                    <!-- Key shaft -->
+                    <rect x="185" y="115" width="50" height="10" fill="white" rx="2"/>
+                    
+                    <!-- Key teeth -->
+                    <rect x="200" y="125" width="6" height="12" fill="white" rx="1"/>
+                    <rect x="215" y="125" width="6" height="8" fill="white" rx="1"/>
+                    
+                    <!-- Floating elements -->
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)">
+                        <animate attributeName="cy" values="100;95;100" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)">
+                        <animate attributeName="cy" values="120;115;120" dur="2.5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)">
+                        <animate attributeName="cy" values="180;175;180" dur="1.8s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)">
+                        <animate attributeName="cy" values="180;185;180" dur="2.2s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    <!-- Connection lines -->
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+            
+            <div class="feature-text">
+                <h3>Reset Your Password</h3>
+                <p>Create a new secure password to protect your account.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section - Reset Password Form or Error -->
+    <div class="reset-password-right-section">
+        @if (Model.IsValidToken)
+        {
+            <div class="form-container">
+                <div class="form-header">
+                    <h2>Create New Password</h2>
+                    <p>Please enter your new password below</p>
+                </div>
+
+                <form method="post" class="reset-password-form">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    
+                    <div class="form-group">
+                        <input type="password"
+                               class="form-control"
+                               autocomplete="new-password"
+                               placeholder="New Password*"
+                               asp-for="Input.Password" />
+                        <span asp-validation-for="Input.Password" class="text-danger validation-error"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="password"
+                               class="form-control"
+                               autocomplete="new-password"
+                               placeholder="Confirm Password*"
+                               asp-for="Input.ConfirmPassword" />
+                        <span asp-validation-for="Input.ConfirmPassword" class="text-danger validation-error"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-continue">
+                            Reset Password
+                        </button>
+                    </div>
+
+                    <div class="form-links">
+                        <p class="login-link">
+                            Remember your password? <a asp-page="/Account/Login/Index" class="link-primary">Sign in</a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        }
+        else
+        {
+            <div class="error-container">
+                <div class="error-content">
+                    <div class="error-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="32" cy="32" r="28" stroke="currentColor" stroke-width="2"/>
+                            <path d="M32 20L32 36" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="32" cy="44" r="2" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h2 class="error-title">Invalid or Expired Link</h2>
+                    <p class="error-message">The password reset link you clicked is no longer valid.</p>
+                    <p class="error-description">This could be because:</p>
+                    <ul class="error-reasons">
+                        <li>The link has expired</li>
+                        <li>The link has already been used</li>
+                        <li>The link was modified</li>
+                    </ul>
+                    <div class="error-actions">
+                        <a asp-page="/Account/ForgotPassword/Index" class="btn-retry">Request New Reset Link</a>
+                        <a asp-page="/Account/Login/Index" class="btn-login">Back to Login</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

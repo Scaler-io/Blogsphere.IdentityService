@@ -1,9 +1,15 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .login-page {
   min-height: calc(100vh - 150px);
-  padding: 6rem 1rem;
+  padding: 3rem 1rem;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .login-page .lead {
   text-align: center;
@@ -12,13 +18,15 @@
   padding: 0 1rem;
 }
 .login-page .lead h1 {
+  font-size: 2rem;
+  font-weight: 700;
   color: #0033cc;
-  font-weight: 600;
+  margin-bottom: 0.5rem;
   margin-bottom: 1rem;
-  font-size: 2.25rem;
+  font-size: 2.5rem;
 }
 .login-page .lead p {
-  color: #666;
+  color: #0033cc;
   font-size: 1.1rem;
   line-height: 1.5;
   margin-bottom: 0;
@@ -34,22 +42,22 @@
   border: none;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background: white;
+  background: #ffffff;
   overflow: hidden;
   margin-bottom: 1.5rem;
 }
 .login-page .card .card-header {
-  background: linear-gradient(45deg, #0033cc, rgb(25.5, 82.875, 255));
+  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
   border: none;
   padding: 1.5rem;
 }
 .login-page .card .card-header h2 {
-  color: white;
+  color: #ffffff;
   font-size: 1.5rem;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 .login-page .card .card-header h2 svg {
   width: 24px;
@@ -63,41 +71,58 @@
   margin-bottom: 1.5rem;
 }
 .login-page .card .card-body .form-group label {
-  color: #555;
+  color: #00205b;
   font-weight: 500;
   margin-bottom: 0.5rem;
   display: block;
 }
 .login-page .card .card-body .form-group .form-control {
-  border: 2px solid #e1e1e1;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 0.75rem 1rem;
-  font-size: 1.25rem;
+  font-size: 1rem;
   transition: all 0.2s ease;
+  background: #ffffff;
+  color: #00205b;
   letter-spacing: 0.2em;
   text-align: center;
-}
-.login-page .card .card-body .form-group .form-control:focus {
-  border-color: #0033cc;
-  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
+  font-size: 1.5rem;
 }
 .login-page .card .card-body .form-group .form-control::placeholder {
-  color: #aaa;
-  letter-spacing: normal;
+  color: #0033cc;
+  opacity: 0.6;
+}
+.login-page .card .card-body .form-group .form-control:focus {
+  outline: none;
+  border-color: #0033cc;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.1);
 }
 .login-page .card .card-body .form-group .form-control.input-validation-error {
   border-color: #ff5252;
   box-shadow: 0 0 0 3px rgba(255, 82, 82, 0.1);
 }
+.login-page .card .card-body .form-group .form-control::placeholder {
+  letter-spacing: normal;
+}
 .login-page .card .card-body .btn-primary {
-  background: #0033cc !important;
+  background: #0033cc;
+  color: #ffffff;
   border: none;
-  border-radius: 8px;
-  padding: 0.75rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 500;
-  width: 100%;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -106,19 +131,34 @@
 .login-page .card .card-body .btn-primary:hover {
   background: rgb(0, 44.625, 178.5);
   transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 .login-page .card .card-body .btn-primary:active {
   transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.login-page .card .card-body .btn-primary:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.login-page .card .card-body .btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 .login-page .help-links {
-  background: white;
+  border: none;
   border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  overflow: hidden;
   padding: 1.5rem;
   width: 100%;
   text-align: center;
 }
 .login-page .help-links .help-links-section h3 {
-  color: #444;
+  color: #00205b;
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 1rem;
@@ -136,10 +176,10 @@
 .login-page .help-links .help-links-section ul li a {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   color: #0033cc;
   text-decoration: none;
-  padding: 0.75rem;
+  padding: 0.5rem;
   border-radius: 8px;
   transition: all 0.2s ease;
 }
@@ -156,20 +196,19 @@
   transform: translateX(2px);
 }
 .login-page .validation-summary-errors {
-  background: #fff3f3;
-  border-left: 4px solid #dc3545;
-  padding: 1rem 1.25rem;
+  background: rgba(255, 82, 82, 0.05);
+  border-left: 4px solid #ff5252;
+  padding: 1rem 1.5rem;
   border-radius: 8px;
   margin-bottom: 1.5rem;
   width: 100%;
-  max-width: 600px;
 }
 .login-page .validation-summary-errors ul {
   list-style: none;
-  margin: 0;
   padding: 0;
-  color: #dc3545;
-  font-size: 0.95rem;
+  margin: 0;
+  color: #ff5252;
+  font-size: 1rem;
 }
 @media (max-width: 576px) {
   .login-page {

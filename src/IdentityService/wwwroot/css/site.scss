@@ -1,11 +1,16 @@
 @use "sass:color";
-@use "./_colors" as colors;
+@use "_colors" as colors;
+@use "_variables" as vars;
+@use "_mixins" as mixins;
 @use "./pages/welcome";
 @use "./pages/login";
 @use "./pages/logout";
 @use "./pages/grants";
 @use "./pages/error";
+@use "./pages/forgotpassword";
+@use "./pages/twofactor";
 @use "./pages/emailverification";
+@use "./pages/resetpassword";
 
 // Bootstrap color overrides
 :root {
@@ -43,29 +48,20 @@
 }
 
 .btn-primary {
-    background-color: colors.$color-primary !important;
-    border-color: colors.$color-primary !important;
-    color: colors.$color-surface !important;
-
-    &:hover,
-    &:focus,
-    &:active {
-        background-color: colors.$color-button !important;
-        border-color: colors.$color-button !important;
-        color: colors.$color-surface !important;
-    }
+    @include mixins.button-primary;
 }
 
 .btn-outline-primary {
+    @include mixins.button-primary;
+    background: transparent !important;
     color: colors.$color-primary !important;
-    border-color: colors.$color-primary !important;
+    border: 2px solid colors.$color-primary !important;
 
     &:hover,
     &:focus,
     &:active {
-        background-color: colors.$color-primary !important;
-        border-color: colors.$color-primary !important;
-        color: colors.$color-surface !important;
+        background: rgba(colors.$color-primary, 0.1) !important;
+        color: colors.$color-primary !important;
     }
 }
 
@@ -126,29 +122,30 @@ body {
     background: colors.$color-surface;
     box-shadow: none;
     border-radius: 0;
-    padding: 0px 24px;
+    padding: 0 vars.$spacing-xl;
     width: 100%;
 }
 
 .font-xs {
-    font-size: 12px;
+    font-size: vars.$font-size-xs;
 }
 .font-sm {
-    font-size: 14px;
+    font-size: vars.$font-size-sm;
 }
 .font-md {
-    font-size: 18px;
+    font-size: vars.$font-size-md;
 }
 .font-lg {
-    font-size: 20px;
+    font-size: vars.$font-size-lg;
 }
+
 .blogsphere-link {
     text-decoration: none;
     color: colors.$color-primary;
 
     &:hover {
         text-decoration: none !important;
-        font-weight: bold;
+        font-weight: vars.$font-weight-bold;
         color: colors.$color-accent-yellow;
     }
 }
@@ -165,7 +162,7 @@ height-10 {
     &--info,
     &--success,
     &--error {
-        border-radius: 15px !important;
+        border-radius: vars.$border-radius-md !important;
     }
 
     &--info {
@@ -193,55 +190,19 @@ height-10 {
 }
 
 .btn {
-    font-size: 14px !important;
-    padding: 10px 18px !important;
+    font-size: vars.$font-size-sm !important;
+    padding: vars.$spacing-sm vars.$spacing-lg !important;
     outline: none !important;
-    border: none !important;
-    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2) !important;
-    transition: box-shadow 0.1s ease;
+    box-shadow: vars.$shadow-sm;
+    transition: all vars.$transition-fast;
 
-    &:hover,
-    &:focus,
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: vars.$shadow-md;
+    }
+
     &:active {
-        outline: none !important;
-        border: none !important;
-    }
-
-    &:focus,
-    &:active {
-        box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2) !important; /* Remove shadow on click */
-    }
-
-    &-primary {
-        background: colors.$color-button !important;
-        color: colors.$color-surface !important;
-        border: none;
-    }
-
-    &-primary:hover,
-    &-primary:focus {
-        background: colors.$color-primary !important;
-        color: colors.$color-accent-yellow !important;
-    }
-
-    &-secondary {
-        background: colors.$color-accent-yellow !important;
-        color: colors.$color-surface !important;
-    }
-
-    &-success {
-        background: colors.$color-accent-yellow !important;
-        color: colors.$color-text-primary !important;
-    }
-
-    &-warning {
-        background: colors.$color-warning !important;
-        color: colors.$color-text-primary !important;
-    }
-
-    &-error {
-        background: colors.$color-error !important;
-        color: colors.$color-surface !important;
+        transform: translateY(0);
     }
 }
 
@@ -426,5 +387,33 @@ height-10 {
                 transform: translateY(-1px);
             }
         }
+    }
+}
+
+// AJAX Components
+.spinner {
+    @include mixins.spinner;
+}
+
+.message-container {
+    position: fixed;
+    top: vars.$spacing-lg;
+    right: vars.$spacing-lg;
+    z-index: vars.$z-index-tooltip;
+    max-width: 400px;
+    width: calc(100% - #{vars.$spacing-lg * 2});
+
+    .alert {
+        @include mixins.alert;
+        transform: translateY(-20px);
+        opacity: 0;
+        animation: slideIn 0.3s ease forwards;
+    }
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }

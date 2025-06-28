@@ -1,0 +1,101 @@
+@page
+@model IdentityService.Pages.Account.ForgotPassword.Index
+@{
+    ViewData["Title"] = "Forgot Password";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="forgot-password-container">
+    <!-- Left Section - Gradient Background with SVG Illustration -->
+    <div class="forgot-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+            
+            <!-- SVG Illustration -->
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="forgot-illustration">
+                    <!-- Background circles -->
+                    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+                    
+                    <!-- Envelope -->
+                    <g class="envelope-group" transform="translate(110, 90)">
+                        <!-- Envelope body -->
+                        <rect x="0" y="20" width="100" height="70" fill="rgba(255, 255, 255, 0.9)" rx="4"/>
+                        <!-- Envelope flap -->
+                        <path d="M0 20L50 0L100 20" fill="rgba(255, 255, 255, 0.7)" />
+                        <!-- Mail symbol -->
+                        <path d="M0 20L50 50L100 20" stroke="#0033cc" stroke-width="2" fill="none"/>
+                        <!-- Lock icon -->
+                        <circle cx="50" cy="55" r="10" fill="#0033cc"/>
+                        <rect x="46" y="52" width="8" height="10" rx="2" fill="white"/>
+                        <circle cx="50" cy="55" r="2" fill="#0033cc"/>
+                    </g>
+                    
+                    <!-- Floating elements -->
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)" />
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)" />
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)" />
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)" />
+                    
+                    <!-- Connection lines -->
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+            
+            <div class="feature-text">
+                <h3>Password Recovery</h3>
+                <p>Secure and simple password reset process with email verification.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section - Forgot Password Form -->
+    <div class="forgot-right-section">
+        <div class="form-container">
+            <div class="form-header">
+                <h2>Reset Your Password</h2>
+                <p>Enter your email address and we'll send you instructions to reset your password.</p>
+            </div>
+
+            <form method="post" class="forgot-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <input type="email" 
+                           class="form-control" 
+                           placeholder="Email*"
+                           asp-for="Input.Email" 
+                           autocomplete="email" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-continue">
+                        Send Reset Instructions
+                    </button>
+                </div>
+
+                <div class="form-links">
+                    <p class="back-link">
+                        <a asp-page="/Account/Login/Index" class="link-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                            Back to Login
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/forgotpassword.css" />
+}
