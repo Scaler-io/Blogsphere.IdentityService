@@ -5,8 +5,6 @@
     default: "Any CPU"
 
 steps:
-  - checkout: self
-
   - task: UseNode@1
     displayName: "Use Node.js"
     inputs:
