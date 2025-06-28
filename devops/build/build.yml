@@ -5,9 +5,6 @@
     default: "Any CPU"
 
 steps:
-  - checkout: self
-    persistCredentials: true
-
   - task: UseNode@1
     displayName: "Use Node.js"
     inputs:
