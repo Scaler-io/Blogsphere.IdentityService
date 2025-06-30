@@ -26,6 +26,11 @@ services:
       - AppConfigurations__ApplicationEnvironment=docker
       - ElasticSearch__Uri=http://elasticsearch:9200
       - "ConnectionStrings__Sqlserver=Server=identityDb;Database=IdentityDb;User Id=sa;Password=P@ssw0rd;Encrypt=True;TrustServerCertificate=True;"
+      - "EventBus__Host=rabbitmq"
+      - "EventBus__Username=guest"
+      - "EventBus__Password=guest"
+      - "EventBus__VirtualHost=/"
+      - "EventBus__Port=5672"
     ports:
       - "5000:8080"
     depends_on:
