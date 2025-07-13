@@ -140,10 +140,11 @@ public class SeedData
         if (context.Users.Any()) return; 
 
         var roles = GetAppRoles();
-        var adminUser = new ApplicationUser("sharthak123", "Sharthak", "Mallik", "sharthak@blogshepere.com");
-        var editorUser = new ApplicationUser("john123", "John", "Doe", "john@blogshepere.com");
-        var authorUser = new ApplicationUser("david100", "David", "Warn", "david@blogshepere.com");
-        var subscriberUser = new ApplicationUser("henry200", "Henry", "Matt", "henry@blogshepere.com");
+        // Updated to use email as username
+        var adminUser = new ApplicationUser("Sharthak", "Mallik", "sharthak@blogsphere.com");
+        var editorUser = new ApplicationUser("John", "Doe", "john@blogsphere.com");
+        var authorUser = new ApplicationUser("David", "Warn", "david@blogsphere.com");
+        var subscriberUser = new ApplicationUser("Henry", "Matt", "henry@blogsphere.com");
 
         adminUser.MarkEmailConfirmation();
         editorUser.MarkEmailConfirmation();

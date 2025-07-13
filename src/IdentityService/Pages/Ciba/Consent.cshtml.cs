@@ -14,28 +14,21 @@ namespace IdentityService.Pages.Ciba;
 
 [Authorize]
 [SecurityHeaders]
-public class Consent : PageModel
+public class Consent(
+    IBackchannelAuthenticationInteractionService interaction,
+    IEventService events,
+    ILogger<Consent> logger) : PageModel
 {
-    private readonly IBackchannelAuthenticationInteractionService _interaction;
-    private readonly IEventService _events;
-    private readonly ILogger<Consent> _logger;
-
-    public Consent(
-        IBackchannelAuthenticationInteractionService interaction,
-        IEventService events,
-        ILogger<Consent> logger)
-    {
-        _interaction = interaction;
-        _events = events;
-        _logger = logger;
-    }
+    private readonly IBackchannelAuthenticationInteractionService _interaction = interaction;
+    private readonly IEventService _events = events;
+    private readonly ILogger<Consent> _logger = logger;
 
     public ViewModel View { get; set; } = default!;
 
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
-    public async Task<IActionResult> OnGet(string? id)
+    public async Task<IActionResult> OnGet(string id)
     {
         if (!await SetViewModelAsync(id))
         {
@@ -50,10 +43,10 @@ public class Consent : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(string id)
     {
         // validate return url is still valid
-        var request = await _interaction.GetLoginRequestByInternalIdAsync(Input.Id ?? throw new ArgumentNullException(nameof(Input.Id)));
+        var request = await _interaction.GetLoginRequestByInternalIdAsync(id ?? throw new ArgumentNullException(nameof(id)));
         if (request == null || request.Subject.GetSubjectId() != User.GetSubjectId())
         {
             return RedirectToPage("/Home/Error/Index");
@@ -120,7 +113,7 @@ public class Consent : PageModel
         return Page();
     }
 
-    private async Task<bool> SetViewModelAsync(string? id)
+    private async Task<bool> SetViewModelAsync(string id)
     {
         ArgumentNullException.ThrowIfNull(id);
 

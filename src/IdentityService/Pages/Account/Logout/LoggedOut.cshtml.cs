@@ -9,18 +9,13 @@ namespace IdentityService.Pages.Logout;
 
 [SecurityHeaders]
 [AllowAnonymous]
-public class LoggedOut : PageModel
+public class LoggedOut(IIdentityServerInteractionService interactionService) : PageModel
 {
-    private readonly IIdentityServerInteractionService _interactionService;
+    private readonly IIdentityServerInteractionService _interactionService = interactionService;
 
     public LoggedOutViewModel View { get; set; } = default!;
 
-    public LoggedOut(IIdentityServerInteractionService interactionService)
-    {
-        _interactionService = interactionService;
-    }
-
-    public async Task OnGet(string? logoutId)
+    public async Task OnGet(string logoutId)
     {
         // get context information (client name, post logout redirect URI and iframe for federated signout)
         var logout = await _interactionService.GetLogoutContextAsync(logoutId);
@@ -28,9 +23,9 @@ public class LoggedOut : PageModel
         View = new LoggedOutViewModel
         {
             AutomaticRedirectAfterSignOut = LogoutOptions.AutomaticRedirectAfterSignOut,
-            PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
-            ClientName = String.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
-            SignOutIframeUrl = logout?.SignOutIFrameUrl
+            PostLogoutRedirectUri = logout?.PostLogoutRedirectUri ?? "/Account/Login",
+            ClientName = String.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId ?? "" : logout?.ClientName ?? "",
+            SignOutIframeUrl = logout?.SignOutIFrameUrl ?? ""
         };
     }
 }

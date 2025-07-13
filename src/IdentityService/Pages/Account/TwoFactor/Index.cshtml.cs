@@ -7,28 +7,31 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
+using IdentityService.Management.Entities;
+using IdentityService.Management.Models;
 
 namespace IdentityService.Pages.Account.TwoFactor;
 
 [SecurityHeaders]
 [AllowAnonymous]
-public class Index : PageModel
+public class Index(
+    ILogger logger,
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signInManager,
+    UserManager<ManagementUser> managementUserManager,
+    SignInManager<ManagementUser> managementSignInManager,
+    IEventService events,
+    IIdentityServerInteractionService interaction) : PageModel
 {
-    private readonly ILogger _logger;
-    private readonly IEventService _events;
-    private readonly IIdentityServerInteractionService _interaction;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ILogger _logger = logger;
+    private readonly IEventService _events = events;
+    private readonly IIdentityServerInteractionService _interaction = interaction;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
+    private readonly UserManager<ManagementUser> _managementUserManager = managementUserManager;
+    private readonly SignInManager<ManagementUser> _managementSignInManager = managementSignInManager;
 
     [BindProperty] public string Code { get; set; } = default!;
-    public Index(ILogger logger, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IEventService events, IIdentityServerInteractionService interaction)
-    {
-        _logger = logger;
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _events = events;
-        _interaction = interaction;
-    }
 
     public IActionResult OnGet()
     {
@@ -46,47 +49,86 @@ public class Index : PageModel
         var userEmail = TempData["2FA_UserEmail"] as string;
         var rememberMe = TempData["2FA_RemberMe"] as bool? ?? false;
         var returnUrl = TempData["2FA_ReturnUrl"] as string ?? "~/";
+        var userType = TempData["2FA_UserType"] as string ?? "blogsphere";
 
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
         if(string.IsNullOrEmpty(Code))
         {
             ModelState.AddModelError("Code", "Code is required");
-            SetTempData(userEmail, returnUrl, rememberMe);
+            SetTempData(userEmail, returnUrl, rememberMe, userType);
             return Page();
         }
 
-        var user = await _userManager.FindByEmailAsync(userEmail);
-        if (user == null)
+        if (userType == "management")
         {
-            ModelState.AddModelError(string.Empty, "Invalid user.");
-            SetTempData(userEmail, returnUrl, rememberMe);
-            return Page();
-        }
+            // Handle management user 2FA
+            var managementUser = await _managementUserManager.FindByEmailAsync(userEmail);
+            if (managementUser == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid user.");
+                SetTempData(userEmail, returnUrl, rememberMe, userType);
+                return Page();
+            }
 
-        var result = await _userManager.VerifyTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider, Code);
-        if(!result)
+            var result = await _managementUserManager.VerifyTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider, Code);
+            if(!result)
+            {
+                ModelState.AddModelError("Code", "The code is invalid");
+                Code = string.Empty;
+                SetTempData(userEmail, returnUrl, rememberMe, userType);
+                return Page();
+            }
+
+            await _managementSignInManager.SignInAsync(managementUser, rememberMe);
+            await _managementUserManager.RemoveAuthenticationTokenAsync(managementUser, "2Fa", "2FACode");
+            await _managementUserManager.RemoveAuthenticationTokenAsync(managementUser, "2Fa", "2FACodeExpiry");
+
+            await _events.RaiseAsync(new UserLoginSuccessEvent(managementUser.UserName, managementUser.Id, managementUser.FullName, clientId: context?.Client.ClientId));
+            Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
+            managementUser.SetLastLogin();
+            await _managementUserManager.UpdateAsync(managementUser);
+        }
+        else
         {
-            ModelState.AddModelError("Code", "The code is invalid");
-            Code = string.Empty;
-            SetTempData(userEmail, returnUrl, rememberMe);
-            return Page();
+            // Handle blogsphere user 2FA (existing logic)
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                ModelState.AddModelError(string.Empty, "Invalid user.");
+                SetTempData(userEmail, returnUrl, rememberMe, userType);
+                return Page();
+            }
+
+            var result = await _userManager.VerifyTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider, Code);
+            if(!result)
+            {
+                ModelState.AddModelError("Code", "The code is invalid");
+                Code = string.Empty;
+                SetTempData(userEmail, returnUrl, rememberMe, userType);
+                return Page();
+            }
+
+            await _signInManager.SignInAsync(user, rememberMe);
+            await _userManager.RemoveAuthenticationTokenAsync(user, "2Fa", "2FACode");
+            await _userManager.RemoveAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry");
+
+            await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.FullName, clientId: context?.Client.ClientId));
+            Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
+            user.SetLastLogin();
+            await _userManager.UpdateAsync(user);
         }
-
-        await _signInManager.SignInAsync(user, rememberMe);
-        await _userManager.RemoveAuthenticationTokenAsync(user, "2Fa", "2FACode");
-        await _userManager.RemoveAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry");
-
-        await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
-        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
 
         return Redirect(returnUrl);
     }
 
-    private void SetTempData(string userEmail, string returnUrl, bool rememberLogin)
+    private void SetTempData(string userEmail, string returnUrl, bool rememberLogin, string userType = "blogsphere")
     {
         TempData["2FA_UserEmail"] = userEmail;
         TempData["2FA_ReturnUrl"] = returnUrl;
         TempData["2FA_RemberMe"] = rememberLogin;
+        TempData["2FA_UserType"] = userType;
     }
 }
