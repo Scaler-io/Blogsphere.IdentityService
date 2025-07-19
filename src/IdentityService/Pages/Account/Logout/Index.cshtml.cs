@@ -23,7 +23,7 @@ public class Index : PageModel
     private readonly IEventService _events;
 
     [BindProperty]
-    public string? LogoutId { get; set; }
+    public string LogoutId { get; set; }
 
     public Index(SignInManager<ApplicationUser> signInManager, IIdentityServerInteractionService interaction, IEventService events)
     {
@@ -32,7 +32,7 @@ public class Index : PageModel
         _events = events;
     }
 
-    public async Task<IActionResult> OnGet(string? logoutId)
+    public async Task<IActionResult> OnGet(string logoutId)
     {
         LogoutId = logoutId;
 
@@ -70,7 +70,10 @@ public class Index : PageModel
             // if there's no current logout context, we need to create one
             // this captures necessary info from the current logged in user
             // this can still return null if there is no context needed
-            LogoutId ??= await _interaction.CreateLogoutContextAsync();
+            if (string.IsNullOrEmpty(LogoutId))
+            {
+                LogoutId = await _interaction.CreateLogoutContextAsync();
+            }
 
             // delete local authentication cookie
             await _signInManager.SignOutAsync();

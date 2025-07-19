@@ -12,54 +12,50 @@ using IdentityService.Entities;
 using IdentityService.Extensions;
 using IdentityService.Models;
 using IdentityService.Services;
+using IdentityService.Management.Entities;
+using IdentityService.Management.Models;
+using IdentityService.Management.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityService.Pages.Login;
+namespace IdentityService.Pages.Account.Login;
 
 [SecurityHeaders]
 [AllowAnonymous]
-public class Index : PageModel
+public class Index(
+    IIdentityServerInteractionService interaction,
+    IAuthenticationSchemeProvider schemeProvider,
+    IIdentityProviderStore identityProviderStore,
+    IEventService events,
+    UserManager<ApplicationUser> userManager,
+    SignInManager<ApplicationUser> signInManager,
+    UserManager<ManagementUser> managementUserManager,
+    SignInManager<ManagementUser> managementSignInManager,
+    ILogger logger,
+    IPublishService publishService,
+    IMultiUserStoreService multiUserStoreService) : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
-    private readonly IIdentityServerInteractionService _interaction;
-    private readonly IEventService _events;
-    private readonly IAuthenticationSchemeProvider _schemeProvider;
-    private readonly IIdentityProviderStore _identityProviderStore;
-    private readonly ILogger _logger;
-    private readonly IPublishService _publishService;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
+    private readonly UserManager<ManagementUser> _managementUserManager = managementUserManager;
+    private readonly SignInManager<ManagementUser> _managementSignInManager = managementSignInManager;
+    private readonly IIdentityServerInteractionService _interaction = interaction;
+    private readonly IEventService _events = events;
+    private readonly IAuthenticationSchemeProvider _schemeProvider = schemeProvider;
+    private readonly IIdentityProviderStore _identityProviderStore = identityProviderStore;
+    private readonly ILogger _logger = logger;
+    private readonly IPublishService _publishService = publishService;
+    private readonly IMultiUserStoreService _multiUserStoreService = multiUserStoreService;
 
     public ViewModel View { get; set; } = default!;
 
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
-    public Index(
-        IIdentityServerInteractionService interaction,
-        IAuthenticationSchemeProvider schemeProvider,
-        IIdentityProviderStore identityProviderStore,
-        IEventService events,
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager,
-        ILogger logger
-,
-        IPublishService publishService)
-    {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _interaction = interaction;
-        _schemeProvider = schemeProvider;
-        _identityProviderStore = identityProviderStore;
-        _events = events;
-        _logger = logger;
-        _publishService = publishService;
-    }
-
-    public async Task<IActionResult> OnGet(string? returnUrl)
+    public async Task<IActionResult> OnGet(string returnUrl)
     {
         if(User.IsAuthenticated()){
             return Redirect("~/");
@@ -124,34 +120,120 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var user = await _userManager.FindByNameAsync(Input.Username);
+            // Determine which user store to use based on the email (username)
+            var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(Input.Username);
             
-            if(user != null && await _userManager.CheckPasswordAsync(user, Input.Password))
+            if (userStore == ManagementConstants.ManagementUserStore)
             {
-                var code = await _userManager.GenerateTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider);
-
-                await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACode", code);
-                await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
-
-                // Send code via email
-                _logger.Here().Information("Sending 2FA code to {code}", code);
-                await _publishService.PublishAsync(new AuthCodeSent
+                // Use proper ASP.NET Core Identity authentication for management users
+                var managementUser = await _managementUserManager.FindByNameAsync(Input.Username);
+                if (managementUser != null)
                 {
-                    Email = user.Email,
-                    Code = code                   
-                }, Guid.NewGuid().ToString());
-
-                TempData["2FA_UserEmail"] = user.Email;
-                TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
-                TempData["2FA_RemberMe"] = Input.RememberLogin;
-
-                return RedirectToPage("../TwoFactor/Index");
+                    var result = await _managementSignInManager.PasswordSignInAsync(managementUser, Input.Password, Input.RememberLogin, lockoutOnFailure: false);
+                    
+                    if (result.Succeeded)
+                    {
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(managementUser.UserName, managementUser.Id, managementUser.FullName, clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+                        
+                        // Management users also get 2FA
+                        var code = await _managementUserManager.GenerateTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider);
+                        
+                        await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACode", code);
+                        await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
+                        
+                        // Send code via email
+                        _logger.Here().Information("Sending 2FA code to management user {code}", code);
+                        await _publishService.PublishAsync(new AuthCodeSent
+                        {
+                            Email = managementUser.Email,
+                            Code = code                   
+                        }, Guid.NewGuid().ToString());
+                        
+                        TempData["2FA_UserEmail"] = managementUser.Email;
+                        TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
+                        TempData["2FA_RemberMe"] = Input.RememberLogin;
+                        TempData["2FA_UserType"] = "management";
+                        
+                        return RedirectToPage("../TwoFactor/Index");
+                    }
+                    else if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("../TwoFactor/Index", new { ReturnUrl = Input.ReturnUrl, RememberMe = Input.RememberLogin });
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return RedirectToPage("../Lockout/Index");
+                    }
+                    else
+                    {
+                        await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "invalid credentials");
+                        ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
+                    }
+                }
+                else
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                    Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "invalid credentials");
+                    ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
+                }
             }
+            else
+            {
+                // Use proper ASP.NET Core Identity authentication for blogsphere users (default)
+                var blogsphereUser = await _userManager.FindByNameAsync(Input.Username);
+                if (blogsphereUser != null)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(blogsphereUser, Input.Password, Input.RememberLogin, lockoutOnFailure: false);
+                    
+                    if (result.Succeeded)
+                    {
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(blogsphereUser.UserName, blogsphereUser.Id, blogsphereUser.FullName, clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+                        
+                        var code = await _userManager.GenerateTwoFactorTokenAsync(blogsphereUser, Constants.CustomTwoFactorTokenProvider);
 
-            const string error = "invalid credentials";
-            await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, error, clientId: context?.Client.ClientId));
-            Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
-            ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
+                        await _userManager.SetAuthenticationTokenAsync(blogsphereUser, "2Fa", "2FACode", code);
+                        await _userManager.SetAuthenticationTokenAsync(blogsphereUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
+
+                        // Send code via email
+                        _logger.Here().Information("Sending 2FA code to {code}", code);
+                        await _publishService.PublishAsync(new AuthCodeSent
+                        {
+                            Email = blogsphereUser.Email,
+                            Code = code                   
+                        }, Guid.NewGuid().ToString());
+
+                        TempData["2FA_UserEmail"] = blogsphereUser.Email;
+                        TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
+                        TempData["2FA_RemberMe"] = Input.RememberLogin;
+                        TempData["2FA_UserType"] = "blogsphere";
+
+                        return RedirectToPage("../TwoFactor/Index");
+                    }
+                    else if (result.RequiresTwoFactor)
+                    {
+                        return RedirectToPage("../TwoFactor/Index", new { ReturnUrl = Input.ReturnUrl, RememberMe = Input.RememberLogin });
+                    }
+                    else if (result.IsLockedOut)
+                    {
+                        return RedirectToPage("../Lockout/Index");
+                    }
+                    else
+                    {
+                        await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "invalid credentials");
+                        ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
+                    }
+                }
+                else
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "invalid credentials", clientId: context?.Client.ClientId));
+                    Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "invalid credentials");
+                    ModelState.AddModelError("Input.Username", LoginOptions.InvalidCredentialsErrorMessage);
+                }
+            }
         }
 
 
@@ -169,7 +251,7 @@ public class Index : PageModel
         return Page();
     }
 
-    private async Task BuildModelAsync(string? returnUrl)
+    private async Task BuildModelAsync(string returnUrl)
     {
         // Preserve existing Input if we have validation errors
         if (Input == null || ModelState.IsValid)
@@ -207,7 +289,7 @@ public class Index : PageModel
 
             if (!local)
             {
-                View.ExternalProviders = new[] { new ViewModel.ExternalProvider(authenticationScheme: context.IdP) };
+                View.ExternalProviders = [new ViewModel.ExternalProvider(authenticationScheme: context.IdP)];
             }
 
             return;
@@ -252,7 +334,7 @@ public class Index : PageModel
         };
     }
 
-    private async Task BuildViewModelAsync(string? returnUrl)
+    private async Task BuildViewModelAsync(string returnUrl)
     {
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
         

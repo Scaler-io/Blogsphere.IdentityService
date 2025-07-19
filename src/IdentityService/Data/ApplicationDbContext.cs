@@ -5,13 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace IdentityService.Data;
 
-public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser>(options)
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);

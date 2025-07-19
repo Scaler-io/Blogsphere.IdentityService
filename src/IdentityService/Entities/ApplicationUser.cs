@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using IdentityService.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IdentityService.Entities;
 
@@ -6,16 +7,18 @@ public class ApplicationUser : IdentityUser
 {
     public ApplicationUser()
     {
-
+        Id = IdGenerator.NewId();
     }
 
-    public ApplicationUser(
-        string username, string firstName, string lastname, string email)
+    public ApplicationUser(string firstName, string lastname, string email)
     {
-        UserName = username;
+        Id = IdGenerator.NewId();
+        UserName = email; // Use email as username
         FirstName = firstName;
         Lastname = lastname;
         Email = email;
+        NormalizedUserName = email.ToUpper();
+        NormalizedEmail = email.ToUpper();
     }
 
     public string FirstName { get; set; }
@@ -69,4 +72,9 @@ public class ApplicationUser : IdentityUser
     public void MarkEmailConfirmation() => EmailConfirmed = true;
     public void MarkPhoneConfirmation() => PhoneNumberConfirmed = true;
     public void UpdateActiveStatus(bool status = true) => IsActive = status;
+    
+    /// <summary>
+    /// Gets the full name of the user
+    /// </summary>
+    public string FullName => $"{FirstName} {Lastname}".Trim();
 }

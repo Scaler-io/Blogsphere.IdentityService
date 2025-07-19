@@ -11,10 +11,10 @@ namespace IdentityService.Pages.EmailVerification;
 
 [SecurityHeaders]
 [AllowAnonymous]
-public class Index : PageModel
+public class Index(UserManager<ApplicationUser> userManager, ILogger logger) : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ILogger _logger;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly ILogger _logger = logger;
 
     [BindProperty]
     public bool EmailVerificationCompleted { get; set; }
@@ -24,13 +24,6 @@ public class Index : PageModel
     public string FailureMessage { get; set; }
     [BindProperty]
     public string UserEmail { get; set; }
-
-
-    public Index(UserManager<ApplicationUser> userManager, ILogger logger)
-    {
-        _userManager = userManager;
-        _logger = logger;
-    }
 
     public async Task<IActionResult> OnGetAsync([FromQuery] string userId, [FromQuery] string token)
     {

@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using IdentityService.Entities;
+using IdentityService.Management.Entities;
+using IdentityService.Management.Models;
+using IdentityService.Management.Services;
+using IdentityService.Models;
 using System.ComponentModel.DataAnnotations;
 using IdentityService.Extensions;
 using IdentityService.Services;
@@ -16,11 +20,18 @@ namespace IdentityService.Pages.Account.ForgotPassword;
 [SecurityHeaders]
 [AllowAnonymous]
 [ValidateAntiForgeryToken]
-public class Index : PageModel
+public class Index(
+    ILogger logger,
+    UserManager<ApplicationUser> userManager,
+    UserManager<ManagementUser> managementUserManager,
+    IMultiUserStoreService multiUserStoreService,
+    IPublishService publishService) : PageModel
 {
-    private readonly ILogger _logger;
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IPublishService _publishService;
+    private readonly ILogger _logger = logger;
+    private readonly UserManager<ApplicationUser> _userManager = userManager;
+    private readonly UserManager<ManagementUser> _managementUserManager = managementUserManager;
+    private readonly IMultiUserStoreService _multiUserStoreService = multiUserStoreService;
+    private readonly IPublishService _publishService = publishService;
 
     public class InputModel
     {
@@ -34,17 +45,6 @@ public class Index : PageModel
 
     [TempData]
     public string StatusMessage { get; set; }
-
-
-    public Index(
-        ILogger logger,
-        UserManager<ApplicationUser> userManager,
-        IPublishService publishService)
-    {
-        _logger = logger;
-        _userManager = userManager;
-        _publishService = publishService;
-    }
 
     public IActionResult OnGet()
     {
@@ -73,39 +73,97 @@ public class Index : PageModel
 
             var email = Input.Email.Trim().ToLowerInvariant();
             
-            // Find user by email
-            var user = await _userManager.FindByEmailAsync(email);
+            // Determine which user store to use based on email
+            var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
             
-            if (user == null || !await _userManager.IsEmailConfirmedAsync(user))
+            // Add detailed logging for debugging
+            _logger.Here().Information("=== FORGOT PASSWORD DEBUG === Email: {Email}, UserStore: {UserStore}", email, userStore);
+            
+            if (userStore == ManagementConstants.ManagementUserStore)
             {
-                // Don't reveal that the user does not exist or is not confirmed
-                _logger.Here().Warning("Password reset attempted for invalid email: {Email}", email);
-                return HandleError("Please enter a valid email address");
+                _logger.Here().Information("Processing as MANAGEMENT USER for email: {Email}", email);
+                // Handle ManagementUser password reset
+                var managementUser = await _managementUserManager.FindByEmailAsync(email);
+                
+                if (managementUser != null && await _managementUserManager.IsEmailConfirmedAsync(managementUser))
+                {
+                    // Check if user is locked out
+                    if (!await _managementUserManager.IsLockedOutAsync(managementUser))
+                    {
+                        // Generate password reset token using the specific token provider
+                        var code = await _managementUserManager.GenerateUserTokenAsync(
+                            managementUser, 
+                            ManagementConstants.ManagementPasswordResetTokenProvider, 
+                            UserManager<ManagementUser>.ResetPasswordTokenPurpose);
+                        
+                        await _publishService.PublishAsync<PasswordResetInstructionSent>(new()
+                        {
+                            Email = email,
+                        }, Guid.NewGuid().ToString(), new
+                        {
+                            Token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)),
+                            UserType = "management"
+                        });
+                        
+                        _logger.Here().Information("Password reset token generated for management user: {Email}", email);
+                    }
+                    else
+                    {
+                        _logger.Here().Warning("Password reset attempted for locked out management account: {Email}", email);
+                    }
+                }
+                else
+                {
+                    // User doesn't exist or email not confirmed - log but don't reveal this info
+                    _logger.Here().Warning("Password reset attempted for invalid or unconfirmed management email: {Email}", email);
+                }
             }
-
-            // Check if user is locked out
-            if (await _userManager.IsLockedOutAsync(user))
+            else
             {
-                // Don't reveal the lockout to potential attackers
-                _logger.Here().Warning("Password reset attempted for locked out account: {Email}", email);
-                return HandleError("Please enter a valid email address");
+                _logger.Here().Information("Processing as APPLICATION USER for email: {Email}", email);
+                // Handle ApplicationUser password reset
+                var user = await _userManager.FindByEmailAsync(email);
+                
+                if (user != null && await _userManager.IsEmailConfirmedAsync(user))
+                {
+                    // Check if user is locked out
+                    if (!await _userManager.IsLockedOutAsync(user))
+                    {
+                        // Generate password reset token using the specific token provider
+                        var code = await _userManager.GenerateUserTokenAsync(
+                            user, 
+                            Constants.CustomPasswordResetTokenProvider, 
+                            UserManager<ApplicationUser>.ResetPasswordTokenPurpose);
+                        
+                        await _publishService.PublishAsync<PasswordResetInstructionSent>(new()
+                        {
+                            Email = email,
+                        }, Guid.NewGuid().ToString(), new
+                        {
+                            Token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)),
+                            UserType = "blogsphere"
+                        });
+                        
+                        _logger.Here().Information("Password reset token generated for blogsphere user: {Email}", email);
+                    }
+                    else
+                    {
+                        _logger.Here().Warning("Password reset attempted for locked out account: {Email}", email);
+                    }
+                }
+                else
+                {
+                    // User doesn't exist or email not confirmed - log but don't reveal this info
+                    _logger.Here().Warning("Password reset attempted for invalid or unconfirmed email: {Email}", email);
+                }
             }
-
-            // Generate password reset token and publish for notification
-            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            await _publishService.PublishAsync<PasswordResetInstructionSent>(new()
-            {
-                Email = email,
-            }, Guid.NewGuid().ToString(), new
-            {
-                Token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code))
-            });
           
+            // Always redirect to status page for security (don't reveal if user exists or not)
             return RedirectToPage("/Account/ForgotPassword/Status");
         }
         catch (Exception ex)
         {
-            _logger.Here().Error(ex, "Error in password reset for {Email}", Input?.Email);
+            _logger.Here().Error(ex, "Error in password reset for \"{Email}\"", Input?.Email);
             return HandleError("An error occurred while processing your request. Please try again later.");
         }
     }

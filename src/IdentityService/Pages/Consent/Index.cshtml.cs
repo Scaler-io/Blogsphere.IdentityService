@@ -15,28 +15,21 @@ namespace IdentityService.Pages.Consent;
 
 [Authorize]
 [SecurityHeaders]
-public class Index : PageModel
+public class Index(
+    IIdentityServerInteractionService interaction,
+    IEventService events,
+    ILogger<Index> logger) : PageModel
 {
-    private readonly IIdentityServerInteractionService _interaction;
-    private readonly IEventService _events;
-    private readonly ILogger<Index> _logger;
-
-    public Index(
-        IIdentityServerInteractionService interaction,
-        IEventService events,
-        ILogger<Index> logger)
-    {
-        _interaction = interaction;
-        _events = events;
-        _logger = logger;
-    }
+    private readonly IIdentityServerInteractionService _interaction = interaction;
+    private readonly IEventService _events = events;
+    private readonly ILogger<Index> _logger = logger;
 
     public ViewModel View { get; set; } = default!;
 
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
-    public async Task<IActionResult> OnGet(string? returnUrl)
+    public async Task<IActionResult> OnGet(string returnUrl)
     {
         if (!await SetViewModelAsync(returnUrl))
         {
@@ -51,7 +44,7 @@ public class Index : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(string returnUrl)
     {
         // validate return url is still valid
         var request = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
@@ -129,7 +122,7 @@ public class Index : PageModel
         return Page();
     }
 
-    private async Task<bool> SetViewModelAsync(string? returnUrl)
+    private async Task<bool> SetViewModelAsync(string returnUrl)
     {
         ArgumentNullException.ThrowIfNull(returnUrl);
 

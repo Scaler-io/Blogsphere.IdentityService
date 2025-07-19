@@ -1,15 +1,11 @@
-﻿namespace IdentityService.Entities;
+﻿using IdentityService.Models;
 
-public class ApplicationPermission
+namespace IdentityService.Entities;
+
+public class ApplicationPermission(string name)
 {
-    public ApplicationPermission(string name)
-    {
-        Id = Guid.NewGuid().ToString();
-        Name = name;
-    }
-
-    public string Id { get; private init; }
-    public string Name { get; set; }
+    public string Id { get; private init; } = IdGenerator.NewId("PERM");
+    public string Name { get; set; } = name;
 
     public ICollection<ApplicationRolePermission> RolePermissions { get; set; } = [];
 }

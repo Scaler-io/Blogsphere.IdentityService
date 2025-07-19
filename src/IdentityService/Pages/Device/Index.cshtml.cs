@@ -17,31 +17,23 @@ namespace IdentityService.Pages.Device;
 
 [SecurityHeaders]
 [Authorize]
-public class Index : PageModel
+public class Index(
+    IDeviceFlowInteractionService interaction,
+    IEventService eventService,
+    IOptions<IdentityServerOptions> options,
+    ILogger<Index> logger) : PageModel
 {
-    private readonly IDeviceFlowInteractionService _interaction;
-    private readonly IEventService _events;
-    private readonly IOptions<IdentityServerOptions> _options;
-    private readonly ILogger<Index> _logger;
-
-    public Index(
-        IDeviceFlowInteractionService interaction,
-        IEventService eventService,
-        IOptions<IdentityServerOptions> options,
-        ILogger<Index> logger)
-    {
-        _interaction = interaction;
-        _events = eventService;
-        _options = options;
-        _logger = logger;
-    }
+    private readonly IDeviceFlowInteractionService _interaction = interaction;
+    private readonly IEventService _events = eventService;
+    private readonly IOptions<IdentityServerOptions> _options = options;
+    private readonly ILogger<Index> _logger = logger;
 
     public ViewModel View { get; set; } = default!;
 
     [BindProperty]
     public InputModel Input { get; set; } = default!;
 
-    public async Task<IActionResult> OnGet(string? userCode)
+    public async Task<IActionResult> OnGet(string userCode)
     {
         if (String.IsNullOrWhiteSpace(userCode))
         {
@@ -62,9 +54,9 @@ public class Index : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPost()
+    public async Task<IActionResult> OnPost(string userCode)
     {
-        var request = await _interaction.GetAuthorizationContextAsync(Input.UserCode ?? throw new ArgumentNullException(nameof(Input.UserCode)));
+        var request = await _interaction.GetAuthorizationContextAsync(userCode);
         if (request == null) return RedirectToPage("/Home/Error/Index");
 
         ConsentResponse? grantedConsent = null;
