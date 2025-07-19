@@ -58,19 +58,16 @@ internal static class HostingExtensions
         
         // Main Application Database
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString)
-                   .LogTo(System.Console.WriteLine, LogLevel.Information));
+            options.UseSqlServer(connectionString));
 
         // Management Database with separate schema
         builder.Services.AddDbContext<ManagementDbContext>(options =>
             options.UseSqlServer(connectionString, 
-                sqlOptions => sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Management"))
-                   .LogTo(System.Console.WriteLine, LogLevel.Information));
+                sqlOptions => sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Management")));
 
         // Data Protection Database
         builder.Services.AddDbContext<DataProtectionKeyContext>(options =>
-            options.UseSqlServer(connectionString)
-                   .LogTo(System.Console.WriteLine, LogLevel.Information));
+            options.UseSqlServer(connectionString));
     }
 
     private static void ConfigureDataProtection(WebApplicationBuilder builder)
@@ -194,7 +191,7 @@ internal static class HostingExtensions
         // Management services
         builder.Services.AddScoped<IdentityService.Management.Services.IMultiUserStoreService, 
             IdentityService.Management.Services.MultiUserStoreService>();
-        builder.Services.AddScoped<IdentityService.Management.Services.ManagementProfileService>();
+        // builder.Services.AddScoped<IdentityService.Management.Services.ManagementProfileService>();
         
         // Authentication services
         builder.Services.AddScoped<IApplicationUserAuthenticationService, ApplicationUserAuthenticationService>();

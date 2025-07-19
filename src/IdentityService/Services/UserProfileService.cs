@@ -137,36 +137,68 @@ public class UserProfileService(
 
         var claims = new List<Claim>
         {
+            new("sub", user.Id),
             new("user_type", "management"),
             new("roles", JsonConvert.SerializeObject(roles)),
-            new("permissions", JsonConvert.SerializeObject(permissions))
+            new("permissions", JsonConvert.SerializeObject(permissions)),
+            new("employee_id", user.EmployeeId ?? string.Empty),
         };
 
-        // Add existing claims
+        // Always include standard profile claims from user properties
+        claims.Add(new Claim(JwtClaimTypes.Name, user.FullName));
+        claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
+        claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
+        claims.Add(new Claim(JwtClaimTypes.Email, user.Email ?? string.Empty));
+
+        // Add any additional existing claims that are not already included
         if (existingClaims != null)
         {
-            var givenNameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName);
-            if (givenNameClaim != null)
-                context.IssuedClaims.Add(givenNameClaim);
-                
-            var familyNameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName);
-            if (familyNameClaim != null)
-                context.IssuedClaims.Add(familyNameClaim);
-                
-            var nameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name);
-            if (nameClaim != null)
-                context.IssuedClaims.Add(nameClaim);
-                
-            var emailClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
-            if (emailClaim != null)
-                context.IssuedClaims.Add(emailClaim);
+            foreach (var existingClaim in existingClaims)
+            {
+                // Only add if not already present in our claims list
+                if (!claims.Any(c => c.Type == existingClaim.Type))
+                {
+                    claims.Add(existingClaim);
+                }
+            }
         }
 
         context.IssuedClaims.AddRange(claims);
     }
 
-    public Task IsActiveAsync(IsActiveContext context)
+    public async Task IsActiveAsync(IsActiveContext context)
     {
-        return Task.CompletedTask;
+        try
+        {
+            // Get the user's email from the subject
+            var email = context.Subject.FindFirst(ClaimTypes.Email)?.Value ?? 
+                       context.Subject.FindFirst(JwtClaimTypes.Email)?.Value;
+            
+            if (string.IsNullOrEmpty(email))
+            {
+                _logger.Here().Warning("No email found in subject claims for IsActive check");
+                context.IsActive = false;
+                return;
+            }
+
+            // Determine which user store to use based on email
+            var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
+
+            if (userStore == ManagementConstants.ManagementUserStore)
+            {
+                var managementUser = await _managementUserManager.FindByEmailAsync(email);
+                context.IsActive = managementUser?.IsActive == true;
+            }
+            else
+            {
+                var applicationUser = await _applicationUserManager.FindByEmailAsync(email);
+                context.IsActive = applicationUser != null;
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Here().Error(ex, "Error checking if user is active");
+            context.IsActive = false;
+        }
     }
 }

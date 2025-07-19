@@ -4,6 +4,7 @@ public enum ManagementRoles
 {
     SuperAdmin,
     Admin,
+    SystemAdmin,
     Manager,
     Moderator,
     Analyst,
