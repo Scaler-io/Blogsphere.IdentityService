@@ -20,6 +20,40 @@ public class LoggerConstants
     public const string CorrelationId = "CorrelationId";
 }
 
+/// <summary>
+/// Utility class for generating uniform IDs across all user types and entities
+/// </summary>
+public static class IdGenerator
+{
+    /// <summary>
+    /// Generates a new GUID-based ID for any entity
+    /// </summary>
+    /// <returns>A new GUID string</returns>
+    public static string NewId() => Guid.NewGuid().ToString();
+
+    /// <summary>
+    /// Generates a new ID with a specific prefix for better identification
+    /// </summary>
+    /// <param name="prefix">Prefix to add to the ID (e.g., "USER", "ROLE", "PERM")</param>
+    /// <returns>A prefixed GUID string</returns>
+    public static string NewId(string prefix) => $"{prefix}_{Guid.NewGuid():N}";
+
+    /// <summary>
+    /// Generates a short ID for entities that don't need full GUID length
+    /// </summary>
+    /// <returns>A short 8-character ID</returns>
+    public static string NewShortId() => Guid.NewGuid().ToString("N")[..8].ToUpper();
+
+    /// <summary>
+    /// Generates a user-friendly ID for management users
+    /// </summary>
+    /// <param name="department">Department code (e.g., "IT", "HR", "SALES")</param>
+    /// <param name="role">Role abbreviation (e.g., "ADM", "MGR", "SUP")</param>
+    /// <returns>A formatted user ID</returns>
+    public static string NewManagementUserId(string department, string role) 
+        => $"{department}{role}{DateTime.UtcNow:yyMMdd}{NewShortId()[..4]}";
+}
+
 public static class RolePermissionMap
 {
     public static List<ApplicationPermission> AdminPermissions =

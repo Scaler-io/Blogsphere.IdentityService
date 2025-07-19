@@ -65,7 +65,7 @@ public static class Telemetry
         /// <summary>
         /// Meter for the IdentityServer host project
         /// </summary>
-        private static readonly Meter Meter = new Meter(ServiceName, ServiceVersion);
+        private static readonly Meter Meter = new(ServiceName, ServiceVersion);
 
         private static Counter<long> ConsentCounter = Meter.CreateCounter<long>(Counters.Consent);
 
@@ -110,7 +110,7 @@ public static class Telemetry
         /// Helper method to increase the <see cref="Counters.GrantsRevoked"/> counter.
         /// </summary>
         /// <param name="clientId">Client id to revoke for, or null for all.</param>
-        public static void GrantsRevoked(string? clientId)
+        public static void GrantsRevoked(string clientId)
             => GrantsRevokedCounter.Add(1, tag: new(Tags.Client, clientId));
 
         private static Counter<long> UserLoginCounter = Meter.CreateCounter<long>(Counters.UserLogin);
@@ -119,7 +119,7 @@ public static class Telemetry
         /// Helper method to increase <see cref="Counters.UserLogin"/> counter.
         /// </summary>
         /// <param name="clientId">Client Id, if available</param>
-        public static void UserLogin(string? clientId, string idp)
+        public static void UserLogin(string clientId, string idp)
             => UserLoginCounter.Add(1, new(Tags.Client, clientId), new(Tags.Idp, idp));
 
         /// <summary>
@@ -127,7 +127,7 @@ public static class Telemetry
         /// </summary>
         /// <param name="clientId">Client Id, if available</param>
         /// <param name="error">Error message</param>
-        public static void UserLoginFailure(string? clientId, string idp, string error)
+        public static void UserLoginFailure(string clientId, string idp, string error)
             => UserLoginCounter.Add(1, new(Tags.Client, clientId), new(Tags.Idp, idp), new(Tags.Error, error));
 
         private static Counter<long> UserLogoutCounter = Meter.CreateCounter<long>(Counters.UserLogout);
@@ -136,7 +136,7 @@ public static class Telemetry
         /// Helper method to increase the <see cref="Counters.UserLogout"/> counter.
         /// </summary>
         /// <param name="idp">Idp/authentication scheme for external authentication, or "local" for built in.</param>
-        public static void UserLogout(string? idp)
+        public static void UserLogout(string idp)
             => UserLogoutCounter.Add(1, tag: new(Tags.Idp, idp));
     }
 }
