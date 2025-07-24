@@ -73,8 +73,8 @@ public static class Config
             ClientId = "blogsphere-management",
             ClientName = "Blogsphere Management Application",
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = { "https://localhost:5001/signin-oidc", "http://localhost:3000/signin-oidc" },
-            PostLogoutRedirectUris = { "https://localhost:5001/signout-callback-oidc", "http://localhost:3000/" },
+            RedirectUris = { "http://localhost:4200" },
+            PostLogoutRedirectUris = { "http://localhost:4200" },
             ClientSecrets = { new Secret("management-secret-key-2024".Sha256()) },
             AllowedScopes =
             {
@@ -85,16 +85,13 @@ public static class Config
                 "apigateway:write",
                 "apigateway:delete"
             },
-            RequireClientSecret = true,
+            RequireClientSecret = false,
             RequirePkce = true,
             AccessTokenType = AccessTokenType.Jwt,
             AllowOfflineAccess = true,
-            AccessTokenLifetime = 3600, // 1 hour
-            RefreshTokenUsage = TokenUsage.ReUse,
-            RefreshTokenExpiration = TokenExpiration.Sliding,
-            SlidingRefreshTokenLifetime = 7200, // 2 hours
-            RequireConsent = false,
-            AlwaysIncludeUserClaimsInIdToken = true
+            AccessTokenLifetime = 3600*24*7,
+            AuthorizationCodeLifetime = 3600*24, //
+            AlwaysIncludeUserClaimsInIdToken = true,
         },
     ];
 }
