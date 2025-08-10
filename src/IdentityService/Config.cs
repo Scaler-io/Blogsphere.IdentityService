@@ -93,5 +93,19 @@ public static class Config
             AuthorizationCodeLifetime = 3600*24, //
             AlwaysIncludeUserClaimsInIdToken = true,
         },
+        new()
+        {
+            ClientId = "blogshere.apigateway.api",
+            ClientName = "Blogsphere API Gateway",
+            ClientSecrets = { new Secret("apigateway-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes =
+            {
+                "apigateway:read"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
+        }
     ];
 }
