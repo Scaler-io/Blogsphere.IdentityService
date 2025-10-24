@@ -154,11 +154,13 @@ public class UserProfileService(
 
         var existingClaims = await _managementUserManager.GetClaimsAsync(user);
 
+        var isSuperAdmin = userRoles.Contains(ManagementConstants.SuperAdminRole);
+        var isAdmin = userRoles.Contains(ManagementConstants.AdminRole);
         var claims = new List<Claim>
         {
             new("sub", user.Id),
             new("user_type", "management"),
-            new("permissions", JsonConvert.SerializeObject(permissions)),
+            new("permissions", isSuperAdmin || isAdmin ? "*" :JsonConvert.SerializeObject(permissions)),
         };
 
         if (existingClaims != null)

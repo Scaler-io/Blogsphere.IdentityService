@@ -15,6 +15,8 @@ public static class Config
         new("apigateway:read"),
         new("apigateway:write"),
         new("apigateway:delete"),
+        new("userapi:read"),
+        new("userapi:write"),
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
@@ -25,6 +27,14 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+            }
+        },
+        new("blogsphere.user.api", "Blogsphere User API")
+        {
+            Scopes =
+            {
+                "userapi:read",
+                "userapi:write",
             }
         }
     ];
@@ -45,6 +55,8 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+                "userapi:read",
+                "userapi:write",
             },
             RequireClientSecret = true,
             AccessTokenType = AccessTokenType.Jwt,
@@ -79,18 +91,27 @@ public static class Config
             AllowedScopes =
             {
                 "openid",
-                "profile",
+                "profile", 
                 "email",
                 "apigateway:read",
-                "apigateway:write",
-                "apigateway:delete"
+                "apigateway:write", 
+                "apigateway:delete",
+                "offline_access"  // ← CRITICAL: Add this
             },
             RequireClientSecret = false,
             RequirePkce = true,
             AccessTokenType = AccessTokenType.Jwt,
-            AllowOfflineAccess = true,
-            AccessTokenLifetime = 3600*24*7,
-            AuthorizationCodeLifetime = 3600*24, //
+            AllowOfflineAccess = true,          
+            // Token lifetimes
+            AccessTokenLifetime = 3600 * 24 * 7,        // 7 days
+            IdentityTokenLifetime = 3600,                // 1 hour 
+            AuthorizationCodeLifetime = 300,             // 5 minutes
+            
+            // Refresh token settings
+            RefreshTokenUsage = TokenUsage.ReUse,
+            RefreshTokenExpiration = TokenExpiration.Sliding,
+            SlidingRefreshTokenLifetime = 3600 * 24 * 30, // 30 days
+            
             AlwaysIncludeUserClaimsInIdToken = true,
         },
         new()

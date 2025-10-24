@@ -49,17 +49,6 @@
 	  </Using>
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Content Update="keys\is-signing-key-710439A836765E191FB971B7860B0D8B.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Update="keys\key-4438b778-723b-4f2a-83bc-e47746fd30f6.xml">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-	</ItemGroup>
 
 	<!-- SCSS Compilation Targets -->
 	<ItemGroup>
