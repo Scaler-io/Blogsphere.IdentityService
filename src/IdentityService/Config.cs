@@ -15,6 +15,8 @@ public static class Config
         new("apigateway:read"),
         new("apigateway:write"),
         new("apigateway:delete"),
+        new("userapi:read"),
+        new("userapi:write"),
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
@@ -25,6 +27,14 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+            }
+        },
+        new("blogsphere.user.api", "Blogsphere User API")
+        {
+            Scopes =
+            {
+                "userapi:read",
+                "userapi:write",
             }
         }
     ];
@@ -45,6 +55,8 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+                "userapi:read",
+                "userapi:write",
             },
             RequireClientSecret = true,
             AccessTokenType = AccessTokenType.Jwt,
@@ -73,28 +85,48 @@ public static class Config
             ClientId = "blogsphere-management",
             ClientName = "Blogsphere Management Application",
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = { "https://localhost:5001/signin-oidc", "http://localhost:3000/signin-oidc" },
-            PostLogoutRedirectUris = { "https://localhost:5001/signout-callback-oidc", "http://localhost:3000/" },
+            RedirectUris = { "http://localhost:4200" },
+            PostLogoutRedirectUris = { "http://localhost:4200" },
             ClientSecrets = { new Secret("management-secret-key-2024".Sha256()) },
             AllowedScopes =
             {
                 "openid",
-                "profile",
+                "profile", 
                 "email",
                 "apigateway:read",
-                "apigateway:write",
-                "apigateway:delete"
+                "apigateway:write", 
+                "apigateway:delete",
+                "offline_access"  // ← CRITICAL: Add this
             },
-            RequireClientSecret = true,
+            RequireClientSecret = false,
             RequirePkce = true,
             AccessTokenType = AccessTokenType.Jwt,
-            AllowOfflineAccess = true,
-            AccessTokenLifetime = 3600, // 1 hour
+            AllowOfflineAccess = true,          
+            // Token lifetimes
+            AccessTokenLifetime = 3600 * 24 * 7,        // 7 days
+            IdentityTokenLifetime = 3600,                // 1 hour 
+            AuthorizationCodeLifetime = 300,             // 5 minutes
+            
+            // Refresh token settings
             RefreshTokenUsage = TokenUsage.ReUse,
             RefreshTokenExpiration = TokenExpiration.Sliding,
-            SlidingRefreshTokenLifetime = 7200, // 2 hours
-            RequireConsent = false,
-            AlwaysIncludeUserClaimsInIdToken = true
+            SlidingRefreshTokenLifetime = 3600 * 24 * 30, // 30 days
+            
+            AlwaysIncludeUserClaimsInIdToken = true,
         },
+        new()
+        {
+            ClientId = "blogshere.apigateway.api",
+            ClientName = "Blogsphere API Gateway",
+            ClientSecrets = { new Secret("apigateway-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes =
+            {
+                "apigateway:read"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
+        }
     ];
 }
