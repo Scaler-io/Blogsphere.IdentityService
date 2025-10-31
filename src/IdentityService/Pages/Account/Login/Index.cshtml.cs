@@ -123,6 +123,26 @@ public class Index(
             // Determine which user store to use based on the email (username)
             var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(Input.Username);
             
+            // Validate if the user type is allowed for this client
+            if (context?.Client?.ClientId != null)
+            {
+                var expectedUserStore = await _multiUserStoreService.DetermineUserStoreAsync(context.Client.ClientId);
+                if (userStore != expectedUserStore)
+                {
+                    await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "user type not allowed for client", clientId: context.Client.ClientId));
+                    Telemetry.Metrics.UserLoginFailure(context.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "user type not allowed for client");
+                    
+                    var clientRequiresManagement = expectedUserStore == ManagementConstants.ManagementUserStore;
+                    var errorMessage = clientRequiresManagement 
+                        ? "This application is restricted to management users only. Please use a management account to login."
+                        : "This application is not available for management users. Please use a regular user account.";
+                    
+                    ModelState.AddModelError("Input.Username", errorMessage);
+                    await BuildViewModelAsync(Input.ReturnUrl);
+                    return Page();
+                }
+            }
+            
             if (userStore == ManagementConstants.ManagementUserStore)
             {
                 // Use proper ASP.NET Core Identity authentication for management users

@@ -74,7 +74,8 @@ internal static class HostingExtensions
     {
         builder.Services.AddDataProtection()
             .PersistKeysToDbContext<DataProtectionKeyContext>()
-            .SetApplicationName("blogsphere");
+            .SetApplicationName("blogsphere")
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(90)); // Keys valid for 90 days
     }
 
     private static void ConfigureApplicationUserIdentity(WebApplicationBuilder builder)
@@ -130,7 +131,7 @@ internal static class HostingExtensions
             options.Password.RequireLowercase = true;
             
             // Token provider configuration
-            options.Tokens.EmailConfirmationTokenProvider = ManagementConstants.ManagementEmailTokenProvider;
+            options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             options.Tokens.PasswordResetTokenProvider = ManagementConstants.ManagementPasswordResetTokenProvider;
             
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
@@ -165,7 +166,10 @@ internal static class HostingExtensions
 
             // Resource configuration
             options.EmitStaticAudienceClaim = true;
-            options.Discovery.CustomEntries.Add("jwks_uri", "https://localhost:5000/.well-known/jwks");
+            
+            // Key management configuration for containerized environments
+            options.KeyManagement.Enabled = true;
+            options.KeyManagement.RotationInterval = TimeSpan.FromDays(30);
         })
         .AddInMemoryIdentityResources(Config.IdentityResources)
         .AddInMemoryApiScopes(Config.ApiScopes)
@@ -173,7 +177,7 @@ internal static class HostingExtensions
         .AddInMemoryClients(Config.Clients)
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
-        .AddDeveloperSigningCredential();
+        .AddDeveloperSigningCredential(persistKey: false); // Don't persist file-based keys
 
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();
