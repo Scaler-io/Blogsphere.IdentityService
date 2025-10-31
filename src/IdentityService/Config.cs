@@ -127,6 +127,20 @@ public static class Config
             AccessTokenType = AccessTokenType.Jwt,
             AccessTokenLifetime = 3600*60,
             AlwaysIncludeUserClaimsInIdToken = false,
+        },
+        new()
+        {
+            ClientId = "blogshere.user.api",
+            ClientName = "Blogsphere User API",
+            ClientSecrets = { new Secret("user-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes =
+            {
+                "userapi:read"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
         }
     ];
 }
