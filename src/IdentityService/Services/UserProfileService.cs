@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer.Extensions;
+using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using IdentityModel;
 using IdentityService.Entities;
@@ -32,130 +33,140 @@ public class UserProfileService(
     {
         try
         {
-            // Get the user's email from the subject
-            var email = context.Subject.FindFirst(ClaimTypes.Email)?.Value;
-            if (string.IsNullOrEmpty(email))
+            var subjectId = context.Subject.GetSubjectId();
+            _logger.Here().Information("Getting profile data for subject ID: {SubjectId}", subjectId);
+
+            if (string.IsNullOrEmpty(subjectId))
             {
-                _logger.Here().Warning("No email found in subject claims");
+                _logger.Here().Warning("Subject ID is null or empty");
                 return;
             }
 
-            // Determine which user store to use based on email
-            var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
-            _logger.Here().Information("Determined user store {UserStore} for email {Email}", userStore, email);
+            
+            var managementUser = await _managementUserManager.FindByIdAsync(subjectId);
+            if (managementUser != null)
+            {
+                _logger.Here().Information("Found ManagementUser {UserId} for profile data", managementUser.Id);
+                await GetManagementUserProfileDataAsync(context, managementUser);
+                return;
+            }
 
-            if (userStore == ManagementConstants.ManagementUserStore)
+            var applicationUser = await _applicationUserManager.FindByIdAsync(subjectId);
+            if (applicationUser != null)
             {
-                await GetManagementUserProfileDataAsync(context, email);
+                _logger.Here().Information("Found ApplicationUser {UserId} for profile data", applicationUser.Id);
+                await GetApplicationUserProfileDataAsync(context, applicationUser);
+                return;
             }
-            else
+
+            var email = context.Subject.FindFirst(ClaimTypes.Email)?.Value;
+            if (!string.IsNullOrEmpty(email))
             {
-                await GetApplicationUserProfileDataAsync(context, email);
+                _logger.Here().Information("Falling back to email-based lookup for profile data: {Email}", email);
+                
+                var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
+                _logger.Here().Information("Determined user store {UserStore} for email {Email}", userStore, email);
+
+                if (userStore == ManagementConstants.ManagementUserStore)
+                {
+                    managementUser = await _managementUserManager.FindByEmailAsync(email);
+                    if (managementUser != null)
+                    {
+                        await GetManagementUserProfileDataAsync(context, managementUser);
+                        return;
+                    }
+                }
+                else
+                {
+                    applicationUser = await _applicationUserManager.FindByEmailAsync(email);
+                    if (applicationUser != null)
+                    {
+                        await GetApplicationUserProfileDataAsync(context, applicationUser);
+                        return;
+                    }
+                }
             }
+
+            _logger.Here().Warning("User not found for subject ID: {SubjectId}, email: {Email}", subjectId, email ?? "null");
         }
         catch (Exception ex)
         {
-            _logger.Here().Error(ex, "Error getting profile data");
+            _logger.Here().Error(ex, "Error getting profile data for subject: {SubjectId}", context.Subject.GetSubjectId());
         }
     }
 
-    private async Task GetApplicationUserProfileDataAsync(ProfileDataRequestContext context, string email)
+    private async Task GetApplicationUserProfileDataAsync(ProfileDataRequestContext context, ApplicationUser user)
     {
-        var user = await _applicationUserManager.FindByEmailAsync(email);
         if (user == null)
         {
-            _logger.Here().Warning("ApplicationUser not found for email {Email}", email);
+            _logger.Here().Warning("ApplicationUser is null");
             return;
         }
 
         var roles = await _applicationUserManager.GetRolesAsync(user);
-        var permissions = new List<string>();
-
-        foreach (var roleName in roles)
-        {
-            var rolePermissions = await _applicationRoleManager.Roles
-                .Where(r => r.Name == roleName)
-                .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission.Name))
-                .ToListAsync();
-            permissions.AddRange(rolePermissions);
-        }
+        var permissions = await _applicationRoleManager.Roles
+            .Where(r => roles.Contains(r.Name))
+            .SelectMany(r => r.RolePermissions)
+            .Select(rp => rp.Permission.Name)
+            .Distinct()
+            .ToListAsync();
 
         var existingClaims = await _applicationUserManager.GetClaimsAsync(user);
 
         var claims = new List<Claim>
         {
+            new("sub", user.Id),
             new("user_type", "application"),
             new("roles", JsonConvert.SerializeObject(roles)),
             new("permissions", JsonConvert.SerializeObject(permissions))
         };
 
-        // Add existing claims
         if (existingClaims != null)
         {
-            var givenNameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.GivenName);
-            if (givenNameClaim != null)
-                context.IssuedClaims.Add(givenNameClaim);
-                
-            var familyNameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.FamilyName);
-            if (familyNameClaim != null)
-                context.IssuedClaims.Add(familyNameClaim);
-                
-            var nameClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Name);
-            if (nameClaim != null)
-                context.IssuedClaims.Add(nameClaim);
-                
-            var emailClaim = existingClaims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email);
-            if (emailClaim != null)
-                context.IssuedClaims.Add(emailClaim);
+            foreach (var existingClaim in existingClaims)
+            {
+                if (!claims.Any(c => c.Type == existingClaim.Type))
+                {
+                    claims.Add(existingClaim);
+                }
+            }
         }
 
         context.IssuedClaims.AddRange(claims);
     }
 
-    private async Task GetManagementUserProfileDataAsync(ProfileDataRequestContext context, string email)
+    private async Task GetManagementUserProfileDataAsync(ProfileDataRequestContext context, ManagementUser user)
     {
-        var user = await _managementUserManager.FindByEmailAsync(email);
         if (user == null)
         {
-            _logger.Here().Warning("ManagementUser not found for email {Email}", email);
+            _logger.Here().Warning("ManagementUser is null");
             return;
         }
 
-        var roles = await _managementUserManager.GetRolesAsync(user);
-        var permissions = new List<string>();
-
-        foreach (var roleName in roles)
-        {
-            var rolePermissions = await _managementRoleManager.Roles
-                .Where(r => r.Name == roleName)
-                .SelectMany(r => r.RolePermissions.Select(rp => rp.Permission.Name))
-                .ToListAsync();
-            permissions.AddRange(rolePermissions);
-        }
+        var userRoles = await _managementUserManager.GetRolesAsync(user);
+        
+        var permissions = await _managementRoleManager.Roles
+            .Where(r => userRoles.Contains(r.Name))
+            .SelectMany(r => r.RolePermissions)
+            .Select(rp => rp.Permission.Name)
+            .Distinct()
+            .ToListAsync();
 
         var existingClaims = await _managementUserManager.GetClaimsAsync(user);
 
+        var isSuperAdmin = userRoles.Contains(ManagementConstants.SuperAdminRole);
+        var isAdmin = userRoles.Contains(ManagementConstants.AdminRole);
         var claims = new List<Claim>
         {
             new("sub", user.Id),
             new("user_type", "management"),
-            new("roles", JsonConvert.SerializeObject(roles)),
-            new("permissions", JsonConvert.SerializeObject(permissions)),
-            new("employee_id", user.EmployeeId ?? string.Empty),
+            new("permissions", isSuperAdmin || isAdmin ? "*" :JsonConvert.SerializeObject(permissions)),
         };
 
-        // Always include standard profile claims from user properties
-        claims.Add(new Claim(JwtClaimTypes.Name, user.FullName));
-        claims.Add(new Claim(JwtClaimTypes.GivenName, user.FirstName));
-        claims.Add(new Claim(JwtClaimTypes.FamilyName, user.LastName));
-        claims.Add(new Claim(JwtClaimTypes.Email, user.Email ?? string.Empty));
-
-        // Add any additional existing claims that are not already included
         if (existingClaims != null)
         {
             foreach (var existingClaim in existingClaims)
             {
-                // Only add if not already present in our claims list
                 if (!claims.Any(c => c.Type == existingClaim.Type))
                 {
                     claims.Add(existingClaim);
@@ -170,34 +181,70 @@ public class UserProfileService(
     {
         try
         {
-            // Get the user's email from the subject
-            var email = context.Subject.FindFirst(ClaimTypes.Email)?.Value ?? 
-                       context.Subject.FindFirst(JwtClaimTypes.Email)?.Value;
-            
-            if (string.IsNullOrEmpty(email))
+            var subjectId = context.Subject.GetSubjectId();
+            _logger.Here().Information("Checking if user is active for subject ID: {SubjectId}", subjectId);
+
+            if (string.IsNullOrEmpty(subjectId))
             {
-                _logger.Here().Warning("No email found in subject claims for IsActive check");
+                _logger.Here().Warning("Subject ID is null or empty");
                 context.IsActive = false;
                 return;
             }
 
-            // Determine which user store to use based on email
-            var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
+            var managementUser = await _managementUserManager.FindByIdAsync(subjectId);
+            if (managementUser != null)
+            {
+                _logger.Here().Information("Found ManagementUser {UserId}, IsActive: {IsActive}", managementUser.Id, managementUser.IsActive);
+                context.IsActive = managementUser.IsActive;
+                return;
+            }
 
-            if (userStore == ManagementConstants.ManagementUserStore)
+            var applicationUser = await _applicationUserManager.FindByIdAsync(subjectId);
+            if (applicationUser != null)
             {
-                var managementUser = await _managementUserManager.FindByEmailAsync(email);
-                context.IsActive = managementUser?.IsActive == true;
+                _logger.Here().Information("Found ApplicationUser {UserId}, setting as active", applicationUser.Id);
+                context.IsActive = true;
+                return;
             }
-            else
+
+            var email = context.Subject.FindFirst(ClaimTypes.Email)?.Value ?? 
+                       context.Subject.FindFirst(JwtClaimTypes.Email)?.Value;
+            
+            if (!string.IsNullOrEmpty(email))
             {
-                var applicationUser = await _applicationUserManager.FindByEmailAsync(email);
-                context.IsActive = applicationUser != null;
+                _logger.Here().Information("Falling back to email-based lookup for: {Email}", email);
+
+                var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(email);
+                _logger.Here().Information("Determined user store: {UserStore} for email: {Email}", userStore, email);
+
+                if (userStore == ManagementConstants.ManagementUserStore)
+                {
+                    managementUser = await _managementUserManager.FindByEmailAsync(email);
+                    if (managementUser != null)
+                    {
+                        _logger.Here().Information("Found ManagementUser by email {Email}, IsActive: {IsActive}", email, managementUser.IsActive);
+                        context.IsActive = managementUser.IsActive;
+                        return;
+                    }
+                }
+                else
+                {
+                    applicationUser = await _applicationUserManager.FindByEmailAsync(email);
+                    if (applicationUser != null)
+                    {
+                        _logger.Here().Information("Found ApplicationUser by email {Email}, setting as active", email);
+                        context.IsActive = true;
+                        return;
+                    }
+                }
             }
+
+            _logger.Here().Warning("User not found for subject ID: {SubjectId}, email: {Email}", subjectId, email ?? "null");
+            context.IsActive = false;
         }
         catch (Exception ex)
         {
-            _logger.Here().Error(ex, "Error checking if user is active");
+            _logger.Here().Error(ex, "Error checking if user is active for subject: {SubjectId}", context.Subject.GetSubjectId());
             context.IsActive = false;
         }
     }
