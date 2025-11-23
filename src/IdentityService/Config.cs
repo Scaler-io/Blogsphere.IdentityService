@@ -116,7 +116,7 @@ public static class Config
         },
         new()
         {
-            ClientId = "blogshere.apigateway.api",
+            ClientId = "blogsphere.apigateway.api",
             ClientName = "Blogsphere API Gateway",
             ClientSecrets = { new Secret("apigateway-secret-key-2024".Sha256()) },
             AllowedGrantTypes = GrantTypes.ClientCredentials,
