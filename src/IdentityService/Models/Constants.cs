@@ -72,12 +72,6 @@ public static class RolePermissionMap
         new("comment:approve"),  // Approve comments
         new("comment:delete"),   // Delete comments
 
-        // User Management Permissions
-        new("user:create"),
-        new("user:read"),        // View user details
-        new("user:update"),      // Update user details (including roles)
-        new("user:delete"),      // Delete users
-
         // Category & Tag Management
         new("category:create"),
         new("category:read"),
