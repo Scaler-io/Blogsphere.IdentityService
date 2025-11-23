@@ -147,6 +147,19 @@ public class Index(
             {
                 // Use proper ASP.NET Core Identity authentication for management users
                 var managementUser = await _managementUserManager.FindByNameAsync(Input.Username);
+                if(managementUser != null && !await _managementUserManager.IsEmailConfirmedAsync(managementUser))
+                {
+                    ModelState.AddModelError("Input.Username", "Email is not confirmed. Please confirm your email to login.");
+                    await BuildViewModelAsync(Input.ReturnUrl);
+                    return Page();
+                }
+                if(managementUser != null && !managementUser.IsActive)
+                {
+                    ModelState.AddModelError("Input.Username", "Your account is not active. Please contact your administrator to activate your account.");
+                    await BuildViewModelAsync(Input.ReturnUrl);
+                    return Page();
+                }
+
                 if (managementUser != null)
                 {
                     var result = await _managementSignInManager.PasswordSignInAsync(managementUser, Input.Password, Input.RememberLogin, lockoutOnFailure: false);

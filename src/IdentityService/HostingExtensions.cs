@@ -177,6 +177,7 @@ internal static class HostingExtensions
         .AddInMemoryClients(Config.Clients)
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
+        .AddExtensionGrantValidator<DelegationGrantValidator>()
         .AddDeveloperSigningCredential(persistKey: false); // Don't persist file-based keys
 
         // Register the custom resource owner password validator

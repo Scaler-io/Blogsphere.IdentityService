@@ -20,7 +20,7 @@ public static class Config
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
-        new("blogsphere.api.gateway", "Blogsphere API Gateway")
+        new("blogsphere.apigateway.api", "Blogsphere API Gateway")
         {
             Scopes =
             {
@@ -141,6 +141,14 @@ public static class Config
             AccessTokenType = AccessTokenType.Jwt,
             AccessTokenLifetime = 3600*60,
             AlwaysIncludeUserClaimsInIdToken = false,
+        },
+        new()
+        {
+            ClientId = "blogsphere.bff.api",
+            ClientName = "Blogsphere BFF API",
+            ClientSecrets = { new Secret("bff-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = { "delegation", GrantType.ClientCredentials },
+            AllowedScopes = { "apigateway:read", "userapi:read" }
         }
     ];
 }
