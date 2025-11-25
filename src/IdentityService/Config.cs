@@ -17,6 +17,7 @@ public static class Config
         new("apigateway:delete"),
         new("userapi:read"),
         new("userapi:write"),
+        new("bffapi.manage")
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
@@ -35,6 +36,13 @@ public static class Config
             {
                 "userapi:read",
                 "userapi:write",
+            }
+        },
+        new("blogsphere.webapp.bff.api", "Blogsphere Bff API")
+        {
+            Scopes = 
+            {
+                "bffapi.manage"
             }
         }
     ];
@@ -57,6 +65,7 @@ public static class Config
                 "apigateway:delete",
                 "userapi:read",
                 "userapi:write",
+                "bffapi.manage"
             },
             RequireClientSecret = true,
             AccessTokenType = AccessTokenType.Jwt,
