@@ -12,11 +12,6 @@ public class ApplicationUserEntityConfiguration : IEntityTypeConfiguration<Appli
 
         builder.HasIndex(u => u.UserName).IsUnique();
 
-        builder.HasMany(u => u.UserRoles)
-            .WithOne(ur => ur.User)
-            .HasForeignKey(fk => fk.UserId)
-            .IsRequired();
-
         builder.OwnsOne(u => u.Image, image =>
         {
             image.Property(i => i.HasData)
