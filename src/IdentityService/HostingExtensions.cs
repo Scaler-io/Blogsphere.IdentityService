@@ -167,9 +167,8 @@ internal static class HostingExtensions
             // Resource configuration
             options.EmitStaticAudienceClaim = true;
             
-            // Key management configuration for containerized environments
-            options.KeyManagement.Enabled = true;
-            options.KeyManagement.RotationInterval = TimeSpan.FromDays(30);
+            // Disable automatic key management (requires license, using developer credential instead)
+            options.KeyManagement.Enabled = false;
         })
         .AddInMemoryIdentityResources(Config.IdentityResources)
         .AddInMemoryApiScopes(Config.ApiScopes)
@@ -178,7 +177,7 @@ internal static class HostingExtensions
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
         .AddExtensionGrantValidator<DelegationGrantValidator>()
-        .AddDeveloperSigningCredential(persistKey: false); // Don't persist file-based keys
+        .AddDeveloperSigningCredential(persistKey: true); // Don't persist file-based keys
 
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();

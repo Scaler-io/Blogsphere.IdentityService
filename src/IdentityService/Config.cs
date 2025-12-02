@@ -17,7 +17,7 @@ public static class Config
         new("apigateway:delete"),
         new("userapi:read"),
         new("userapi:write"),
-        new("bffapi.manage")
+        new("bffapi:manage")
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
@@ -42,7 +42,7 @@ public static class Config
         {
             Scopes = 
             {
-                "bffapi.manage"
+                "bffapi:manage"
             }
         }
     ];
@@ -65,7 +65,7 @@ public static class Config
                 "apigateway:delete",
                 "userapi:read",
                 "userapi:write",
-                "bffapi.manage"
+                "bffapi:manage"
             },
             RequireClientSecret = true,
             AccessTokenType = AccessTokenType.Jwt,
@@ -153,11 +153,14 @@ public static class Config
         },
         new()
         {
-            ClientId = "blogsphere.bff.api",
+            ClientId = "blogsphere.webapp.bff.api",
             ClientName = "Blogsphere BFF API",
             ClientSecrets = { new Secret("bff-secret-key-2024".Sha256()) },
             AllowedGrantTypes = { "delegation", GrantType.ClientCredentials },
-            AllowedScopes = { "apigateway:read", "userapi:read" }
+            AllowedScopes = { "bffapi:manage" },
+            AccessTokenType = AccessTokenType.Jwt,  
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
         }
     ];
 }
