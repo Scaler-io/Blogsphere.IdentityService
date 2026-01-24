@@ -40,7 +40,7 @@ public static class Config
         },
         new("blogsphere.webapp.bff.api", "Blogsphere Bff API")
         {
-            Scopes = 
+            Scopes =
             {
                 "bffapi:manage"
             }
@@ -67,8 +67,10 @@ public static class Config
                 "userapi:write",
                 "bffapi:manage"
             },
+            AccessTokenLifetime = 3600,
+            AlwaysIncludeUserClaimsInIdToken = false, // Don't include user claims in the id token
             RequireClientSecret = true,
-            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenType = AccessTokenType.Jwt, // Use JWT for the access token
         },
         new()
         {
@@ -100,10 +102,10 @@ public static class Config
             AllowedScopes =
             {
                 "openid",
-                "profile", 
+                "profile",
                 "email",
                 "apigateway:read",
-                "apigateway:write", 
+                "apigateway:write",
                 "apigateway:delete",
                 "offline_access"  // ← CRITICAL: Add this
             },
@@ -154,13 +156,18 @@ public static class Config
         new()
         {
             ClientId = "blogsphere.webapp.bff.api",
-            ClientName = "Blogsphere BFF API",
+            ClientName = "Blogsphere Bff API",
             ClientSecrets = { new Secret("bff-secret-key-2024".Sha256()) },
-            AllowedGrantTypes = { "delegation", GrantType.ClientCredentials },
-            AllowedScopes = { "bffapi:manage" },
-            AccessTokenType = AccessTokenType.Jwt,  
+            AllowedGrantTypes = { "delegation", GrantType.ClientCredentials},
+            AllowedScopes =
+            {
+                "userapi:read",
+                "apigateway:read",
+                "bffapi:manage"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
             AccessTokenLifetime = 3600*60,
-            AlwaysIncludeUserClaimsInIdToken = false,
+            AlwaysIncludeUserClaimsInIdToken = true,
         }
     ];
 }

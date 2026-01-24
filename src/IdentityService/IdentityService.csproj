@@ -54,6 +54,11 @@
 	<ItemGroup>
 		<Watch Include="wwwroot/css/**/*.scss" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Update="signing-key.pfx">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 
 	<Target Name="CompileSass" BeforeTargets="Build">
 		<Message Text="Compiling SCSS files..." Importance="high" />

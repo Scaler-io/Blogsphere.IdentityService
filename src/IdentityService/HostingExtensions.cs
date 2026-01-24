@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Serilog;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IdentityService;
 
@@ -156,6 +157,14 @@ internal static class HostingExtensions
 
     private static void ConfigureIdentityServer(WebApplicationBuilder builder)
     {
+        var cert = new X509Certificate2(
+            Path.Combine(builder.Environment.ContentRootPath, "signing-key.pfx"),
+            "Admin@123",
+            X509KeyStorageFlags.PersistKeySet |
+            X509KeyStorageFlags.MachineKeySet |
+            X509KeyStorageFlags.Exportable
+        );
+        
         builder.Services.AddIdentityServer(options =>
         {
             // Event configuration
@@ -177,7 +186,7 @@ internal static class HostingExtensions
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
         .AddExtensionGrantValidator<DelegationGrantValidator>()
-        .AddDeveloperSigningCredential(persistKey: true); // Don't persist file-based keys
+        .AddSigningCredential(cert);
 
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();
