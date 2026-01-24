@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Serilog;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IdentityService;
 
@@ -74,7 +75,8 @@ internal static class HostingExtensions
     {
         builder.Services.AddDataProtection()
             .PersistKeysToDbContext<DataProtectionKeyContext>()
-            .SetApplicationName("blogsphere");
+            .SetApplicationName("blogsphere")
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(90)); // Keys valid for 90 days
     }
 
     private static void ConfigureApplicationUserIdentity(WebApplicationBuilder builder)
@@ -130,7 +132,7 @@ internal static class HostingExtensions
             options.Password.RequireLowercase = true;
             
             // Token provider configuration
-            options.Tokens.EmailConfirmationTokenProvider = ManagementConstants.ManagementEmailTokenProvider;
+            options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             options.Tokens.PasswordResetTokenProvider = ManagementConstants.ManagementPasswordResetTokenProvider;
             
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
@@ -155,6 +157,14 @@ internal static class HostingExtensions
 
     private static void ConfigureIdentityServer(WebApplicationBuilder builder)
     {
+        var cert = new X509Certificate2(
+            Path.Combine(builder.Environment.ContentRootPath, "signing-key.pfx"),
+            "Admin@123",
+            X509KeyStorageFlags.PersistKeySet |
+            X509KeyStorageFlags.MachineKeySet |
+            X509KeyStorageFlags.Exportable
+        );
+        
         builder.Services.AddIdentityServer(options =>
         {
             // Event configuration
@@ -165,7 +175,9 @@ internal static class HostingExtensions
 
             // Resource configuration
             options.EmitStaticAudienceClaim = true;
-            options.Discovery.CustomEntries.Add("jwks_uri", "https://localhost:5000/.well-known/jwks");
+            
+            // Disable automatic key management (requires license, using developer credential instead)
+            options.KeyManagement.Enabled = false;
         })
         .AddInMemoryIdentityResources(Config.IdentityResources)
         .AddInMemoryApiScopes(Config.ApiScopes)
@@ -173,7 +185,8 @@ internal static class HostingExtensions
         .AddInMemoryClients(Config.Clients)
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
-        .AddDeveloperSigningCredential();
+        .AddExtensionGrantValidator<DelegationGrantValidator>()
+        .AddSigningCredential(cert);
 
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();

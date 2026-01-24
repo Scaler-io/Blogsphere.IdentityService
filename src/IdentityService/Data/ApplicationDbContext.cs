@@ -10,12 +10,16 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationPermissionEntityConfiguration).Assembly);
+        builder.ApplyConfiguration(new ApplicationUserEntityConfiguration());
+        builder.ApplyConfiguration(new ApplicationRoleEntityConfiguration());
+        builder.ApplyConfiguration(new ApplicationUserRoleEntityConfiguration());
+        builder.ApplyConfiguration(new ApplicationPermissionEntityConfiguration());
+
         builder.Entity<ApplicationRolePermission>()
             .HasKey(ck => new { ck.RoleId, ck.PermissionId });
 
         builder.Owned<ProfileDetails>();
-        builder.Owned<ImageDetails>();
+        builder.Owned<ImageDetails>();  
     }
 
     // permission sets
