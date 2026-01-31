@@ -56,14 +56,14 @@ internal static class HostingExtensions
     private static void ConfigureDatabaseContexts(WebApplicationBuilder builder)
     {
         var connectionString = builder.Configuration.GetConnectionString("Sqlserver");
-        
+
         // Main Application Database
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
         // Management Database with separate schema
         builder.Services.AddDbContext<ManagementDbContext>(options =>
-            options.UseSqlServer(connectionString, 
+            options.UseSqlServer(connectionString,
                 sqlOptions => sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Management")));
 
         // Data Protection Database
@@ -86,20 +86,20 @@ internal static class HostingExtensions
         {
             // Sign-in requirements
             options.SignIn.RequireConfirmedEmail = true;
-            
+
             // Password requirements
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
-            
+
             // Token provider configuration
             options.Tokens.EmailConfirmationTokenProvider = Constants.CustomEmailTokenProvider;
             options.Tokens.PasswordResetTokenProvider = Constants.CustomPasswordResetTokenProvider;
-            
+
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
-            options.Tokens.ProviderMap[Constants.CustomPasswordResetTokenProvider] = 
+            options.Tokens.ProviderMap[Constants.CustomPasswordResetTokenProvider] =
                 new TokenProviderDescriptor(typeof(PasswordResetTokenProvider<ApplicationUser>));
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -111,7 +111,7 @@ internal static class HostingExtensions
         // Configure ApplicationUser token provider options
         builder.Services.Configure<PasswordResetTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
-        
+
         builder.Services.Configure<EmailConfirmationTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
     }
@@ -123,20 +123,20 @@ internal static class HostingExtensions
         {
             // Sign-in requirements
             options.SignIn.RequireConfirmedEmail = true;
-            
+
             // Password requirements
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
-            
+
             // Token provider configuration
             options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             options.Tokens.PasswordResetTokenProvider = ManagementConstants.ManagementPasswordResetTokenProvider;
-            
+
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
-            options.Tokens.ProviderMap[ManagementConstants.ManagementPasswordResetTokenProvider] = 
+            options.Tokens.ProviderMap[ManagementConstants.ManagementPasswordResetTokenProvider] =
                 new TokenProviderDescriptor(typeof(ManagementPasswordResetTokenProvider<ManagementUser>));
         })
         .AddRoles<ManagementRole>()
@@ -150,7 +150,7 @@ internal static class HostingExtensions
         // Configure ManagementUser token provider options
         builder.Services.Configure<ManagementPasswordResetTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
-        
+
         builder.Services.Configure<ManagementEmailConfirmationTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
     }
@@ -164,10 +164,13 @@ internal static class HostingExtensions
             X509KeyStorageFlags.MachineKeySet |
             X509KeyStorageFlags.Exportable
         );
-        
+
+
+
         builder.Services.AddIdentityServer(options =>
         {
             // Event configuration
+            options.IssuerUri = "http://localhost:5000";
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;
             options.Events.RaiseFailureEvents = true;
@@ -175,7 +178,7 @@ internal static class HostingExtensions
 
             // Resource configuration
             options.EmitStaticAudienceClaim = true;
-            
+
             // Disable automatic key management (requires license, using developer credential instead)
             options.KeyManagement.Enabled = false;
         })
@@ -200,12 +203,12 @@ internal static class HostingExtensions
     {
         // Core application services
         builder.Services.AddScoped<IPublishService, PublishService>();
-        
+
         // Management services
-        builder.Services.AddScoped<IdentityService.Management.Services.IMultiUserStoreService, 
+        builder.Services.AddScoped<IdentityService.Management.Services.IMultiUserStoreService,
             IdentityService.Management.Services.MultiUserStoreService>();
         // builder.Services.AddScoped<IdentityService.Management.Services.ManagementProfileService>();
-        
+
         // Authentication services
         builder.Services.AddScoped<IApplicationUserAuthenticationService, ApplicationUserAuthenticationService>();
         builder.Services.AddScoped<IManagementUserAuthenticationService, ManagementUserAuthenticationService>();

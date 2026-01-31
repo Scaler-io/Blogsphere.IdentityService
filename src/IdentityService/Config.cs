@@ -107,6 +107,7 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+                "bffapi:manage",
                 "offline_access"  // ← CRITICAL: Add this
             },
             RequireClientSecret = false,
