@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Serilog;
+using System.Security.Cryptography.X509Certificates;
 
 namespace IdentityService;
 
@@ -55,14 +56,14 @@ internal static class HostingExtensions
     private static void ConfigureDatabaseContexts(WebApplicationBuilder builder)
     {
         var connectionString = builder.Configuration.GetConnectionString("Sqlserver");
-        
+
         // Main Application Database
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(connectionString));
 
         // Management Database with separate schema
         builder.Services.AddDbContext<ManagementDbContext>(options =>
-            options.UseSqlServer(connectionString, 
+            options.UseSqlServer(connectionString,
                 sqlOptions => sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "Management")));
 
         // Data Protection Database
@@ -74,7 +75,8 @@ internal static class HostingExtensions
     {
         builder.Services.AddDataProtection()
             .PersistKeysToDbContext<DataProtectionKeyContext>()
-            .SetApplicationName("blogsphere");
+            .SetApplicationName("blogsphere")
+            .SetDefaultKeyLifetime(TimeSpan.FromDays(90)); // Keys valid for 90 days
     }
 
     private static void ConfigureApplicationUserIdentity(WebApplicationBuilder builder)
@@ -84,20 +86,20 @@ internal static class HostingExtensions
         {
             // Sign-in requirements
             options.SignIn.RequireConfirmedEmail = true;
-            
+
             // Password requirements
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
-            
+
             // Token provider configuration
             options.Tokens.EmailConfirmationTokenProvider = Constants.CustomEmailTokenProvider;
             options.Tokens.PasswordResetTokenProvider = Constants.CustomPasswordResetTokenProvider;
-            
+
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
-            options.Tokens.ProviderMap[Constants.CustomPasswordResetTokenProvider] = 
+            options.Tokens.ProviderMap[Constants.CustomPasswordResetTokenProvider] =
                 new TokenProviderDescriptor(typeof(PasswordResetTokenProvider<ApplicationUser>));
         })
         .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -109,7 +111,7 @@ internal static class HostingExtensions
         // Configure ApplicationUser token provider options
         builder.Services.Configure<PasswordResetTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
-        
+
         builder.Services.Configure<EmailConfirmationTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
     }
@@ -121,20 +123,20 @@ internal static class HostingExtensions
         {
             // Sign-in requirements
             options.SignIn.RequireConfirmedEmail = true;
-            
+
             // Password requirements
             options.Password.RequireDigit = true;
             options.Password.RequiredLength = 8;
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
             options.Password.RequireLowercase = true;
-            
+
             // Token provider configuration
-            options.Tokens.EmailConfirmationTokenProvider = ManagementConstants.ManagementEmailTokenProvider;
+            options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
             options.Tokens.PasswordResetTokenProvider = ManagementConstants.ManagementPasswordResetTokenProvider;
-            
+
             // Register password reset provider as two-factor provider for ResetPasswordAsync compatibility
-            options.Tokens.ProviderMap[ManagementConstants.ManagementPasswordResetTokenProvider] = 
+            options.Tokens.ProviderMap[ManagementConstants.ManagementPasswordResetTokenProvider] =
                 new TokenProviderDescriptor(typeof(ManagementPasswordResetTokenProvider<ManagementUser>));
         })
         .AddRoles<ManagementRole>()
@@ -148,16 +150,27 @@ internal static class HostingExtensions
         // Configure ManagementUser token provider options
         builder.Services.Configure<ManagementPasswordResetTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
-        
+
         builder.Services.Configure<ManagementEmailConfirmationTokenProviderOptions>(options =>
             options.TokenLifespan = TimeSpan.FromHours(1));
     }
 
     private static void ConfigureIdentityServer(WebApplicationBuilder builder)
     {
+        var cert = new X509Certificate2(
+            Path.Combine(builder.Environment.ContentRootPath, "signing-key.pfx"),
+            "Admin@123",
+            X509KeyStorageFlags.PersistKeySet |
+            X509KeyStorageFlags.MachineKeySet |
+            X509KeyStorageFlags.Exportable
+        );
+
+
+
         builder.Services.AddIdentityServer(options =>
         {
             // Event configuration
+            options.IssuerUri = "http://localhost:5000";
             options.Events.RaiseErrorEvents = true;
             options.Events.RaiseInformationEvents = true;
             options.Events.RaiseFailureEvents = true;
@@ -165,7 +178,9 @@ internal static class HostingExtensions
 
             // Resource configuration
             options.EmitStaticAudienceClaim = true;
-            options.Discovery.CustomEntries.Add("jwks_uri", "https://localhost:5000/.well-known/jwks");
+
+            // Disable automatic key management (requires license, using developer credential instead)
+            options.KeyManagement.Enabled = false;
         })
         .AddInMemoryIdentityResources(Config.IdentityResources)
         .AddInMemoryApiScopes(Config.ApiScopes)
@@ -173,7 +188,8 @@ internal static class HostingExtensions
         .AddInMemoryClients(Config.Clients)
         .AddAspNetIdentity<ApplicationUser>()
         .AddProfileService<UserProfileService>()
-        .AddDeveloperSigningCredential();
+        .AddExtensionGrantValidator<DelegationGrantValidator>()
+        .AddSigningCredential(cert);
 
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();
@@ -187,12 +203,12 @@ internal static class HostingExtensions
     {
         // Core application services
         builder.Services.AddScoped<IPublishService, PublishService>();
-        
+
         // Management services
-        builder.Services.AddScoped<IdentityService.Management.Services.IMultiUserStoreService, 
+        builder.Services.AddScoped<IdentityService.Management.Services.IMultiUserStoreService,
             IdentityService.Management.Services.MultiUserStoreService>();
         // builder.Services.AddScoped<IdentityService.Management.Services.ManagementProfileService>();
-        
+
         // Authentication services
         builder.Services.AddScoped<IApplicationUserAuthenticationService, ApplicationUserAuthenticationService>();
         builder.Services.AddScoped<IManagementUserAuthenticationService, ManagementUserAuthenticationService>();
