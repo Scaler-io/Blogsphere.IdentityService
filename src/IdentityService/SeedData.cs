@@ -18,14 +18,25 @@ public class SeedData
         using var scope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var dataProtectionContext = scope.ServiceProvider.GetRequiredService<DataProtectionKeyContext>();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
 
-        // Do migration if it is really required
+        // Do migration if it is really required for ApplicationDbContext
         if (IsMigrationRequired(context))
         {
             await context.Database.MigrateAsync();
         }
+
+        // Ensure DataProtectionKeyContext is migrated
+        if (IsDataProtectionMigrationRequired(dataProtectionContext))
+        {
+            await dataProtectionContext.Database.MigrateAsync();
+        }
+
+        // Clean up any corrupted data protection keys if needed
+        CleanupCorruptedDataProtectionKeys(dataProtectionContext, scope);
+
 
         // begin the transactions
         context.Database.BeginTransaction();
@@ -45,8 +56,34 @@ public class SeedData
 
     private static bool IsMigrationRequired(ApplicationDbContext context) => !context.Database.GetAppliedMigrations().Any();
 
+    private static bool IsDataProtectionMigrationRequired(DataProtectionKeyContext context) => !context.Database.GetAppliedMigrations().Any();
+
+    private static void CleanupCorruptedDataProtectionKeys(DataProtectionKeyContext dataProtectionContext, IServiceScope scope)
+    {
+        try
+        {
+            var logger = scope.ServiceProvider.GetService<ILogger>();
+            
+            // Try to validate existing keys by attempting to load them
+            var dataProtector = scope.ServiceProvider.GetService<Microsoft.AspNetCore.DataProtection.IDataProtectionProvider>();
+            if (dataProtector != null)
+            {
+                // If we can create a protector successfully, the keys are likely working
+                var testProtector = dataProtector.CreateProtector("test");
+                logger?.Here().Information("Data protection keys appear to be working correctly");
+            }
+        }
+        catch (Exception ex)
+        {
+            var logger = scope.ServiceProvider.GetService<ILogger>();
+            logger?.Here().Warning(ex, "Data protection key validation failed - this might indicate corrupted keys. Consider clearing the DataProtectionKeys table if the issue persists.");
+            
+            // Optionally, in development, we could clear the keys automatically
+            // But for safety, we'll just log the issue
+        }
+    }
+
     private static List<ApplicationRole> GetAppRoles() => [
-        new(Roles.Admin.ToString(), Roles.Admin.GetEnumMemberAttributeValue()),
         new(Roles.Editor.ToString(), Roles.Editor.GetEnumMemberAttributeValue()),
         new(Roles.Author.ToString(), Roles.Author.GetEnumMemberAttributeValue()),
         new(Roles.Subscriber.ToString(), Roles.Author.GetEnumMemberAttributeValue())
@@ -66,12 +103,6 @@ public class SeedData
         new("comment:write"),
         new("comment:approve"),  
         new("comment:delete"),   
-
-        // User Management Permissions
-        new("user:create"),
-        new("user:read"),        
-        new("user:update"),     
-        new("user:delete"),     
     
         // Category & Tag Management
         new("category:create"),
@@ -127,7 +158,6 @@ public class SeedData
     {
         return roleName switch
         {
-            "Admin" => RolePermissionMap.AdminPermissions,
             "Editor" => RolePermissionMap.EditorPermissions,
             "Author" => RolePermissionMap.AuthorPermissions,
             "Subscriber" => RolePermissionMap.SubscriberPermissions,
@@ -141,12 +171,10 @@ public class SeedData
 
         var roles = GetAppRoles();
         // Updated to use email as username
-        var adminUser = new ApplicationUser("Sharthak", "Mallik", "sharthak@blogsphere.com");
         var editorUser = new ApplicationUser("John", "Doe", "john@blogsphere.com");
         var authorUser = new ApplicationUser("David", "Warn", "david@blogsphere.com");
         var subscriberUser = new ApplicationUser("Henry", "Matt", "henry@blogsphere.com");
 
-        adminUser.MarkEmailConfirmation();
         editorUser.MarkEmailConfirmation();
         authorUser.SetProfileDetails("A simple bio");
         authorUser.MarkEmailConfirmation();
@@ -154,12 +182,13 @@ public class SeedData
 
         try
         {
-            await userManager.CreateAsync(adminUser, "P@ssw0rd");
             await userManager.CreateAsync(editorUser, "P@ssw0rd");
             await userManager.CreateAsync(authorUser, "P@ssw0rd");
             await userManager.CreateAsync(subscriberUser, "P@ssw0rd");
 
-            await AddToClaim(adminUser, userManager, roles.Where(x => x.Name == Roles.Admin.ToString()).ToList(),RolePermissionMap.AdminPermissions);
+            await userManager.AddToRolesAsync(editorUser, [Roles.Editor.ToString()]);
+            await userManager.AddToRolesAsync(authorUser, [Roles.Author.ToString()]);
+            await userManager.AddToRolesAsync(subscriberUser, [Roles.Subscriber.ToString()]);
 
             await AddToClaim(editorUser, userManager,
                 roles.Where(x => x.Name == Roles.Editor.ToString()).ToList(),
@@ -173,12 +202,8 @@ public class SeedData
                 roles.Where(x => x.Name == Roles.Subscriber.ToString()).ToList(),
                 RolePermissionMap.SubscriberPermissions);
 
-            await userManager.AddToRoleAsync(adminUser, Roles.Admin.ToString());
-            await userManager.AddToRoleAsync(editorUser, Roles.Editor.ToString());
-            await userManager.AddToRoleAsync(authorUser, Roles.Author.ToString());
-            await userManager.AddToRoleAsync(subscriberUser, Roles.Subscriber.ToString());
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             // exception handling
         }

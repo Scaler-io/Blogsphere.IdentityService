@@ -15,16 +15,34 @@ public static class Config
         new("apigateway:read"),
         new("apigateway:write"),
         new("apigateway:delete"),
+        new("userapi:read"),
+        new("userapi:write"),
+        new("bffapi:manage")
     ];
 
     public static IEnumerable<ApiResource> ApiResources => [
-        new("blogsphere.api.gateway", "Blogsphere API Gateway")
+        new("blogsphere.apigateway.api", "Blogsphere API Gateway")
         {
             Scopes =
             {
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+            }
+        },
+        new("blogsphere.user.api", "Blogsphere User API")
+        {
+            Scopes =
+            {
+                "userapi:read",
+                "userapi:write",
+            }
+        },
+        new("blogsphere.webapp.bff.api", "Blogsphere Bff API")
+        {
+            Scopes =
+            {
+                "bffapi:manage"
             }
         }
     ];
@@ -45,9 +63,14 @@ public static class Config
                 "apigateway:read",
                 "apigateway:write",
                 "apigateway:delete",
+                "userapi:read",
+                "userapi:write",
+                "bffapi:manage"
             },
+            AccessTokenLifetime = 3600,
+            AlwaysIncludeUserClaimsInIdToken = false, // Don't include user claims in the id token
             RequireClientSecret = true,
-            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenType = AccessTokenType.Jwt, // Use JWT for the access token
         },
         new()
         {
@@ -73,8 +96,8 @@ public static class Config
             ClientId = "blogsphere-management",
             ClientName = "Blogsphere Management Application",
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = { "https://localhost:5001/signin-oidc", "http://localhost:3000/signin-oidc" },
-            PostLogoutRedirectUris = { "https://localhost:5001/signout-callback-oidc", "http://localhost:3000/" },
+            RedirectUris = { "http://localhost:4200" },
+            PostLogoutRedirectUris = { "http://localhost:4200" },
             ClientSecrets = { new Secret("management-secret-key-2024".Sha256()) },
             AllowedScopes =
             {
@@ -83,18 +106,69 @@ public static class Config
                 "email",
                 "apigateway:read",
                 "apigateway:write",
-                "apigateway:delete"
+                "apigateway:delete",
+                "bffapi:manage",
+                "offline_access"  // ← CRITICAL: Add this
             },
-            RequireClientSecret = true,
+            RequireClientSecret = false,
             RequirePkce = true,
             AccessTokenType = AccessTokenType.Jwt,
-            AllowOfflineAccess = true,
-            AccessTokenLifetime = 3600, // 1 hour
+            AllowOfflineAccess = true,          
+            // Token lifetimes
+            AccessTokenLifetime = 3600 * 24 * 7,        // 7 days
+            IdentityTokenLifetime = 3600,                // 1 hour 
+            AuthorizationCodeLifetime = 300,             // 5 minutes
+            
+            // Refresh token settings
             RefreshTokenUsage = TokenUsage.ReUse,
             RefreshTokenExpiration = TokenExpiration.Sliding,
-            SlidingRefreshTokenLifetime = 7200, // 2 hours
-            RequireConsent = false,
-            AlwaysIncludeUserClaimsInIdToken = true
+            SlidingRefreshTokenLifetime = 3600 * 24 * 30, // 30 days
+            
+            AlwaysIncludeUserClaimsInIdToken = true,
         },
+        new()
+        {
+            ClientId = "blogsphere.apigateway.api",
+            ClientName = "Blogsphere API Gateway",
+            ClientSecrets = { new Secret("apigateway-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes =
+            {
+                "apigateway:read"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
+        },
+        new()
+        {
+            ClientId = "blogshere.user.api",
+            ClientName = "Blogsphere User API",
+            ClientSecrets = { new Secret("user-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = GrantTypes.ClientCredentials,
+            AllowedScopes =
+            {
+                "userapi:read"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = false,
+        },
+        new()
+        {
+            ClientId = "blogsphere.webapp.bff.api",
+            ClientName = "Blogsphere Bff API",
+            ClientSecrets = { new Secret("bff-secret-key-2024".Sha256()) },
+            AllowedGrantTypes = { "delegation", GrantType.ClientCredentials},
+            AllowedScopes =
+            {
+                "userapi:read",
+                "apigateway:read",
+                "bffapi:manage"
+            },
+            AccessTokenType = AccessTokenType.Jwt,
+            AccessTokenLifetime = 3600*60,
+            AlwaysIncludeUserClaimsInIdToken = true,
+        }
     ];
 }
