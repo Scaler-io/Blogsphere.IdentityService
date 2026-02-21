@@ -168,14 +168,32 @@ public class Index(
                     {
                         await _events.RaiseAsync(new UserLoginSuccessEvent(managementUser.UserName, managementUser.Id, managementUser.FullName, clientId: context?.Client.ClientId));
                         Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
-                        
-                        // Management users also get 2FA
+
+                        managementUser.SetLastLogin();
+                        await _managementUserManager.UpdateAsync(managementUser);
+
+                        if (context != null)
+                        {
+                            if (context.IsNativeClient())
+                            {
+                                return this.LoadingPage(Input.ReturnUrl);
+                            }
+
+                            return Redirect(Input.ReturnUrl ?? "~/");
+                        }
+
+                        return Redirect(Input.ReturnUrl ?? "~/");
+                    }
+                    else if (result.RequiresTwoFactor)
+                    {
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(managementUser.UserName, managementUser.Id, managementUser.FullName, clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
                         var code = await _managementUserManager.GenerateTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider);
                         
                         await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACode", code);
                         await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
                         
-                        // Send code via email
                         _logger.Here().Information("Sending 2FA code to management user {code}", code);
                         await _publishService.PublishAsync(new AuthCodeSent
                         {
@@ -189,10 +207,6 @@ public class Index(
                         TempData["2FA_UserType"] = "management";
                         
                         return RedirectToPage("../TwoFactor/Index");
-                    }
-                    else if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("../TwoFactor/Index", new { ReturnUrl = Input.ReturnUrl, RememberMe = Input.RememberLogin });
                     }
                     else if (result.IsLockedOut)
                     {
@@ -224,13 +238,32 @@ public class Index(
                     {
                         await _events.RaiseAsync(new UserLoginSuccessEvent(blogsphereUser.UserName, blogsphereUser.Id, blogsphereUser.FullName, clientId: context?.Client.ClientId));
                         Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
-                        
+
+                        blogsphereUser.SetLastLogin();
+                        await _userManager.UpdateAsync(blogsphereUser);
+
+                        if (context != null)
+                        {
+                            if (context.IsNativeClient())
+                            {
+                                return this.LoadingPage(Input.ReturnUrl);
+                            }
+
+                            return Redirect(Input.ReturnUrl ?? "~/");
+                        }
+
+                        return Redirect(Input.ReturnUrl ?? "~/");
+                    }
+                    else if (result.RequiresTwoFactor)
+                    {
+                        await _events.RaiseAsync(new UserLoginSuccessEvent(blogsphereUser.UserName, blogsphereUser.Id, blogsphereUser.FullName, clientId: context?.Client.ClientId));
+                        Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
                         var code = await _userManager.GenerateTwoFactorTokenAsync(blogsphereUser, Constants.CustomTwoFactorTokenProvider);
 
                         await _userManager.SetAuthenticationTokenAsync(blogsphereUser, "2Fa", "2FACode", code);
                         await _userManager.SetAuthenticationTokenAsync(blogsphereUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
 
-                        // Send code via email
                         _logger.Here().Information("Sending 2FA code to {code}", code);
                         await _publishService.PublishAsync(new AuthCodeSent
                         {
@@ -244,10 +277,6 @@ public class Index(
                         TempData["2FA_UserType"] = "blogsphere";
 
                         return RedirectToPage("../TwoFactor/Index");
-                    }
-                    else if (result.RequiresTwoFactor)
-                    {
-                        return RedirectToPage("../TwoFactor/Index", new { ReturnUrl = Input.ReturnUrl, RememberMe = Input.RememberLogin });
                     }
                     else if (result.IsLockedOut)
                     {

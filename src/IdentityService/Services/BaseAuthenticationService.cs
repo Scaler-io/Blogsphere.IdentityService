@@ -54,14 +54,19 @@ public class BaseAuthenticationService<TUser>(
         {
             await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, GetUserDisplayName(user), clientId: context?.Client.ClientId));
             Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
-            
-            // Generate 2FA token
+
+            return BlogsphereAuthenticationResult.Success();
+        }
+        else if (result.RequiresTwoFactor)
+        {
+            await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, GetUserDisplayName(user), clientId: context?.Client.ClientId));
+            Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
+
             var code = await _userManager.GenerateTwoFactorTokenAsync(user, _twoFactorTokenProvider);
             
             await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACode", code);
             await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
             
-            // Send code via email
             _logger.Here().Information("Sending 2FA code to {UserType} user", _userType);
             await _publishService.PublishAsync(new AuthCodeSent
             {
@@ -69,10 +74,6 @@ public class BaseAuthenticationService<TUser>(
                 Code = code                   
             }, Guid.NewGuid().ToString());
             
-            return BlogsphereAuthenticationResult.CreateRequiresTwoFactor(user.Email, _userType);
-        }
-        else if (result.RequiresTwoFactor)
-        {
             return BlogsphereAuthenticationResult.CreateRequiresTwoFactor(user.Email, _userType);
         }
         else if (result.IsLockedOut)
