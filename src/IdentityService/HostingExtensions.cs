@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Serilog;
 using System.Security.Cryptography.X509Certificates;
+using Duende.IdentityServer.Configuration;
 
 namespace IdentityService;
 
@@ -157,15 +158,15 @@ internal static class HostingExtensions
 
     private static void ConfigureIdentityServer(WebApplicationBuilder builder)
     {
+        var certificateSettings = builder.Configuration.GetSection(CertificateSettings.OptionName).Get<CertificateSettings>();
+
         var cert = new X509Certificate2(
-            Path.Combine(builder.Environment.ContentRootPath, "signing-key.pfx"),
-            "Admin@123",
+            Path.Combine(builder.Environment.ContentRootPath, certificateSettings.Path),
+            certificateSettings.Password,
             X509KeyStorageFlags.PersistKeySet |
             X509KeyStorageFlags.MachineKeySet |
             X509KeyStorageFlags.Exportable
         );
-
-
 
         builder.Services.AddIdentityServer(options =>
         {

@@ -31,6 +31,8 @@ services:
       - "EventBus__Password=guest"
       - "EventBus__VirtualHost=/"
       - "EventBus__Port=5672"
+      - "Certificate__Path=signing-key.pfx"
+      - "Certificate__Password=Admin@123"
     ports:
       - "5000:8080"
     depends_on:
