@@ -67,6 +67,25 @@
 .login-page .card .card-body {
   padding: 2rem;
 }
+.login-page .card .card-body .alert-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(16, 185, 129, 0.08);
+  border-left: 4px solid #10b981;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  color: #065f46;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+.login-page .card .card-body .alert-success-banner svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: #10b981;
+}
 .login-page .card .card-body .form-group {
   margin-bottom: 1.5rem;
 }
@@ -157,12 +176,26 @@
   width: 100%;
   text-align: center;
 }
-.login-page .help-links .help-links-section h3 {
-  color: #00205b;
-  font-size: 1.1rem;
-  font-weight: 600;
+.login-page .help-links .help-links-section .notice-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
   margin-bottom: 1rem;
-  padding-left: 0.5rem;
+  color: #e65100;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: left;
+}
+.login-page .help-links .help-links-section .notice-banner svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: #ffc107;
 }
 .login-page .help-links .help-links-section ul {
   list-style: none;
@@ -194,6 +227,50 @@
 }
 .login-page .help-links .help-links-section ul li a:active {
   transform: translateX(2px);
+}
+.login-page .help-links .help-links-section .resend-form {
+  margin: 0;
+  padding: 0;
+}
+.login-page .help-links .help-links-section .resend-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0033cc;
+  text-decoration: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-family: inherit;
+}
+.login-page .help-links .help-links-section .resend-link svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.login-page .help-links .help-links-section .resend-link .resend-timer {
+  font-size: 0.875rem;
+  color: #9e9e9e;
+  font-weight: 500;
+  min-width: 35px;
+}
+.login-page .help-links .help-links-section .resend-link:hover:not(:disabled) {
+  background: rgba(0, 51, 204, 0.05);
+  transform: translateX(4px);
+}
+.login-page .help-links .help-links-section .resend-link:active:not(:disabled) {
+  transform: translateX(2px);
+}
+.login-page .help-links .help-links-section .resend-link:disabled {
+  color: #9e9e9e;
+  cursor: not-allowed;
+}
+.login-page .help-links .help-links-section .resend-link:disabled svg {
+  color: #9e9e9e;
 }
 .login-page .validation-summary-errors {
   background: rgba(255, 82, 82, 0.05);
