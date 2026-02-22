@@ -62,7 +62,7 @@ public class Index(
         }
         
         await BuildModelAsync(returnUrl);
-
+        
         if (View.IsExternalLoginOnly)
         {
             // we only have one option for logging in and it's an external provider
@@ -341,6 +341,7 @@ public class Index(
             View = new ViewModel
             {
                 EnableLocalLogin = local,
+                ShowSignup = !ManagementConstants.ManagementClientIds.Contains(context?.Client?.ClientId ?? ""),
             };
 
             // Only overwrite username if no validation errors
@@ -392,7 +393,8 @@ public class Index(
         {
             AllowRememberLogin = LoginOptions.AllowRememberLogin,
             EnableLocalLogin = allowLocal && LoginOptions.AllowLocalLogin,
-            ExternalProviders = providers.ToArray()
+            ShowSignup = !ManagementConstants.ManagementClientIds.Contains(context?.Client?.ClientId ?? ""),
+            ExternalProviders = [.. providers]
         };
     }
 

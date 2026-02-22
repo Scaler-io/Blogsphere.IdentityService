@@ -8,20 +8,23 @@
 .container.logout-container,
 .container.logged-out-container {
     min-height: 100vh;
+    height: 100vh;
     @include mixins.gradient-background;
     font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
         Roboto, "Helvetica Neue", Arial, sans-serif !important;
     @include mixins.flex-center;
-    padding: vars.$spacing-xl !important;
-    max-width: none !important;
+    padding: vars.$spacing-lg !important;
+    max-width: 100% !important;
     width: 100% !important;
+    box-sizing: border-box;
+    overflow: hidden;
 
     @media (max-width: 768px) {
-        padding: vars.$spacing-lg !important;
+        padding: vars.$spacing-md !important;
     }
 
     @media (max-width: 480px) {
-        padding: vars.$spacing-md !important;
+        padding: vars.$spacing-sm !important;
     }
 }
 
@@ -32,7 +35,8 @@
     border-radius: vars.$border-radius-lg;
     box-shadow: vars.$shadow-lg;
     border: 2px solid rgba(colors.$color-surface, 0.1);
-    max-width: 540px;
+    max-width: 480px;
+    max-height: calc(100vh - (vars.$spacing-lg * 2));
     width: 100%;
     text-align: center;
     position: relative;
@@ -42,7 +46,7 @@
 
     @media (max-width: 768px) {
         border-radius: vars.$border-radius-md;
-        max-width: 480px;
+        max-width: 440px;
     }
 
     @media (max-width: 480px) {
@@ -55,8 +59,8 @@
 // Header styles
 .logout-header,
 .logged-out-header {
-    padding: vars.$spacing-3xl vars.$spacing-3xl vars.$spacing-xl
-        vars.$spacing-3xl;
+    padding: vars.$spacing-2xl vars.$spacing-2xl vars.$spacing-lg
+        vars.$spacing-2xl;
     background: linear-gradient(
         135deg,
         rgba(colors.$color-surface, 0.95) 0%,
@@ -66,13 +70,13 @@
     position: relative;
 
     @media (max-width: 768px) {
-        padding: vars.$spacing-2xl vars.$spacing-xl vars.$spacing-lg
+        padding: vars.$spacing-xl vars.$spacing-xl vars.$spacing-md
             vars.$spacing-xl;
     }
 
     @media (max-width: 480px) {
-        padding: vars.$spacing-xl vars.$spacing-lg vars.$spacing-md
-            vars.$spacing-lg;
+        padding: vars.$spacing-lg vars.$spacing-md vars.$spacing-md
+            vars.$spacing-md;
     }
 
     .logout-icon,
@@ -96,7 +100,7 @@
     }
 
     h1 {
-        font-size: vars.$font-size-2xl;
+        font-size: vars.$font-size-xl;
         font-weight: vars.$font-weight-bold;
         color: colors.$color-text-primary;
         margin: 0 0 vars.$spacing-md 0;
@@ -104,28 +108,28 @@
         letter-spacing: -0.025em;
 
         @media (max-width: 768px) {
-            font-size: calc(vars.$font-size-2xl * 0.88);
+            font-size: calc(vars.$font-size-xl * 0.9);
         }
 
         @media (max-width: 480px) {
-            font-size: calc(vars.$font-size-2xl * 0.76);
+            font-size: calc(vars.$font-size-xl * 0.8);
         }
     }
 
     .logout-subtitle,
     .success-subtitle {
         color: color.adjust(colors.$color-primary, $lightness: 5%);
-        font-size: vars.$font-size-lg;
+        font-size: vars.$font-size-md;
         margin: 0;
         font-weight: vars.$font-weight-medium;
         opacity: 0.9;
 
         @media (max-width: 768px) {
-            font-size: vars.$font-size-md;
+            font-size: vars.$font-size-sm;
         }
 
         @media (max-width: 480px) {
-            font-size: vars.$font-size-sm;
+            font-size: vars.$font-size-xs;
         }
     }
 }
@@ -133,33 +137,33 @@
 // Content sections
 .logout-content,
 .logged-out-content {
-    padding: vars.$spacing-xl vars.$spacing-3xl;
+    padding: vars.$spacing-lg vars.$spacing-2xl;
 
     @media (max-width: 768px) {
-        padding: vars.$spacing-lg vars.$spacing-xl;
+        padding: vars.$spacing-md vars.$spacing-lg;
     }
 
     @media (max-width: 480px) {
-        padding: vars.$spacing-lg vars.$spacing-lg;
+        padding: vars.$spacing-md vars.$spacing-md;
     }
 
     .logout-description,
     .logout-text {
         color: colors.$color-text-secondary;
-        font-size: vars.$font-size-md;
+        font-size: vars.$font-size-sm;
         margin: 0 0 vars.$spacing-xl 0;
         font-weight: vars.$font-weight-normal;
         line-height: 1.7;
         text-align: center;
 
         @media (max-width: 480px) {
-            font-size: vars.$font-size-sm;
+            font-size: vars.$font-size-xs;
             margin: 0 0 vars.$spacing-lg 0;
         }
     }
 
     .decorative-elements {
-        margin: vars.$spacing-xl 0;
+        margin: vars.$spacing-lg 0;
         display: flex;
         justify-content: center;
 
@@ -204,7 +208,7 @@
     // Action buttons
     .logout-actions,
     .logged-out-actions {
-        margin-top: vars.$spacing-xl;
+        margin-top: vars.$spacing-lg;
         display: flex;
         flex-direction: column;
         gap: vars.$spacing-md;
@@ -228,14 +232,14 @@
 
 // Button styles for logout actions
 .logout-actions {
-    padding: 0 vars.$spacing-3xl vars.$spacing-3xl;
+    padding: 0 vars.$spacing-2xl vars.$spacing-2xl;
 
     @media (max-width: 768px) {
-        padding: 0 vars.$spacing-xl vars.$spacing-xl;
+        padding: 0 vars.$spacing-lg vars.$spacing-lg;
     }
 
     @media (max-width: 480px) {
-        padding: 0 vars.$spacing-lg vars.$spacing-lg;
+        padding: 0 vars.$spacing-md vars.$spacing-md;
     }
 
     .button-group {
@@ -251,7 +255,7 @@
         .btn-cancel {
             padding: vars.$spacing-md vars.$spacing-xl;
             border-radius: vars.$border-radius-md;
-            font-size: vars.$font-size-md;
+            font-size: vars.$font-size-sm;
             font-weight: vars.$font-weight-semibold;
             transition: all 0.3s ease;
             text-decoration: none;
@@ -305,14 +309,14 @@
 
 // Logged out page action styles
 .logged-out-actions {
-    padding: 0 vars.$spacing-3xl vars.$spacing-3xl;
+    padding: 0 vars.$spacing-2xl vars.$spacing-2xl;
 
     @media (max-width: 768px) {
-        padding: 0 vars.$spacing-xl vars.$spacing-xl;
+        padding: 0 vars.$spacing-lg vars.$spacing-lg;
     }
 
     @media (max-width: 480px) {
-        padding: 0 vars.$spacing-lg vars.$spacing-lg;
+        padding: 0 vars.$spacing-md vars.$spacing-md;
     }
 
     .redirect-info {
@@ -320,7 +324,7 @@
 
         .redirect-text {
             color: colors.$color-text-secondary;
-            font-size: vars.$font-size-md;
+            font-size: vars.$font-size-sm;
             margin-bottom: vars.$spacing-lg;
         }
 
@@ -353,7 +357,7 @@
         .btn-home {
             padding: vars.$spacing-md vars.$spacing-xl;
             border-radius: vars.$border-radius-md;
-            font-size: vars.$font-size-md;
+            font-size: vars.$font-size-sm;
             font-weight: vars.$font-weight-semibold;
             transition: all 0.3s ease;
             text-decoration: none;

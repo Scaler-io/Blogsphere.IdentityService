@@ -100,9 +100,11 @@
                 </div>
 
                 <div class="form-links">
-                    <p class="signup-link">
-                        Not registered? <a href="#" class="link-primary">Sign up</a>
-                    </p>
+                    @if(Model.View.ShowSignup){
+                        <p class="signup-link">
+                            Not registered? <a href="#" class="link-primary">Sign up</a>
+                        </p>
+                    }
                     <p class="forgot-link">
                         <a asp-page="/Account/ForgotPassword/Index" class="link-secondary">I don't remember my password</a>
                     </p>
