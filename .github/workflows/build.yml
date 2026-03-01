@@ -1,0 +1,62 @@
+name: build
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        type: string
+        required: false
+        default: "8.0.100"
+      configuration:
+        type: string
+        required: false
+        default: "Release"
+      project_path:
+        type: string
+        required: false
+        default: "src/IdentityService/IdentityService.csproj"
+      build_platform:
+        type: string
+        required: false
+        default: "Any CPU"
+      output_dir:
+        type: string
+        required: false
+        default: "build-output"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+
+      - name: Restore NuGet dependencies
+        run: dotnet restore ${{ inputs.project_path }}
+
+      - name: Build
+        run: dotnet build ${{ inputs.project_path }} --configuration ${{ inputs.configuration }} --no-restore -p:Platform="${{ inputs.build_platform }}"
+
+      - name: Publish Identity Service
+        run: dotnet publish ${{ inputs.project_path }} --configuration ${{ inputs.configuration }} --no-build -p:Platform="${{ inputs.build_platform }}" --output ${{ inputs.output_dir }}
+
+      - name: Zip publish output
+        run: zip -r "${{ inputs.output_dir }}.zip" "${{ inputs.output_dir }}"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            ${{ inputs.output_dir }}
+            ${{ inputs.output_dir }}.zip
+          if-no-files-found: error
+          retention-days: 14

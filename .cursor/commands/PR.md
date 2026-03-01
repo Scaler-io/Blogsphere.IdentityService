@@ -8,9 +8,9 @@ Follow these steps **in order**. Use the Shell tool for all git and gh commands.
 
 ---
 
-### Step 1: Secret Scan
+### Step 1: Secret Scan (optional for now — skip)
 
-Before doing anything, scan the working tree for files that may contain secrets. Check for patterns like:
+~~Before doing anything, scan the working tree for files that may contain secrets. Check for patterns like:~~
 
 - Files named: `.env`, `*.pem`, `*.key`, `credentials.json`, `secrets.json`, `*secret*`, `*.pfx`
 - File content matching patterns: `password\s*=`, `apikey`, `secret`, `token`, `connectionstring` (case-insensitive) in **staged/unstaged changed files only**

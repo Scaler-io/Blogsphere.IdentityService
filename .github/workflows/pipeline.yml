@@ -1,0 +1,74 @@
+name: pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+      - "hotfix/**"
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+concurrency:
+  group: pipeline-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    permissions:
+      contents: read
+      actions: write
+    uses: ./.github/workflows/build.yml
+    with:
+      dotnet_version: "8.0.100"
+      configuration: "Release"
+      project_path: "src/IdentityService/IdentityService.csproj"
+      build_platform: "Any CPU"
+      output_dir: "build-output"
+
+  code_analysis:
+    name: Code Analysis
+    needs: [build]
+    permissions:
+      contents: read
+      actions: write
+    uses: ./.github/workflows/code-analysis.yml
+    with:
+      dotnet_version: "8.0.100"
+      configuration: "Release"
+      build_output_dir: "build-output"
+      analysis_report: "code-analysis-report.csv"
+
+  github_release:
+    name: GitHub Release
+    needs: [code_analysis]
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    permissions:
+      contents: write
+    uses: ./.github/workflows/github-release.yml
+
+  docker_build_push:
+    name: Docker Build & Push
+    needs: [github_release]
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+    uses: ./.github/workflows/docker-build-push.yml
+    with:
+      image_name: ${{ vars.IMAGE_NAME || 'sharthak1995/blogsphere.identity.svc' }}
+      tag: ${{ needs.github_release.outputs.release_tag }}
+      dockerfile_path: "src/IdentityService/Dockerfile"
+      context: "src"
+      registry: ${{ vars.DOCKER_REGISTRY || 'docker.io' }}
+    secrets:
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
