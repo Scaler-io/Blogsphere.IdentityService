@@ -8,9 +8,18 @@ Follow these steps **in order**. Use the Shell tool for all git and gh commands.
 
 ---
 
-### Step 1: Secret Scan (SKIP for now)
+### Step 1: Secret Scan (optional for now — skip)
 
-Skip the secret scan. Proceed directly to Step 2.
+~~Before doing anything, scan the working tree for files that may contain secrets. Check for patterns like:~~
+
+- Files named: `.env`, `*.pem`, `*.key`, `credentials.json`, `secrets.json`, `*secret*`, `*.pfx`
+- File content matching patterns: `password\s*=`, `apikey`, `secret`, `token`, `connectionstring` (case-insensitive) in **staged/unstaged changed files only**
+
+If any suspicious files are found:
+- **List them to the user** with the matched pattern
+- **Exclude them from commits** (do NOT stage them)
+- Warn the user and suggest adding them to `.gitignore`
+- **Do NOT abort** — continue with the remaining safe files
 
 ---
 
@@ -55,7 +64,7 @@ Group related files together into logical units. For example:
 - If total uncommitted files > 5: break into smaller logical commits (3-8 files each)
 - Each commit message must be **contextual and descriptive** — explain *why* the change was made, not just *what* files changed
 - Use conventional commit style: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:` etc.
-- ~~Never include files flagged as secrets in Step 1~~ (secret scan skipped)
+- Never include files flagged as secrets in Step 1
 
 #### 3b: Stage and commit each group
 
@@ -118,6 +127,7 @@ git push -u origin HEAD
 Report back to the user:
 - PR URL (new or existing)
 - Number of commits created
+- Any files that were excluded due to secret detection
 - Summary of what was committed
 
 ---
@@ -127,7 +137,7 @@ Report back to the user:
 - NEVER force push
 - NEVER commit to `main` or `master` directly
 - NEVER include secret files in commits
-- Secret scan skipped for now
+- NEVER skip the secret scan
 - ALWAYS use `gh` CLI for GitHub operations
 - ALWAYS use HEREDOC for multi-line commit messages and PR bodies
 - If `gh` is not authenticated, inform the user and stop
