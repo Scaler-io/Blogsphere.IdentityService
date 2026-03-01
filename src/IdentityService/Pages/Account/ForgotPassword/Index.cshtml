@@ -65,6 +65,8 @@
 
             <form method="post" class="forgot-form">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ReturnUrl" />
+                <input type="hidden" asp-for="ClientId" />
 
                 <div class="form-group">
                     <input type="email" 
@@ -83,7 +85,7 @@
 
                 <div class="form-links">
                     <p class="back-link">
-                        <a asp-page="/Account/Login/Index" class="link-secondary">
+                        <a asp-page="/Account/Login/Index" asp-route-returnUrl="@Model.ReturnUrl" class="link-secondary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M15 18l-6-6 6-6"/>
                             </svg>

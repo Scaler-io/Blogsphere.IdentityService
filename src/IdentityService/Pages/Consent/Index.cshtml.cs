@@ -7,6 +7,7 @@ using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Validation;
 using IdentityModel;
+using IdentityService.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,6 +16,7 @@ namespace IdentityService.Pages.Consent;
 
 [Authorize]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Index(
     IIdentityServerInteractionService interaction,
     IEventService events,
@@ -31,14 +33,16 @@ public class Index(
 
     public async Task<IActionResult> OnGet(string returnUrl)
     {
-        if (!await SetViewModelAsync(returnUrl))
+        var safeReturnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
+
+        if (!await SetViewModelAsync(safeReturnUrl))
         {
             return RedirectToPage("/Home/Error/Index");
         }
 
         Input = new InputModel
         {
-            ReturnUrl = returnUrl,
+            ReturnUrl = safeReturnUrl,
         };
 
         return Page();
@@ -46,6 +50,8 @@ public class Index(
 
     public async Task<IActionResult> OnPost(string returnUrl)
     {
+        Input.ReturnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(Input.ReturnUrl);
+
         // validate return url is still valid
         var request = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
         if (request == null) return RedirectToPage("/Home/Error/Index");

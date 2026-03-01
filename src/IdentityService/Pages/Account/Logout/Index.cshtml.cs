@@ -16,6 +16,7 @@ namespace IdentityService.Pages.Logout;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index : PageModel
 {
     private readonly SignInManager<ApplicationUser> _signInManager;

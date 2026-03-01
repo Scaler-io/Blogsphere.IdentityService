@@ -11,6 +11,7 @@ namespace IdentityService.Pages.Ciba;
 
 [AllowAnonymous]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class IndexModel(IBackchannelAuthenticationInteractionService backchannelAuthenticationInteractionService, ILogger<IndexModel> logger) : PageModel
 {
     public BackchannelUserLoginRequest LoginRequest { get; set; } = default!;

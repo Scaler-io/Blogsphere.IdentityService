@@ -5,6 +5,7 @@ using Duende.IdentityServer.Services;
 using IdentityService.Entities;
 using IdentityService.Extensions;
 using IdentityService.Models;
+using IdentityService.Security;
 using IdentityService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace IdentityService.Pages.Account.TwoFactor;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index(
     ILogger logger,
     UserManager<ApplicationUser> userManager,
@@ -55,7 +57,7 @@ public class Index(
     {
         var userEmail = TempData["2FA_UserEmail"] as string;
         var rememberMe = TempData["2FA_RemberMe"] as bool? ?? false;
-        var returnUrl = TempData["2FA_ReturnUrl"] as string ?? "~/";
+        var returnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(TempData["2FA_ReturnUrl"] as string);
         var userType = TempData["2FA_UserType"] as string ?? "blogsphere";
 
         if (string.IsNullOrEmpty(userEmail))
@@ -111,7 +113,7 @@ public class Index(
     {
         var userEmail = TempData["2FA_UserEmail"] as string;
         var rememberMe = TempData["2FA_RemberMe"] as bool? ?? false;
-        var returnUrl = TempData["2FA_ReturnUrl"] as string ?? "~/";
+        var returnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(TempData["2FA_ReturnUrl"] as string);
         var userType = TempData["2FA_UserType"] as string ?? "blogsphere";
 
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
@@ -190,7 +192,7 @@ public class Index(
     private void SetTempData(string userEmail, string returnUrl, bool rememberLogin, string userType = "blogsphere")
     {
         TempData["2FA_UserEmail"] = userEmail;
-        TempData["2FA_ReturnUrl"] = returnUrl;
+        TempData["2FA_ReturnUrl"] = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
         TempData["2FA_RemberMe"] = rememberLogin;
         TempData["2FA_UserType"] = userType;
     }

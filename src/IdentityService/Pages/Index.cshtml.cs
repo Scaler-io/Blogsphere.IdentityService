@@ -3,12 +3,14 @@
 
 using Duende.IdentityServer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Reflection;
 
 namespace IdentityService.Pages.Home;
 
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index(IdentityServerLicense license = null) : PageModel
 {
     public string Version

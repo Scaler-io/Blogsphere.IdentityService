@@ -4,12 +4,14 @@
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Ciba;
 
 [SecurityHeaders]
 [Authorize]
+[ValidateAntiForgeryToken]
 public class AllModel(IBackchannelAuthenticationInteractionService backchannelAuthenticationInteractionService) : PageModel
 {
     public IEnumerable<BackchannelUserLoginRequest> Logins { get; set; } = default!;

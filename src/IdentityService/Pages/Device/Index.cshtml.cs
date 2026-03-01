@@ -17,6 +17,7 @@ namespace IdentityService.Pages.Device;
 
 [SecurityHeaders]
 [Authorize]
+[ValidateAntiForgeryToken]
 public class Index(
     IDeviceFlowInteractionService interaction,
     IEventService eventService,

@@ -1,0 +1,94 @@
+@page
+@model IdentityService.Pages.Account.SelfResetPassword.Index
+@{
+    ViewData["Title"] = "Reset Password";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <circle cx="160" cy="140" r="120" fill="rgba(0, 51, 204, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(0, 51, 204, 0.15)" />
+                    <circle cx="160" cy="140" r="60" fill="rgba(0, 51, 204, 0.2)" />
+
+                    <circle cx="160" cy="120" r="25" fill="white" stroke="rgba(0, 51, 204, 0.5)" stroke-width="2"/>
+                    <circle cx="160" cy="120" r="15" fill="#0033cc"/>
+                    <rect x="185" y="115" width="50" height="10" fill="white" rx="2"/>
+                    <rect x="200" y="125" width="6" height="12" fill="white" rx="1"/>
+                    <rect x="215" y="125" width="6" height="8" fill="white" rx="1"/>
+                </svg>
+            </div>
+
+            <div class="feature-text">
+                <h3>Reset Your Password</h3>
+                <p>Create a new secure password to protect your account.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-right-section">
+        <div class="form-container">
+            <div class="back-nav">
+                <a class="back-nav-link" href="@Model.Input.ReturnUrl">&larr; Back</a>
+            </div>
+            <div class="form-header">
+                <h2>Choose Reset Method</h2>
+                <p>Select how you want to proceed.</p>
+            </div>
+
+            <div class="reset-password-form">
+                <div class="form-group">
+                    <input type="email"
+                           class="form-control"
+                           asp-for="Input.Email"
+                           readonly
+                           tabindex="-1"
+                           aria-readonly="true" />
+                </div>
+
+                <form method="get" asp-page="/Account/SelfResetPassword/ChangePassword/Index" class="form-actions">
+                    <input type="hidden" name="mode" value="current" />
+                    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
+                    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
+                    <button type="submit" class="btn-continue">Use Current Password</button>
+                </form>
+
+                <form method="get" asp-page="/Account/SelfResetPassword/VerifyCode/Index" class="form-actions" style="margin-top: 12px;">
+                    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
+                    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
+                    <button type="submit" class="btn-continue">Use One-Time Code</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .back-nav { margin-bottom: 10px; }
+        .back-nav-link {
+            color: #0033cc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(0, 51, 204, 0.08);
+        }
+        .back-nav-link:hover {
+            background: rgba(0, 51, 204, 0.14);
+            text-decoration: none;
+        }
+    </style>
+}

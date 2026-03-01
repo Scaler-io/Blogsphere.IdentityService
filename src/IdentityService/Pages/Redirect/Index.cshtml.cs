@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace IdentityService.Pages.Redirect;
 
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class IndexModel : PageModel
 {
     public string RedirectUri { get; set; }

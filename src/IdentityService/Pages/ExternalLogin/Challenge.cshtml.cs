@@ -2,6 +2,7 @@
 // See LICENSE in the project root for license information.
 
 using Duende.IdentityServer.Services;
+using IdentityService.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +12,14 @@ namespace IdentityService.Pages.ExternalLogin;
 
 [AllowAnonymous]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Challenge(IIdentityServerInteractionService interactionService) : PageModel
 {
     private readonly IIdentityServerInteractionService _interactionService = interactionService;
 
     public IActionResult OnGet(string scheme, string returnUrl)
     {
-        if (string.IsNullOrEmpty(returnUrl)) returnUrl = "~/";
+        returnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
 
         // validate returnUrl - either it is a valid OIDC URL or back to a local page
         if (Url.IsLocalUrl(returnUrl) == false && _interactionService.IsValidReturnUrl(returnUrl) == false)
