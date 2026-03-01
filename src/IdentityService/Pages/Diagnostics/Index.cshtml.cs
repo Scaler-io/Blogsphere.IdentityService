@@ -10,6 +10,7 @@ namespace IdentityService.Pages.Diagnostics;
 
 [SecurityHeaders]
 [Authorize]
+[ValidateAntiForgeryToken]
 public class Index : PageModel
 {
     public ViewModel View { get; set; } = default!;

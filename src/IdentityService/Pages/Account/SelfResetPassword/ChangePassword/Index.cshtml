@@ -1,0 +1,138 @@
+@page
+@model IdentityService.Pages.Account.SelfResetPassword.ChangePassword.Index
+@{
+    ViewData["Title"] = "Change Password";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+                    <circle cx="160" cy="140" r="60" fill="rgba(0, 51, 204, 0.2)" />
+
+                    <g transform="translate(120, 80)">
+                        <rect x="0" y="25" width="80" height="65" rx="4" fill="rgba(255, 255, 255, 0.9)" stroke="rgba(0, 51, 204, 0.5)" stroke-width="2"/>
+                        <rect x="20" y="45" width="40" height="30" rx="2" fill="#0033cc"/>
+                        <path d="M25 45V38C25 32 35 28 40 28C45 28 55 32 55 38V45" stroke="#0033cc" stroke-width="2" fill="none" stroke-linecap="round"/>
+                        <circle cx="40" cy="52" r="3" fill="white"/>
+                        <rect x="35" y="82" width="10" height="15" rx="1" fill="white"/>
+                        <rect x="55" y="82" width="10" height="15" rx="1" fill="white"/>
+                    </g>
+
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)">
+                        <animate attributeName="cy" values="100;95;100" dur="2s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)">
+                        <animate attributeName="cy" values="120;115;120" dur="2.5s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)">
+                        <animate attributeName="cy" values="180;175;180" dur="1.8s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)">
+                        <animate attributeName="cy" values="180;185;180" dur="2.2s" repeatCount="indefinite" />
+                    </circle>
+
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+
+            <div class="feature-text">
+                <h3>Change Password</h3>
+                <p>Update your password to keep your account secure.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-right-section">
+        <div class="form-container">
+            <div class="back-nav">
+                <a class="back-nav-link"
+                   href="#"
+                   onclick="event.preventDefault(); if (window.history.length > 1) { window.history.back(); } else { window.location.href='@Url.Page("/Account/SelfResetPassword/Index", new { returnUrl = Model.Input.ReturnUrl, clientId = Model.Input.ClientId })'; }">&larr; Back</a>
+            </div>
+            <div class="form-header">
+                <h2>Change Password</h2>
+                <p>@(Model.IsCodeMode ? "Code verified. Set your new password." : "Enter your current password to continue.")</p>
+            </div>
+
+            <form method="post" class="reset-password-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Input.ReturnUrl" />
+                <input type="hidden" asp-for="Input.Email" />
+                <input type="hidden" asp-for="Input.ClientId" />
+                <input type="hidden" asp-for="Input.Mode" />
+
+                <div class="form-group">
+                    <input type="email" class="form-control" asp-for="Input.Email" readonly />
+                </div>
+
+                @if (!Model.IsCodeMode)
+                {
+                    <div class="form-group">
+                        <input type="password"
+                               class="form-control"
+                               autocomplete="current-password"
+                               placeholder="Current Password*"
+                               asp-for="Input.CurrentPassword" />
+                        <span asp-validation-for="Input.CurrentPassword" class="text-danger validation-error"></span>
+                    </div>
+                }
+
+                <div class="form-group">
+                    <input type="password"
+                           class="form-control"
+                           autocomplete="new-password"
+                           placeholder="New Password*"
+                           asp-for="Input.NewPassword" />
+                    <span asp-validation-for="Input.NewPassword" class="text-danger validation-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <input type="password"
+                           class="form-control"
+                           autocomplete="new-password"
+                           placeholder="Confirm Password*"
+                           asp-for="Input.ConfirmPassword" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger validation-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-continue">Change Password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .back-nav { margin-bottom: 10px; }
+        .back-nav-link {
+            color: #0033cc;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(0, 51, 204, 0.08);
+        }
+        .back-nav-link:hover {
+            background: rgba(0, 51, 204, 0.14);
+            text-decoration: none;
+        }
+    </style>
+}

@@ -1,10 +1,14 @@
 using System.Text;
+using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Stores;
 using IdentityService.Entities;
 using IdentityService.Management.Entities;
 using IdentityService.Management.Models;
 using IdentityService.Management.Services;
 using IdentityService.Extensions;
 using IdentityService.Models;
+using IdentityService.Security;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,23 +19,37 @@ namespace IdentityService.Pages.Account.ResetPassword;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public partial class Index(
     ILogger logger,
     UserManager<ApplicationUser> userManager,
     UserManager<ManagementUser> managementUserManager,
-    IMultiUserStoreService multiUserStoreService) : PageModel
+    IMultiUserStoreService multiUserStoreService,
+    SignInManager<ApplicationUser> signInManager,
+    SignInManager<ManagementUser> managementSignInManager,
+    IPersistedGrantStore persistedGrantStore) : PageModel
 {
     private readonly ILogger _logger = logger;
     private readonly UserManager<ApplicationUser> _userManager = userManager;
     private readonly UserManager<ManagementUser> _managementUserManager = managementUserManager;
     private readonly IMultiUserStoreService _multiUserStoreService = multiUserStoreService;
+    private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
+    private readonly SignInManager<ManagementUser> _managementSignInManager = managementSignInManager;
+    private readonly IPersistedGrantStore _persistedGrantStore = persistedGrantStore;
     public bool IsValidToken { get; set; } = true;
 
     [BindProperty]
     public InputModel Input { get; set; }
 
-    public async Task<IActionResult> OnGet([FromQuery] string email, [FromQuery] string token, [FromQuery] string userType = "blogsphere")
+    public async Task<IActionResult> OnGet(
+        [FromQuery] string email,
+        [FromQuery] string token,
+        [FromQuery] string returnUrl = null,
+        [FromQuery] string clientId = null,
+        [FromQuery] string userType = "blogsphere")
     {
+        var effectiveReturnUrl = ReturnUrlGuard.NormalizeForClientApp(returnUrl, clientId);
+
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
         {
             IsValidToken = false;
@@ -89,6 +107,8 @@ public partial class Index(
         TempData["Email"] = email;
         TempData["Token"] = token;
         TempData["UserType"] = userStore;
+        TempData["ReturnUrl"] = effectiveReturnUrl;
+        TempData["ClientId"] = clientId ?? string.Empty;
         return Page();
     }
 
@@ -96,7 +116,9 @@ public partial class Index(
     {
         var email = TempData["Email"] as string;
         var token = TempData["Token"] as string;
-        var userType = TempData["UserType"] as string ?? "blogsphere";
+        var returnUrl = TempData["ReturnUrl"] as string;
+        var clientId = TempData["ClientId"] as string;
+        var effectiveReturnUrl = ReturnUrlGuard.NormalizeForClientApp(returnUrl, clientId);
 
         if (!ModelState.IsValid)
         {
@@ -105,7 +127,7 @@ public partial class Index(
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
         {
-            return RedirectToPage("/Account/Login/Index");
+            return RedirectToPage("/Account/Login/Index", new { returnUrl = effectiveReturnUrl });
         }
 
         var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
@@ -124,7 +146,7 @@ public partial class Index(
             if (managementUser == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToPage("/Account/Login/Index");
+                return RedirectToPage("/Account/Login/Index", new { returnUrl = effectiveReturnUrl });
             }
 
             // Verify token explicitly with the specific token provider
@@ -146,8 +168,9 @@ public partial class Index(
             
             if (result.Succeeded)
             {
+                await RevokeTokensAndSignOutAsync(managementUser.Id, email);
                 _logger.Here().Information("Password reset successful for management user {Email}", email);
-                return RedirectToPage("/Account/Login/Index");
+                return RedirectToPage("/Account/Login/Index", new { returnUrl = effectiveReturnUrl });
             }
 
             foreach (var error in result.Errors)
@@ -163,7 +186,7 @@ public partial class Index(
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToPage("/Account/Login/Index");
+                return RedirectToPage("/Account/Login/Index", new { returnUrl = effectiveReturnUrl });
             }
 
             // Verify token explicitly with the specific token provider
@@ -185,8 +208,9 @@ public partial class Index(
             
             if (result.Succeeded)
             {
+                await RevokeTokensAndSignOutAsync(user.Id, email);
                 _logger.Here().Information("Password reset successful for user {Email}", email);
-                return RedirectToPage("/Account/Login/Index");
+                return RedirectToPage("/Account/Login/Index", new { returnUrl = effectiveReturnUrl });
             }
 
             foreach (var error in result.Errors)
@@ -197,4 +221,18 @@ public partial class Index(
 
         return Page();
     }
+
+    private async Task RevokeTokensAndSignOutAsync(string subjectId, string email)
+    {
+        await _persistedGrantStore.RemoveAllAsync(new PersistedGrantFilter
+        {
+            SubjectId = subjectId
+        });
+
+        await _signInManager.SignOutAsync();
+        await _managementSignInManager.SignOutAsync();
+        await HttpContext.SignOutAsync();
+        _logger.Here().Information("Revoked persisted grants and signed out user after password reset for {Email}", email);
+    }
+
 }

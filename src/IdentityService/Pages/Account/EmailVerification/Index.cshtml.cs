@@ -11,6 +11,7 @@ namespace IdentityService.Pages.EmailVerification;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index(UserManager<ApplicationUser> userManager, ILogger logger) : PageModel
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager;

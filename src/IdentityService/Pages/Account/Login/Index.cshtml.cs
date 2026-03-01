@@ -11,6 +11,7 @@ using Duende.IdentityServer.Stores;
 using IdentityService.Entities;
 using IdentityService.Extensions;
 using IdentityService.Models;
+using IdentityService.Security;
 using IdentityService.Services;
 using IdentityService.Management.Entities;
 using IdentityService.Management.Models;
@@ -25,6 +26,7 @@ namespace IdentityService.Pages.Account.Login;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index(
     IIdentityServerInteractionService interaction,
     IAuthenticationSchemeProvider schemeProvider,
@@ -57,16 +59,18 @@ public class Index(
 
     public async Task<IActionResult> OnGet(string returnUrl)
     {
+        var safeReturnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
+
         if(User.IsAuthenticated()){
             return Redirect("~/");
         }
         
-        await BuildModelAsync(returnUrl);
+        await BuildModelAsync(safeReturnUrl);
         
         if (View.IsExternalLoginOnly)
         {
             // we only have one option for logging in and it's an external provider
-            return RedirectToPage("/ExternalLogin/Challenge", new { scheme = View.ExternalLoginScheme, returnUrl });
+            return RedirectToPage("/ExternalLogin/Challenge", new { scheme = View.ExternalLoginScheme, returnUrl = safeReturnUrl });
         }
 
         return Page();
@@ -74,6 +78,8 @@ public class Index(
 
     public async Task<IActionResult> OnPost()
     {
+        Input.ReturnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(Input.ReturnUrl);
+
         // check if we are in the context of an authorization request
         var context = await _interaction.GetAuthorizationContextAsync(Input.ReturnUrl);
 

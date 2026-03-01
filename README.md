@@ -27,8 +27,10 @@
 -   **User Authentication**: Local and external (e.g., Google) login support.
 -   **Role-Based Access Control**: Custom roles (Admin, Editor, Author, Subscriber) and fine-grained permissions.
 -   **OpenID Connect & OAuth2**: Standards-based authentication for secure API and web access.
+-   **Authenticated Password Reset**: Self-reset password flow for logged-in users via email OTP verification.
 -   **Profile & Image Management**: Extensible user profile and image details.
 -   **Secure Token Handling**: Data protection and custom token providers.
+-   **Return URL Guard**: Validates return URLs against allowed clients to prevent open redirect attacks.
 -   **Logging & Telemetry**: Serilog integration with console and Elasticsearch sinks.
 -   **Database Migrations & Seeding**: Automated on first run in development.
 -   **Docker Support**: Production-ready containerization.
@@ -153,6 +155,9 @@ On first run in development, the service will:
 3. **Access the Discovery Document:**
     - [http://localhost:5000/.well-known/openid-configuration](http://localhost:5000/.well-known/openid-configuration)
 
+4. **Self-Reset Password** (authenticated users):
+    - Navigate to `/Account/SelfResetPassword` when logged in to change your password via email OTP verification.
+
 ### Docker
 
 To build and run the service in Docker:
@@ -175,9 +180,15 @@ src/
     Program.cs               # Entry point and startup logic
     Entities/                # User, Role, Permission, Profile, Image models
     Data/                    # EF Core DbContext, migrations
+    Events/                  # Domain events (e.g., PasswordResetOneTimeCodeSent)
+    Security/                # ReturnUrlGuard for safe return URL validation
     Services/                # Custom profile service, etc.
     Configurations/          # App, logging, and ElasticSearch configs
     Pages/                   # Razor Pages for login, consent, diagnostics, etc.
+      Account/
+        SelfResetPassword/   # Authenticated password reset flow (entry, verify OTP, change password)
+        ForgotPassword/      # Unauthenticated password recovery
+        Login/, Logout/      # Account management
     wwwroot/                 # Static assets (CSS, JS, images)
     Dockerfile               # Container build instructions
     appsettings.json         # Main configuration file
@@ -198,6 +209,7 @@ src/
 
 -   **Data Protection**: Keys stored in the database for distributed deployments.
 -   **Token Providers**: Custom email and password reset token providers.
+-   **Return URL Guard**: `ReturnUrlGuard` validates redirect URLs against allowed client origins before redirect, preventing open redirect attacks. All identity pages use `BaseAuthenticationPageModel` for consistent, safe return URL handling.
 -   **CORS**: Configurable origins for secure API access.
 -   **Environment Separation**: Seeding and debugging only in development.
 

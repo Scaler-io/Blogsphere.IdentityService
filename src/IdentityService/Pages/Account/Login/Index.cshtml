@@ -106,7 +106,10 @@
                         </p>
                     }
                     <p class="forgot-link">
-                        <a asp-page="/Account/ForgotPassword/Index" class="link-secondary">I don't remember my password</a>
+                        <a asp-page="/Account/ForgotPassword/Index"
+                           asp-route-email="@Model.Input?.Username"
+                           asp-route-returnUrl="@Model.Input?.ReturnUrl"
+                           class="link-secondary">I don't remember my password</a>
                     </p>
                 </div>
 

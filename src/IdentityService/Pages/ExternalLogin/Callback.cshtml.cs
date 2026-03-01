@@ -6,6 +6,7 @@ using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Services;
 using IdentityModel;
 using IdentityService.Entities;
+using IdentityService.Security;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,6 +18,7 @@ namespace IdentityService.Pages.ExternalLogin;
 
 [AllowAnonymous]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Callback(
     IIdentityServerInteractionService interaction,
     IEventService events,
@@ -82,7 +84,7 @@ public class Callback(
         await HttpContext.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
         // retrieve return URL
-        var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
+        var returnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(result.Properties.Items["returnUrl"]);
 
         // check if external login is in the context of an OIDC request
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
