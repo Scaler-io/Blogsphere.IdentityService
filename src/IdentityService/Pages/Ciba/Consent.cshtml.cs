@@ -14,6 +14,7 @@ namespace IdentityService.Pages.Ciba;
 
 [Authorize]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Consent(
     IBackchannelAuthenticationInteractionService interaction,
     IEventService events,

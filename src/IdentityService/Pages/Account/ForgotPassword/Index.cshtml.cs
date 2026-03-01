@@ -11,6 +11,7 @@ using IdentityService.Models;
 using System.ComponentModel.DataAnnotations;
 using IdentityService.Extensions;
 using IdentityService.Services;
+using IdentityService.Security;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Contracts.Events;
@@ -43,10 +44,16 @@ public class Index(
     [BindProperty]
     public InputModel Input { get; set; }
 
+    [BindProperty(SupportsGet = true)]
+    public string ReturnUrl { get; set; } = string.Empty;
+
+    [BindProperty(SupportsGet = true)]
+    public string ClientId { get; set; } = string.Empty;
+
     [TempData]
     public string StatusMessage { get; set; }
 
-    public IActionResult OnGet()
+    public IActionResult OnGet([FromQuery] string email = null, [FromQuery] string returnUrl = null, [FromQuery] string clientId = null)
     {
         // If user is authenticated, redirect to home
         if (User.IsAuthenticated())
@@ -54,11 +61,17 @@ public class Index(
             return RedirectToPage("/Index");
         }
 
+        ClientId = clientId ?? string.Empty;
+        ReturnUrl = ReturnUrlGuard.NormalizeForClientApp(returnUrl, ClientId);
+        Input ??= new InputModel();
+        Input.Email = (email ?? string.Empty).Trim();
+
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync()
     {
+        ReturnUrl = ReturnUrlGuard.NormalizeForClientApp(ReturnUrl, ClientId);
         try
         {
             if (Input?.Email == null)
@@ -102,7 +115,9 @@ public class Index(
                         }, Guid.NewGuid().ToString(), new
                         {
                             Token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)),
-                            UserType = "management"
+                            UserType = "management",
+                            ReturnUrl,
+                            ClientId
                         });
                         
                         _logger.Here().Information("Password reset token generated for management user: {Email}", email);
@@ -141,7 +156,9 @@ public class Index(
                         }, Guid.NewGuid().ToString(), new
                         {
                             Token = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code)),
-                            UserType = "blogsphere"
+                            UserType = "blogsphere",
+                            ReturnUrl,
+                            ClientId
                         });
                         
                         _logger.Here().Information("Password reset token generated for blogsphere user: {Email}", email);

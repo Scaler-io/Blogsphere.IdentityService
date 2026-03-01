@@ -3,12 +3,14 @@
 
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Error;
 
 [AllowAnonymous]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Index(IIdentityServerInteractionService interaction, IWebHostEnvironment environment) : PageModel
 {
     private readonly IIdentityServerInteractionService _interaction = interaction;

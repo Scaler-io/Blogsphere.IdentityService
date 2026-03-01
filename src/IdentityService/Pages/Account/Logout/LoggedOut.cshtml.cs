@@ -3,12 +3,14 @@
 
 using Duende.IdentityServer.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Logout;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class LoggedOut(IIdentityServerInteractionService interactionService) : PageModel
 {
     private readonly IIdentityServerInteractionService _interactionService = interactionService;

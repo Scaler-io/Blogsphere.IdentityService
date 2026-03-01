@@ -7,13 +7,14 @@ namespace IdentityService.Pages.Account.ForgotPassword;
 
 [AllowAnonymous]
 [SecurityHeaders]
+[ValidateAntiForgeryToken]
 public class Status : PageModel
 {
     public IActionResult OnGet()
     {
         if(User.IsAuthenticated())
         {
-            return RedirectToPage("~/");
+            return Redirect("~/");
         }
         return Page();
     }
