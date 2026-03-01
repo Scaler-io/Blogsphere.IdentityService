@@ -1,0 +1,171 @@
+name: code-analysis
+
+on:
+  workflow_call:
+    inputs:
+      dotnet_version:
+        type: string
+        required: false
+        default: "8.0.100"
+      configuration:
+        type: string
+        required: false
+        default: "Release"
+      build_output_dir:
+        type: string
+        required: false
+        default: "build-output"
+      analysis_report:
+        type: string
+        required: false
+        default: "code-analysis-report.csv"
+
+jobs:
+  analysis:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
+    env:
+      BUILD_CONFIGURATION: ${{ inputs.configuration }}
+      BUILD_OUTPUT_DIR: ${{ inputs.build_output_dir }}
+      ANALYSIS_REPORT: ${{ inputs.analysis_report }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet_version }}
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ${{ env.BUILD_OUTPUT_DIR }}
+
+      - name: Run code analysis
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "🔍 Running code analysis..."
+
+          possible_paths=(
+            "src/IdentityService"
+            "IdentityService"
+            "."
+            "${BUILD_OUTPUT_DIR}"
+          )
+
+          find_project_dir() {
+            local path
+            for path in "${possible_paths[@]}"; do
+              if [[ -d "$path" ]]; then
+                local csproj
+                csproj=$(find "$path" -name "*.csproj" -print -quit)
+                if [[ -n "$csproj" ]]; then
+                  echo "$(dirname "$csproj")"
+                  return 0
+                fi
+              fi
+            done
+            return 1
+          }
+
+          project_dir="$(find_project_dir)" || {
+            echo "❌ No project file found in expected locations."
+            echo "📁 Current directory: $(pwd)"
+            ls -R
+            exit 1
+          }
+
+          echo "✅ Found project directory: $project_dir"
+          cd "$project_dir"
+          echo "📁 Working directory: $(pwd)"
+
+          echo "📦 Restoring NuGet packages..."
+          dotnet restore
+
+          echo "🔒 Security analysis - vulnerable packages"
+          if ! dotnet list package --vulnerable; then
+            echo "⚠️ Vulnerable package check returned a non-zero exit code."
+          fi
+
+          echo "🧪 Code quality analysis - build warnings/errors"
+          set +e
+          build_output="$(dotnet build --configuration "${BUILD_CONFIGURATION}" --verbosity normal --no-restore 2>&1)"
+          build_exit_code=$?
+          set -e
+          echo "${build_output}"
+
+          warnings_count=$(echo "${build_output}" | grep -i "warning" | grep -v "0 Warning(s)" | wc -l || true)
+          errors_count=$(echo "${build_output}" | grep -i "error" | grep -v "0 Error(s)" | wc -l || true)
+
+          if [[ $build_exit_code -ne 0 ]]; then
+            echo "❌ Build failed with ${errors_count} error(s)."
+            exit 1
+          fi
+
+          if [[ $warnings_count -gt 0 ]]; then
+            echo "⚠️ Found ${warnings_count} warning(s)."
+          else
+            echo "✅ No warnings found."
+          fi
+
+          echo "🎯 Code style analysis"
+          set +e
+          style_output="$(dotnet build --configuration "${BUILD_CONFIGURATION}" --verbosity normal --no-restore 2>&1)"
+          set -e
+          style_warnings_count=$(echo "${style_output}" | grep -E -i "warning.*(style|IDE|CS)" | wc -l || true)
+
+          if [[ $style_warnings_count -gt 0 ]]; then
+            echo "⚠️ Found ${style_warnings_count} code style warning(s)."
+          else
+            echo "✅ No code style issues found."
+          fi
+
+          echo "🔍 Running analyzers during build"
+          dotnet build --configuration "${BUILD_CONFIGURATION}" --verbosity normal --no-restore -p:RunAnalyzersDuringBuild=true
+
+          echo "📦 Dependency analysis"
+          dotnet list package
+          dotnet list package --outdated || true
+
+          echo "📊 Code metrics analysis"
+          repo_root="${GITHUB_WORKSPACE:-$(pwd)}"
+          total_lines=0
+          total_files=0
+          if [[ -d "${repo_root}/src" ]]; then
+            total_files=$(find "${repo_root}/src" -name "*.cs" | wc -l)
+            if [[ $total_files -gt 0 ]]; then
+              total_lines=$(find "${repo_root}/src" -name "*.cs" -print0 | xargs -0 wc -l | awk 'END{print $1}')
+            else
+              total_lines=0
+            fi
+          fi
+
+          echo "📈 Total lines of C# code: ${total_lines}"
+          echo "📁 Total C# files: ${total_files}"
+
+          echo "🧾 Generating analysis report"
+          report_path="${GITHUB_WORKSPACE}/${ANALYSIS_REPORT}"
+          timestamp="$(date -u +"%Y-%m-%d %H:%M:%S")"
+          {
+            echo "Category,Metric,Value,Timestamp"
+            echo "Dependencies,Total Packages,See console output for details,${timestamp}"
+            echo "Code Metrics,Total Lines of Code,${total_lines},${timestamp}"
+            echo "Code Metrics,Total C# files,${total_files},${timestamp}"
+          } > "${report_path}"
+
+          echo "✅ Analysis report generated: ${report_path}"
+
+      - name: Upload analysis report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: CodeAnalysisReport
+          path: ${{ env.ANALYSIS_REPORT }}
+          if-no-files-found: error
+          retention-days: 14

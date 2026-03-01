@@ -1,0 +1,35 @@
+name: github-release
+
+on:
+  workflow_call:
+    outputs:
+      release_tag:
+        description: Release tag created by the workflow
+        value: ${{ jobs.release.outputs.release_tag }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: Docker
+    permissions:
+      contents: write
+    outputs:
+      release_tag: ${{ steps.tag.outputs.release_tag }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate release tag
+        id: tag
+        run: |
+          RELEASE_TAG="v1.0.${{ github.run_number }}"
+          echo "release_tag=$RELEASE_TAG" >> "$GITHUB_OUTPUT"
+          echo "Release tag: $RELEASE_TAG"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          name: Release ${{ steps.tag.outputs.release_tag }}
+          target_commitish: ${{ github.sha }}
+          generate_release_notes: true
