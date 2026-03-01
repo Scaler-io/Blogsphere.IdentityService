@@ -10,10 +10,11 @@ public abstract class BaseTwoFactorTokenProvider<TUser>(ILogger logger, string u
     protected readonly ILogger _logger = logger;
     protected readonly string _userType = userType;
 
-    public virtual Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
+    public virtual async Task<bool> CanGenerateTwoFactorTokenAsync(UserManager<TUser> manager, TUser user)
     {
-        _logger.Here().Information("Checking if 2FA token can be generated for {UserType} user {UserId}", _userType, user.Id);
-        return Task.FromResult(true);
+        var isTwoFactorEnabled = await manager.GetTwoFactorEnabledAsync(user);
+        _logger.Here().Information("Checking if 2FA token can be generated for {UserType} user {UserId}: {IsEnabled}", _userType, user.Id, isTwoFactorEnabled);
+        return isTwoFactorEnabled;
     }
 
     public virtual Task<string> GenerateAsync(string purpose, UserManager<TUser> manager, TUser user)

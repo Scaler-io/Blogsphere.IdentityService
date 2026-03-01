@@ -1,8 +1,11 @@
+using Contracts.Events;
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Services;
 using IdentityService.Entities;
+using IdentityService.Extensions;
 using IdentityService.Models;
+using IdentityService.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,7 +24,8 @@ public class Index(
     UserManager<ManagementUser> managementUserManager,
     SignInManager<ManagementUser> managementSignInManager,
     IEventService events,
-    IIdentityServerInteractionService interaction) : PageModel
+    IIdentityServerInteractionService interaction,
+    IPublishService publishService) : PageModel
 {
     private readonly ILogger _logger = logger;
     private readonly IEventService _events = events;
@@ -30,8 +34,11 @@ public class Index(
     private readonly SignInManager<ApplicationUser> _signInManager = signInManager;
     private readonly UserManager<ManagementUser> _managementUserManager = managementUserManager;
     private readonly SignInManager<ManagementUser> _managementSignInManager = managementSignInManager;
+    private readonly IPublishService _publishService = publishService;
 
     [BindProperty] public string Code { get; set; } = default!;
+
+    [TempData] public string StatusMessage { get; set; }
 
     public IActionResult OnGet()
     {
@@ -42,6 +49,62 @@ public class Index(
         }
 
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostResend()
+    {
+        var userEmail = TempData["2FA_UserEmail"] as string;
+        var rememberMe = TempData["2FA_RemberMe"] as bool? ?? false;
+        var returnUrl = TempData["2FA_ReturnUrl"] as string ?? "~/";
+        var userType = TempData["2FA_UserType"] as string ?? "blogsphere";
+
+        if (string.IsNullOrEmpty(userEmail))
+        {
+            return RedirectToPage("/Account/Login/Index");
+        }
+
+        if (userType == "management")
+        {
+            var managementUser = await _managementUserManager.FindByEmailAsync(userEmail);
+            if (managementUser == null)
+            {
+                return RedirectToPage("/Account/Login/Index");
+            }
+
+            var code = await _managementUserManager.GenerateTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider);
+            await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACode", code);
+            await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
+
+            _logger.Here().Information("Resending 2FA code to management user {Email}", userEmail);
+            await _publishService.PublishAsync(new AuthCodeSent
+            {
+                Email = managementUser.Email,
+                Code = code
+            }, Guid.NewGuid().ToString());
+        }
+        else
+        {
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user == null)
+            {
+                return RedirectToPage("/Account/Login/Index");
+            }
+
+            var code = await _userManager.GenerateTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider);
+            await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACode", code);
+            await _userManager.SetAuthenticationTokenAsync(user, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
+
+            _logger.Here().Information("Resending 2FA code to blogsphere user {Email}", userEmail);
+            await _publishService.PublishAsync(new AuthCodeSent
+            {
+                Email = user.Email,
+                Code = code
+            }, Guid.NewGuid().ToString());
+        }
+
+        SetTempData(userEmail, returnUrl, rememberMe, userType);
+        StatusMessage = "A new verification code has been sent to your email.";
+        return RedirectToPage();
     }
 
     public async Task<IActionResult> OnPost()
