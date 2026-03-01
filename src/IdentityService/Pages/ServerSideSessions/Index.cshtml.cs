@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.ServerSideSessions
 {
+    [ValidateAntiForgeryToken]
     public class IndexModel(ISessionManagementService sessionManagementService) : PageModel
     {
         private readonly ISessionManagementService _sessionManagementService = sessionManagementService;

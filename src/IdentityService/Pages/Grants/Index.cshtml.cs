@@ -13,6 +13,7 @@ namespace IdentityService.Pages.Grants;
 
 [SecurityHeaders]
 [Authorize]
+[ValidateAntiForgeryToken]
 public class Index(IIdentityServerInteractionService interaction,
     IClientStore clients,
     IResourceStore resources,

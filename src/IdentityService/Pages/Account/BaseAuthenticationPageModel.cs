@@ -1,14 +1,17 @@
 using Duende.IdentityServer.Services;
 using IdentityService.Extensions;
 using IdentityService.Management.Services;
+using IdentityService.Security;
 using IdentityService.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace IdentityService.Pages.Account;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public abstract class BaseAuthenticationPageModel(
     ILogger logger,
     IMultiUserStoreService multiUserStoreService,
@@ -37,7 +40,7 @@ public abstract class BaseAuthenticationPageModel(
     protected void SetTempDataForTwoFactor(string userEmail, string returnUrl, bool rememberLogin, string userType)
     {
         TempData["2FA_UserEmail"] = userEmail;
-        TempData["2FA_ReturnUrl"] = returnUrl;
+        TempData["2FA_ReturnUrl"] = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
         TempData["2FA_RemberMe"] = rememberLogin;
         TempData["2FA_UserType"] = userType;
     }
@@ -45,7 +48,7 @@ public abstract class BaseAuthenticationPageModel(
     protected (string email, string returnUrl, bool rememberLogin, string userType) GetTempDataForTwoFactor()
     {
         var userEmail = TempData["2FA_UserEmail"] as string ?? "";
-        var returnUrl = TempData["2FA_ReturnUrl"] as string ?? "~/";
+        var returnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(TempData["2FA_ReturnUrl"] as string);
         var rememberMe = TempData["2FA_RemberMe"] as bool? ?? false;
         var userType = TempData["2FA_UserType"] as string ?? "blogsphere";
 
