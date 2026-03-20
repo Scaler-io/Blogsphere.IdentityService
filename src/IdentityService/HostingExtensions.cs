@@ -12,6 +12,7 @@ using IdentityService.Management.Services;
 using MassTransit;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Converters;
 using Serilog;
@@ -195,9 +196,20 @@ internal static class HostingExtensions
         // Register the custom resource owner password validator
         builder.Services.AddScoped<Duende.IdentityServer.Validation.IResourceOwnerPasswordValidator, Services.MultiUserResourceOwnerPasswordValidator>();
 
-        // Configure application cookies
+        // Configure application cookies for cross-site session checks
         builder.Services.ConfigureApplicationCookie(options =>
-            options.Cookie.SameSite = SameSiteMode.Lax);
+        {
+            if (builder.Environment.IsDevelopment())
+            {
+                options.Cookie.SameSite = SameSiteMode.Lax;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            }
+            else
+            {
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            }
+        });
     }
 
     private static void ConfigureApplicationServices(WebApplicationBuilder builder)
@@ -240,7 +252,8 @@ internal static class HostingExtensions
             options.AddPolicy(Constants.AppCorsPolicy, policy =>
                 policy.WithOrigins("http://localhost:4200")
                       .AllowAnyHeader()
-                      .AllowAnyMethod());
+                      .AllowAnyMethod()
+                      .AllowCredentials());
         });
     }
 
@@ -263,6 +276,9 @@ internal static class HostingExtensions
         app.UseAuthorization();
 
         // Configure endpoints
+        app.MapGet("/account/session/check", () => Results.Ok())
+            .RequireAuthorization()
+            .RequireCors(Constants.AppCorsPolicy);
         app.MapRazorPages().RequireAuthorization();
 
         return app;
