@@ -1,0 +1,137 @@
+@page
+@model IdentityService.Pages.Account.Manage.TwoFactor.Index
+@{
+    ViewData["Title"] = "Two-Factor Authentication";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+
+                    <!-- Shield with checkmark -->
+                    <path d="M160 55L120 75V125C120 150 135 170 160 175C185 170 200 150 200 125V75L160 55Z"
+                          fill="rgba(255, 255, 255, 0.9)" stroke="rgba(255, 255, 255, 1)" stroke-width="2"/>
+                    <path d="M143 118L155 130L178 107" stroke="#0033cc" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <!-- Floating elements -->
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)" />
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)" />
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)" />
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)" />
+
+                    <!-- Connection lines -->
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+
+            <div class="feature-text">
+                <h3>Two-Factor Authentication</h3>
+                <p>Add an extra layer of protection to your account.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-right-section">
+        <div class="form-container">
+            <div class="back-nav">
+                <a class="back-nav-link"
+                   asp-page="/Account/Manage/Index"
+                   asp-route-returnUrl="@Model.Input.ReturnUrl"
+                   asp-route-clientId="@Model.Input.ClientId">&larr; Back</a>
+            </div>
+            <div class="form-header">
+                <h2>Two-Factor Authentication</h2>
+                <p>
+                    @if (Model.TwoFactorEnabled)
+                    {
+                        <span>Two-factor authentication is currently <strong class="text-success">enabled</strong>.</span>
+                    }
+                    else
+                    {
+                        <span>Two-factor authentication is currently <strong class="text-danger">disabled</strong>.</span>
+                    }
+                </p>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+            {
+                <div class="manage-status-message">@Model.StatusMessage</div>
+            }
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @if (!Model.TwoFactorEnabled)
+            {
+                <div class="tfa-info-box">
+                    <p>When enabled, you will be required to enter a verification code sent to your email each time you sign in.</p>
+                </div>
+                <form method="post" class="reset-password-form">
+                    <input type="hidden" asp-for="Input.ReturnUrl" />
+                    <input type="hidden" asp-for="Input.ClientId" />
+                    <input type="hidden" name="Input.Action" value="enable" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn-continue">Enable Two-Factor Authentication</button>
+                    </div>
+                </form>
+            }
+            else if (!Model.DisableCodeSent)
+            {
+                <div class="tfa-info-box tfa-info-box--warn">
+                    <p>Disabling two-factor authentication will reduce the security of your account. A verification code will be sent to your email to confirm this action.</p>
+                </div>
+                <form method="post" class="reset-password-form">
+                    <input type="hidden" asp-for="Input.ReturnUrl" />
+                    <input type="hidden" asp-for="Input.ClientId" />
+                    <input type="hidden" name="Input.Action" value="requestDisableCode" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn-continue btn-continue--danger">Disable Two-Factor Authentication</button>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <form method="post" class="reset-password-form">
+                    <input type="hidden" asp-for="Input.ReturnUrl" />
+                    <input type="hidden" asp-for="Input.ClientId" />
+                    <input type="hidden" name="Input.Action" value="confirmDisable" />
+
+                    <div class="form-group">
+                        <input type="text"
+                               class="form-control"
+                               asp-for="Input.VerificationCode"
+                               placeholder="Enter verification code"
+                               autocomplete="one-time-code"
+                               inputmode="numeric"
+                               maxlength="6" />
+                        <span asp-validation-for="Input.VerificationCode" class="text-danger validation-error"></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-continue btn-continue--danger">Confirm &amp; Disable</button>
+                    </div>
+                </form>
+
+                <form method="post" class="reset-password-form" style="margin-top: 8px;">
+                    <input type="hidden" asp-for="Input.ReturnUrl" />
+                    <input type="hidden" asp-for="Input.ClientId" />
+                    <input type="hidden" name="Input.Action" value="requestDisableCode" />
+                    <div class="form-actions">
+                        <button type="submit" class="btn-resend">Resend Code</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
