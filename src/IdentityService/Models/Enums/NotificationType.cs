@@ -4,5 +4,6 @@ public enum NotificationType
 {
     AuthCodeSent,
     PasswordResetInstructionSent,
-    PasswordResetOneTimeCodeSent
+    PasswordResetOneTimeCodeSent,
+    PhoneVerificationCodeSent
 }

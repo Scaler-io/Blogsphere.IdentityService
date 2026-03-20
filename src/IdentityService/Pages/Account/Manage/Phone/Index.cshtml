@@ -1,0 +1,116 @@
+@page
+@model IdentityService.Pages.Account.Manage.Phone.Index
+@{
+    ViewData["Title"] = "Recovery Phone";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+
+                    <!-- Phone device -->
+                    <rect x="135" y="65" width="50" height="90" rx="8" fill="rgba(255, 255, 255, 0.9)" stroke="rgba(255, 255, 255, 1)" stroke-width="2"/>
+                    <rect x="141" y="78" width="38" height="55" rx="2" fill="#0033cc" opacity="0.15"/>
+                    <circle cx="160" cy="145" r="4" fill="#0033cc"/>
+                    <!-- Signal waves -->
+                    <path d="M192 85C198 80 198 70 192 65" stroke="rgba(255, 255, 255, 0.7)" stroke-width="2" fill="none" stroke-linecap="round"/>
+                    <path d="M200 90C210 82 210 63 200 55" stroke="rgba(255, 255, 255, 0.5)" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+                    <!-- Floating elements -->
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)" />
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)" />
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)" />
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)" />
+
+                    <!-- Connection lines -->
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+
+            <div class="feature-text">
+                <h3>Recovery Phone</h3>
+                <p>Add a phone number for account recovery and extra security.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-right-section">
+        <div class="form-container">
+            <div class="back-nav">
+                <a class="back-nav-link"
+                   asp-page="/Account/Manage/Index"
+                   asp-route-returnUrl="@Model.Input.ReturnUrl"
+                   asp-route-clientId="@Model.Input.ClientId">&larr; Back</a>
+            </div>
+            <div class="form-header">
+                <h2>Recovery Phone</h2>
+                <p>Add or update the phone number associated with your account.</p>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+            {
+                <div class="manage-status-message">@Model.StatusMessage</div>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.CurrentPhone))
+            {
+                <div class="phone-current">
+                    <span class="phone-current-label">Current phone</span>
+                    <span class="phone-current-value">@Model.CurrentPhone</span>
+                    @if (Model.PhoneConfirmed)
+                    {
+                        <span class="manage-badge manage-badge--on">Verified</span>
+                    }
+                    else
+                    {
+                        <span class="manage-badge manage-badge--off">Not verified</span>
+                        <a class="phone-verify-link"
+                           asp-page="/Account/Manage/Phone/VerifyCode/Index"
+                           asp-route-returnUrl="@Model.Input.ReturnUrl"
+                           asp-route-clientId="@Model.Input.ClientId">Verify now</a>
+                    }
+                </div>
+            }
+
+            <form method="post" class="reset-password-form">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <input type="hidden" asp-for="Input.ReturnUrl" />
+                <input type="hidden" asp-for="Input.ClientId" />
+
+                <div class="form-group">
+                    <div class="phone-input-group">
+                        <span class="phone-input-prefix">+91</span>
+                        <input type="tel"
+                               class="form-control phone-input-control"
+                               asp-for="Input.PhoneNumber"
+                               placeholder="10-digit mobile number*"
+                               autocomplete="tel-national"
+                               inputmode="numeric"
+                               maxlength="10"
+                               pattern="[6-9][0-9]{9}" />
+                    </div>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger validation-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-continue">
+                        @(string.IsNullOrEmpty(Model.CurrentPhone) ? "Add Phone Number" : "Update Phone Number")
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
