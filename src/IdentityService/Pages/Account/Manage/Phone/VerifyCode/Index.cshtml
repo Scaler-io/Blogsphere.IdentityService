@@ -1,0 +1,104 @@
+@page
+@model IdentityService.Pages.Account.Manage.Phone.VerifyCode.Index
+@{
+    ViewData["Title"] = "Verify Phone Number";
+    Layout = "_SinglePageLayout";
+}
+
+<div class="reset-password-container">
+    <div class="reset-password-left-section">
+        <div class="gradient-overlay"></div>
+        <div class="content-wrapper">
+            <div class="brand-section">
+                <h1 class="brand-title">Blogsphere</h1>
+                <p class="brand-subtitle">Identity Service</p>
+            </div>
+
+            <div class="illustration-container">
+                <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" class="reset-password-illustration">
+                    <circle cx="160" cy="140" r="120" fill="rgba(255, 255, 255, 0.1)" />
+                    <circle cx="160" cy="140" r="90" fill="rgba(255, 255, 255, 0.05)" />
+
+                    <!-- Envelope with code -->
+                    <path d="M115 95H205V165H115V95Z" fill="rgba(255, 255, 255, 0.9)" stroke="rgba(255, 255, 255, 1)" stroke-width="2"/>
+                    <path d="M115 95L160 130L205 95" stroke="rgba(255, 255, 255, 1)" stroke-width="2" fill="none"/>
+                    <!-- Code digits -->
+                    <rect x="130" y="140" width="16" height="16" rx="3" fill="#0033cc"/>
+                    <rect x="152" y="140" width="16" height="16" rx="3" fill="#0033cc"/>
+                    <rect x="174" y="140" width="16" height="16" rx="3" fill="#0033cc"/>
+
+                    <!-- Floating elements -->
+                    <circle cx="100" cy="100" r="4" fill="rgba(255, 230, 0, 0.8)" />
+                    <circle cx="220" cy="120" r="3" fill="rgba(255, 230, 0, 0.6)" />
+                    <circle cx="80" cy="180" r="5" fill="rgba(255, 230, 0, 0.7)" />
+                    <circle cx="240" cy="180" r="4" fill="rgba(255, 230, 0, 0.5)" />
+
+                    <!-- Connection lines -->
+                    <path d="M100 100L160 140L220 120" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <path d="M80 180L160 140L240 180" stroke="rgba(255, 255, 255, 0.3)" stroke-width="1" stroke-dasharray="3,3"/>
+                </svg>
+            </div>
+
+            <div class="feature-text">
+                <h3>Verify Phone</h3>
+                <p>Enter the verification code to confirm your phone number.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reset-password-right-section">
+        <div class="form-container">
+            <div class="back-nav">
+                <a class="back-nav-link"
+                   asp-page="/Account/Manage/Phone/Index"
+                   asp-route-returnUrl="@Model.Input.ReturnUrl"
+                   asp-route-clientId="@Model.Input.ClientId">&larr; Back</a>
+            </div>
+            <div class="form-header">
+                <h2>Verify Phone Number</h2>
+                <p>
+                    Send a verification code to your email and enter it below to confirm
+                    @if (!string.IsNullOrEmpty(Model.MaskedPhone))
+                    {
+                        <span>phone number <strong>@Model.MaskedPhone</strong></span>
+                    }
+                    else
+                    {
+                        <span>your phone number</span>
+                    }
+                </p>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+            {
+                <div class="manage-status-message">@Model.StatusMessage</div>
+            }
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <form method="post" class="reset-password-form">
+                <input type="hidden" asp-for="Input.ReturnUrl" />
+                <input type="hidden" asp-for="Input.ClientId" />
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-continue" name="Input.Action" value="sendCode">Send Verification Code</button>
+                </div>
+
+                <div class="form-group">
+                    <input type="text"
+                           class="form-control"
+                           asp-for="Input.VerificationCode"
+                           placeholder="Enter verification code"
+                           autocomplete="one-time-code"
+                           inputmode="numeric"
+                           maxlength="6" />
+                    <span asp-validation-for="Input.VerificationCode" class="text-danger validation-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-continue" name="Input.Action" value="verifyCode">Verify Phone Number</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

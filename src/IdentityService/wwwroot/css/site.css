@@ -3397,6 +3397,219 @@
     transform: translateY(0);
   }
 }
+.reset-password-container .back-nav {
+  margin-bottom: 0.5rem;
+}
+.reset-password-container .back-nav-link {
+  color: #0033cc;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.625rem;
+  border-radius: 999px;
+  background: rgba(0, 51, 204, 0.08);
+}
+.reset-password-container .back-nav-link:hover {
+  background: rgba(0, 51, 204, 0.14);
+  text-decoration: none;
+}
+.reset-password-container .manage-status-message {
+  background: rgba(0, 51, 204, 0.08);
+  color: #0033cc;
+  padding: 0.625rem 0.875rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+.reset-password-container .manage-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.reset-password-container .manage-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  background: #ffffff;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+.reset-password-container .manage-card:hover {
+  border-color: rgba(0, 51, 204, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 51, 204, 0.08);
+  text-decoration: none;
+  color: inherit;
+}
+.reset-password-container .manage-card-icon {
+  flex-shrink: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 51, 204, 0.08);
+  border-radius: 0.625rem;
+  color: #0033cc;
+}
+.reset-password-container .manage-card-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.reset-password-container .manage-card-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #00205b;
+}
+.reset-password-container .manage-card-desc {
+  font-size: 0.82rem;
+  color: rgba(0, 32, 91, 0.6);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.reset-password-container .manage-card-arrow {
+  font-size: 1.5rem;
+  color: rgba(0, 32, 91, 0.35);
+  font-weight: 300;
+}
+.reset-password-container .manage-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.reset-password-container .manage-badge--on {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+.reset-password-container .manage-badge--off {
+  background: rgba(255, 82, 82, 0.1);
+  color: rgb(255, 51.4, 51.4);
+}
+.reset-password-container .manage-hint {
+  color: rgba(0, 32, 91, 0.5);
+  font-style: italic;
+}
+.reset-password-container .tfa-info-box {
+  background: rgba(0, 51, 204, 0.05);
+  border: 1px solid rgba(0, 51, 204, 0.12);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.reset-password-container .tfa-info-box p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(0, 32, 91, 0.75);
+  line-height: 1.5;
+}
+.reset-password-container .tfa-info-box--warn {
+  background: rgba(255, 82, 82, 0.04);
+  border-color: rgba(255, 82, 82, 0.12);
+}
+.reset-password-container .tfa-info-box--warn p {
+  color: rgba(0, 32, 91, 0.8);
+}
+.reset-password-container .text-success {
+  color: #10b981;
+}
+.reset-password-container .text-danger {
+  color: rgb(255, 41.2, 41.2);
+}
+.reset-password-container .btn-continue--danger {
+  background: #ff5252 !important;
+  border-color: #ff5252 !important;
+  color: #ffffff !important;
+}
+.reset-password-container .btn-continue--danger:hover {
+  background: rgb(255, 41.2, 41.2) !important;
+  border-color: rgb(255, 41.2, 41.2) !important;
+}
+.reset-password-container .btn-resend {
+  width: 100%;
+  padding: 0.625rem 1.25rem;
+  border: 1px solid rgba(0, 51, 204, 0.2);
+  border-radius: 8px;
+  background: transparent;
+  color: #0033cc;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.reset-password-container .btn-resend:hover {
+  background: rgba(0, 51, 204, 0.06);
+}
+.reset-password-container .phone-current {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+  padding: 0.75rem 1rem;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.reset-password-container .phone-input-group {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+}
+.reset-password-container .phone-input-group .phone-input-prefix {
+  display: inline-flex;
+  align-items: center;
+  padding: 1.5rem 1.5rem;
+  background: rgba(0, 51, 204, 0.06);
+  border: 1px solid #e0e0e0;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  color: #00205b;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+.reset-password-container .phone-input-group .phone-input-control {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.reset-password-container .phone-current-label {
+  font-size: 0.82rem;
+  color: rgba(0, 32, 91, 0.55);
+  font-weight: 500;
+}
+.reset-password-container .phone-current-value {
+  font-family: monospace;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #00205b;
+  letter-spacing: 0.05em;
+}
+.reset-password-container .phone-verify-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0033cc;
+  text-decoration: none;
+  margin-left: auto;
+}
+.reset-password-container .phone-verify-link:hover {
+  text-decoration: underline;
+}
+
 :root {
   --bs-primary: #0033cc;
   --bs-primary-rgb: 0, 51, 204;

@@ -1,0 +1,253 @@
+@use "sass:color";
+@use "../_colors" as colors;
+@use "../_variables" as vars;
+@use "../_mixins" as mixins;
+
+.reset-password-container {
+    .back-nav {
+        margin-bottom: vars.$spacing-sm;
+    }
+
+    .back-nav-link {
+        color: colors.$color-primary;
+        text-decoration: none;
+        font-weight: vars.$font-weight-semibold;
+        font-size: 0.95rem;
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.625rem;
+        border-radius: 999px;
+        background: rgba(colors.$color-primary, 0.08);
+
+        &:hover {
+            background: rgba(colors.$color-primary, 0.14);
+            text-decoration: none;
+        }
+    }
+
+    .manage-status-message {
+        background: rgba(colors.$color-primary, 0.08);
+        color: colors.$color-primary;
+        padding: 0.625rem 0.875rem;
+        border-radius: vars.$border-radius-sm;
+        font-size: 0.9rem;
+        font-weight: vars.$font-weight-medium;
+        margin-bottom: vars.$spacing-lg;
+    }
+
+    .manage-card-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .manage-card {
+        display: flex;
+        align-items: center;
+        gap: vars.$spacing-md;
+        padding: vars.$spacing-md vars.$spacing-lg;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        border-radius: vars.$border-radius-md;
+        background: colors.$color-surface;
+        text-decoration: none;
+        color: inherit;
+        transition: border-color vars.$transition-fast,
+            box-shadow vars.$transition-fast;
+        cursor: pointer;
+
+        &:hover {
+            border-color: rgba(colors.$color-primary, 0.3);
+            box-shadow: 0 2px 8px rgba(colors.$color-primary, 0.08);
+            text-decoration: none;
+            color: inherit;
+        }
+    }
+
+    .manage-card-icon {
+        flex-shrink: 0;
+        width: 2.5rem;
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(colors.$color-primary, 0.08);
+        border-radius: 0.625rem;
+        color: colors.$color-primary;
+    }
+
+    .manage-card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+    }
+
+    .manage-card-title {
+        font-weight: vars.$font-weight-semibold;
+        font-size: 0.95rem;
+        color: colors.$color-text-primary;
+    }
+
+    .manage-card-desc {
+        font-size: 0.82rem;
+        color: rgba(colors.$color-text-primary, 0.6);
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: vars.$spacing-sm;
+    }
+
+    .manage-card-arrow {
+        font-size: 1.5rem;
+        color: rgba(colors.$color-text-primary, 0.35);
+        font-weight: vars.$font-weight-light;
+    }
+
+    .manage-badge {
+        display: inline-block;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.72rem;
+        font-weight: vars.$font-weight-semibold;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .manage-badge--on {
+        background: rgba(colors.$color-success, 0.12);
+        color: colors.$color-success;
+    }
+
+    .manage-badge--off {
+        background: rgba(colors.$color-error, 0.1);
+        color: color.adjust(colors.$color-error, $lightness: -6%);
+    }
+
+    .manage-hint {
+        color: rgba(colors.$color-text-primary, 0.5);
+        font-style: italic;
+    }
+
+    .tfa-info-box {
+        background: rgba(colors.$color-primary, 0.05);
+        border: 1px solid rgba(colors.$color-primary, 0.12);
+        border-radius: vars.$border-radius-sm;
+        padding: vars.$spacing-md vars.$spacing-lg;
+        margin-bottom: vars.$spacing-lg;
+
+        p {
+            margin: 0;
+            font-size: vars.$font-size-xs;
+            color: rgba(colors.$color-text-primary, 0.75);
+            line-height: 1.5;
+        }
+    }
+
+    .tfa-info-box--warn {
+        background: rgba(colors.$color-error, 0.04);
+        border-color: rgba(colors.$color-error, 0.12);
+
+        p {
+            color: rgba(colors.$color-text-primary, 0.8);
+        }
+    }
+
+    .text-success {
+        color: colors.$color-success;
+    }
+
+    .text-danger {
+        color: color.adjust(colors.$color-error, $lightness: -8%);
+    }
+
+    .btn-continue--danger {
+        background: colors.$color-error !important;
+        border-color: colors.$color-error !important;
+        color: colors.$color-surface !important;
+
+        &:hover {
+            background: color.adjust(colors.$color-error, $lightness: -8%) !important;
+            border-color: color.adjust(colors.$color-error, $lightness: -8%) !important;
+        }
+    }
+
+    .btn-resend {
+        width: 100%;
+        padding: 0.625rem 1.25rem;
+        border: 1px solid rgba(colors.$color-primary, 0.2);
+        border-radius: vars.$border-radius-sm;
+        background: transparent;
+        color: colors.$color-primary;
+        font-weight: vars.$font-weight-semibold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background vars.$transition-fast;
+
+        &:hover {
+            background: rgba(colors.$color-primary, 0.06);
+        }
+    }
+
+    .phone-current {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+        flex-wrap: wrap;
+        padding: 0.75rem 1rem;
+        background: rgba(0, 0, 0, 0.02);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        border-radius: vars.$border-radius-sm;
+        margin-bottom: vars.$spacing-lg;
+    }
+
+    .phone-input-group {
+        display: flex;
+        align-items: stretch;
+        width: 100%;
+
+        .phone-input-prefix {
+            display: inline-flex;
+            align-items: center;
+            padding: vars.$spacing-lg vars.$spacing-lg;
+            background: rgba(colors.$color-primary, 0.06);
+            border: 1px solid colors.$color-border;
+            border-right: none;
+            border-radius: vars.$border-radius-sm 0 0 vars.$border-radius-sm;
+            color: colors.$color-text-primary;
+            font-weight: vars.$font-weight-semibold;
+            font-size: vars.$font-size-sm;
+            letter-spacing: 0.02em;
+        }
+
+        .phone-input-control {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+
+    .phone-current-label {
+        font-size: 0.82rem;
+        color: rgba(colors.$color-text-primary, 0.55);
+        font-weight: vars.$font-weight-medium;
+    }
+
+    .phone-current-value {
+        font-family: monospace;
+        font-size: 0.95rem;
+        font-weight: vars.$font-weight-semibold;
+        color: colors.$color-text-primary;
+        letter-spacing: 0.05em;
+    }
+
+    .phone-verify-link {
+        font-size: 0.82rem;
+        font-weight: vars.$font-weight-semibold;
+        color: colors.$color-primary;
+        text-decoration: none;
+        margin-left: auto;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
