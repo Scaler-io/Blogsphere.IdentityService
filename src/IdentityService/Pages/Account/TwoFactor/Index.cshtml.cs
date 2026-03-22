@@ -82,7 +82,10 @@ public class Index(
             {
                 Email = managementUser.Email,
                 Code = code
-            }, Guid.NewGuid().ToString());
+            }, Guid.NewGuid().ToString(), new{
+                Purpose = "TwoFactor",
+                UserType = "management"
+            });
         }
         else
         {
@@ -101,7 +104,11 @@ public class Index(
             {
                 Email = user.Email,
                 Code = code
-            }, Guid.NewGuid().ToString());
+            }, Guid.NewGuid().ToString(), new
+            {
+                Purpose = "TwoFactor",
+                UserType = "blogsphere"
+            });
         }
 
         SetTempData(userEmail, returnUrl, rememberMe, userType);
@@ -118,7 +125,7 @@ public class Index(
 
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
 
-        if(string.IsNullOrEmpty(Code))
+        if (string.IsNullOrEmpty(Code))
         {
             ModelState.AddModelError("Code", "Code is required");
             SetTempData(userEmail, returnUrl, rememberMe, userType);
@@ -137,7 +144,7 @@ public class Index(
             }
 
             var result = await _managementUserManager.VerifyTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider, Code);
-            if(!result)
+            if (!result)
             {
                 ModelState.AddModelError("Code", "The code is invalid");
                 Code = string.Empty;
@@ -167,7 +174,7 @@ public class Index(
             }
 
             var result = await _userManager.VerifyTwoFactorTokenAsync(user, Constants.CustomTwoFactorTokenProvider, Code);
-            if(!result)
+            if (!result)
             {
                 ModelState.AddModelError("Code", "The code is invalid");
                 Code = string.Empty;

@@ -105,7 +105,7 @@ public class Index(
 
         logger.Here().Information("2FA enabled for {UserType} user {Email}", userStore, email);
         StatusMessage = "Two-factor authentication has been enabled.";
-        return RedirectToPage("/Account/Manage/Index", new { returnUrl = Input.ReturnUrl, clientId = Input.ClientId });
+        return Redirect(AppendQueryParam(Input.ReturnUrl, "twoFactor", "enabled"));
     }
 
     private async Task<IActionResult> HandleRequestDisableCodeAsync(string email, string userStore)
@@ -188,7 +188,7 @@ public class Index(
 
         logger.Here().Information("2FA disabled for {UserType} user {Email}", userStore, email);
         StatusMessage = "Two-factor authentication has been disabled.";
-        return RedirectToPage("/Account/Manage/Index", new { returnUrl = Input.ReturnUrl, clientId = Input.ClientId });
+        return Redirect(AppendQueryParam(Input.ReturnUrl, "twoFactor", "disabled"));
     }
 
     private async Task<(bool isValid, string reason)> ValidateOtpAsync(string email, string userStore, string otpCode)
@@ -251,5 +251,16 @@ public class Index(
     {
         ModelState.AddModelError(string.Empty, "Unable to process request. Account may be inactive.");
         return Page();
+    }
+
+    private static string AppendQueryParam(string url, string key, string value)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return url;
+        }
+
+        var separator = url.Contains('?') ? "&" : "?";
+        return $"{url}{separator}{Uri.EscapeDataString(key)}={Uri.EscapeDataString(value ?? string.Empty)}";
     }
 }
