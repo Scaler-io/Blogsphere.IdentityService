@@ -77,15 +77,15 @@ public class Index(
             var oneTimeCode = RandomNumberGenerator.GetInt32(100000, 1000000).ToString("D6");
             await SaveOtpAsync(currentEmail, userStore, oneTimeCode, DateTime.UtcNow.AddMinutes(OtpExpiryMinutes), isVerified: false);
 
-            await _publishService.PublishAsync<PasswordResetOneTimeCodeSent>(new()
+            await _publishService.PublishAsync(new AuthCodeSent
             {
                 Email = currentEmail,
                 Code = oneTimeCode
             }, Guid.NewGuid().ToString(), new
             {
+                Purpose = "SelfResetPassword",
                 UserType = userStore == ManagementConstants.ManagementUserStore ? "management" : "blogsphere",
-                ReturnUrl = Input.ReturnUrl,
-                ClientId = Input.ClientId
+
             });
 
             StatusMessage = "One-time code sent to your email.";

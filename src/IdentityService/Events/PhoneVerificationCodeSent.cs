@@ -6,6 +6,7 @@ namespace Contracts.Events;
 public class PhoneVerificationCodeSent : NotificationEventBase
 {
     public string Email { get; set; } = string.Empty;
+    public string PhoneNumber { get; set; } = string.Empty;
     public string Code { get; set; } = string.Empty;
     protected override NotificationType NotificationType { get; set; } = NotificationType.PhoneVerificationCodeSent;
 }

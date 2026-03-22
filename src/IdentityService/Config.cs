@@ -1,4 +1,4 @@
-﻿using Duende.IdentityServer.Models;
+using Duende.IdentityServer.Models;
 
 namespace IdentityService;
 
@@ -96,7 +96,7 @@ public static class Config
             ClientId = "blogsphere-management",
             ClientName = "Blogsphere Management Application",
             AllowedGrantTypes = GrantTypes.Code,
-            RedirectUris = { "http://localhost:4200" },
+            RedirectUris = { "http://localhost:4200", "http://localhost:4200/user-profile" },
             PostLogoutRedirectUris = { "http://localhost:4200" },
             ClientSecrets = { new Secret("management-secret-key-2024".Sha256()) },
             AllowedScopes =

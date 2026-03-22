@@ -91,6 +91,7 @@ public class Index(
     private async Task<IActionResult> HandleSendCodeAsync(string email, string userStore)
     {
         var code = RandomNumberGenerator.GetInt32(100000, 1000000).ToString("D6");
+        var phoneNumber = string.Empty;
 
         if (userStore == ManagementConstants.ManagementUserStore)
         {
@@ -100,6 +101,7 @@ public class Index(
             await managementUserManager.SetAuthenticationTokenAsync(user, OtpLoginProvider, OtpCodeName, code);
             await managementUserManager.SetAuthenticationTokenAsync(user, OtpLoginProvider, OtpCodeExpiryName,
                 DateTime.UtcNow.AddMinutes(OtpExpiryMinutes).ToString("O"));
+            phoneNumber = user.PhoneNumber ?? string.Empty;
         }
         else
         {
@@ -109,11 +111,13 @@ public class Index(
             await userManager.SetAuthenticationTokenAsync(user, OtpLoginProvider, OtpCodeName, code);
             await userManager.SetAuthenticationTokenAsync(user, OtpLoginProvider, OtpCodeExpiryName,
                 DateTime.UtcNow.AddMinutes(OtpExpiryMinutes).ToString("O"));
+            phoneNumber = user.PhoneNumber ?? string.Empty;
         }
 
         await publishService.PublishAsync(new PhoneVerificationCodeSent
         {
             Email = email,
+            PhoneNumber = phoneNumber,
             Code = code
         }, Guid.NewGuid().ToString(), new
         {
@@ -122,7 +126,7 @@ public class Index(
         });
 
         logger.Here().Information("Phone verification code sent to {UserType} user {Email}", userStore, email);
-        StatusMessage = "A verification code has been sent to your email.";
+        StatusMessage = "A verification code has been sent to your phone.";
         return RedirectToPage(new { returnUrl = Input.ReturnUrl, clientId = Input.ClientId });
     }
 
@@ -164,7 +168,7 @@ public class Index(
 
         logger.Here().Information("Phone verified for {UserType} user {Email}", userStore, email);
         StatusMessage = "Your phone number has been verified.";
-        return RedirectToPage("/Account/Manage/Index", new { returnUrl = Input.ReturnUrl, clientId = Input.ClientId });
+        return Redirect(AppendQueryParam(Input.ReturnUrl, "phone", "verified"));
     }
 
     private async Task<(bool isValid, string reason)> ValidateOtpAsync(string email, string userStore, string otpCode)
@@ -248,5 +252,16 @@ public class Index(
     {
         ModelState.AddModelError(string.Empty, "Unable to process request. Account may be inactive.");
         return Page();
+    }
+
+    private static string AppendQueryParam(string url, string key, string value)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return url;
+        }
+
+        var separator = url.Contains('?') ? "&" : "?";
+        return $"{url}{separator}{Uri.EscapeDataString(key)}={Uri.EscapeDataString(value ?? string.Empty)}";
     }
 }
