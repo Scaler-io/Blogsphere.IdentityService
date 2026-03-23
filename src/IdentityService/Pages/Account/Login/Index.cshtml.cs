@@ -61,12 +61,13 @@ public class Index(
     {
         var safeReturnUrl = ReturnUrlGuard.NormalizeForIdentityFlow(returnUrl);
 
-        if(User.IsAuthenticated()){
+        if (User.IsAuthenticated())
+        {
             return Redirect("~/");
         }
-        
+
         await BuildModelAsync(safeReturnUrl);
-        
+
         if (View.IsExternalLoginOnly)
         {
             // we only have one option for logging in and it's an external provider
@@ -118,7 +119,7 @@ public class Index(
         {
             ModelState.AddModelError("Input.Username", "Email is required.");
         }
-        
+
         if (string.IsNullOrWhiteSpace(Input.Password))
         {
             ModelState.AddModelError("Input.Password", "Password is required.");
@@ -128,7 +129,7 @@ public class Index(
         {
             // Determine which user store to use based on the email (username)
             var userStore = await _multiUserStoreService.DetermineUserStoreByEmailAsync(Input.Username);
-            
+
             // Validate if the user type is allowed for this client
             if (context?.Client?.ClientId != null)
             {
@@ -137,29 +138,29 @@ public class Index(
                 {
                     await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, "user type not allowed for client", clientId: context.Client.ClientId));
                     Telemetry.Metrics.UserLoginFailure(context.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, "user type not allowed for client");
-                    
+
                     var clientRequiresManagement = expectedUserStore == ManagementConstants.ManagementUserStore;
-                    var errorMessage = clientRequiresManagement 
+                    var errorMessage = clientRequiresManagement
                         ? "This application is restricted to management users only. Please use a management account to login."
                         : "This application is not available for management users. Please use a regular user account.";
-                    
+
                     ModelState.AddModelError("Input.Username", errorMessage);
                     await BuildViewModelAsync(Input.ReturnUrl);
                     return Page();
                 }
             }
-            
+
             if (userStore == ManagementConstants.ManagementUserStore)
             {
                 // Use proper ASP.NET Core Identity authentication for management users
                 var managementUser = await _managementUserManager.FindByNameAsync(Input.Username);
-                if(managementUser != null && !await _managementUserManager.IsEmailConfirmedAsync(managementUser))
+                if (managementUser != null && !await _managementUserManager.IsEmailConfirmedAsync(managementUser))
                 {
                     ModelState.AddModelError("Input.Username", "Email is not confirmed. Please confirm your email to login.");
                     await BuildViewModelAsync(Input.ReturnUrl);
                     return Page();
                 }
-                if(managementUser != null && !managementUser.IsActive)
+                if (managementUser != null && !managementUser.IsActive)
                 {
                     ModelState.AddModelError("Input.Username", "Your account is not active. Please contact your administrator to activate your account.");
                     await BuildViewModelAsync(Input.ReturnUrl);
@@ -169,7 +170,7 @@ public class Index(
                 if (managementUser != null)
                 {
                     var result = await _managementSignInManager.PasswordSignInAsync(managementUser, Input.Password, Input.RememberLogin, lockoutOnFailure: false);
-                    
+
                     if (result.Succeeded)
                     {
                         await _events.RaiseAsync(new UserLoginSuccessEvent(managementUser.UserName, managementUser.Id, managementUser.FullName, clientId: context?.Client.ClientId));
@@ -196,22 +197,26 @@ public class Index(
                         Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
 
                         var code = await _managementUserManager.GenerateTwoFactorTokenAsync(managementUser, ManagementConstants.ManagementTwoFactorTokenProvider);
-                        
+
                         await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACode", code);
                         await _managementUserManager.SetAuthenticationTokenAsync(managementUser, "2Fa", "2FACodeExpiry", DateTime.UtcNow.AddMinutes(5).ToString());
-                        
+
                         _logger.Here().Information("Sending 2FA code to management user {code}", code);
                         await _publishService.PublishAsync(new AuthCodeSent
                         {
                             Email = managementUser.Email,
-                            Code = code                   
-                        }, Guid.NewGuid().ToString());
-                        
+                            Code = code
+                        }, Guid.NewGuid().ToString(), new
+                        {
+                            Purpose = "TwoFactor",
+                            UserType = "management"
+                        });
+
                         TempData["2FA_UserEmail"] = managementUser.Email;
                         TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
                         TempData["2FA_RemberMe"] = Input.RememberLogin;
                         TempData["2FA_UserType"] = "management";
-                        
+
                         return RedirectToPage("../TwoFactor/Index");
                     }
                     else if (result.IsLockedOut)
@@ -239,7 +244,7 @@ public class Index(
                 if (blogsphereUser != null)
                 {
                     var result = await _signInManager.PasswordSignInAsync(blogsphereUser, Input.Password, Input.RememberLogin, lockoutOnFailure: false);
-                    
+
                     if (result.Succeeded)
                     {
                         await _events.RaiseAsync(new UserLoginSuccessEvent(blogsphereUser.UserName, blogsphereUser.Id, blogsphereUser.FullName, clientId: context?.Client.ClientId));
@@ -274,8 +279,11 @@ public class Index(
                         await _publishService.PublishAsync(new AuthCodeSent
                         {
                             Email = blogsphereUser.Email,
-                            Code = code                   
-                        }, Guid.NewGuid().ToString());
+                            Code = code
+                        }, Guid.NewGuid().ToString(), new{
+                            Purpose = "TwoFactor",
+                            UserType = "blogsphere"
+                        });
 
                         TempData["2FA_UserEmail"] = blogsphereUser.Email;
                         TempData["2FA_ReturnUrl"] = Input.ReturnUrl;
@@ -315,7 +323,7 @@ public class Index(
             // We have validation errors, so we need to rebuild the View model but preserve Input
             await BuildViewModelAsync(Input.ReturnUrl);
         }
-        
+
         return Page();
     }
 
@@ -407,7 +415,7 @@ public class Index(
     private async Task BuildViewModelAsync(string returnUrl)
     {
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
-        
+
         var schemes = await _schemeProvider.GetAllSchemesAsync();
 
         var providers = schemes
