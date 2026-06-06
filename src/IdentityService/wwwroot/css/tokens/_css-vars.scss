@@ -1,0 +1,47 @@
+@use 'colors' as colors;
+
+:root {
+  --md-primary: #{colors.$md-primary};
+  --md-on-primary: #{colors.$md-on-primary};
+  --md-primary-container: #{colors.$md-primary-container};
+  --md-on-primary-container: #{colors.$md-on-primary-container};
+  --md-secondary: #{colors.$md-secondary};
+  --md-on-secondary: #{colors.$md-on-secondary};
+  --md-secondary-container: #{colors.$md-secondary-container};
+  --md-on-secondary-container: #{colors.$md-on-secondary-container};
+  --md-secondary-fixed-dim: #{colors.$md-secondary-fixed-dim};
+  --md-surface: #{colors.$md-surface};
+  --md-surface-container-lowest: #{colors.$md-surface-container-lowest};
+  --md-surface-container-low: #{colors.$md-surface-container-low};
+  --md-surface-container: #{colors.$md-surface-container};
+  --md-on-surface: #{colors.$md-on-surface};
+  --md-on-surface-variant: #{colors.$md-on-surface-variant};
+  --md-outline: #{colors.$md-outline};
+  --md-outline-variant: #{colors.$md-outline-variant};
+  --md-error: #{colors.$md-error};
+  --md-on-error: #{colors.$md-on-error};
+  --md-error-container: #{colors.$md-error-container};
+  --md-elevation-card: #{colors.$md-elevation-card};
+  --md-elevation-card-hover: #{colors.$md-elevation-card-hover};
+  --md-elevation-overlay: #{colors.$md-elevation-overlay};
+
+  --color-primary: var(--md-primary);
+  --color-accent: var(--md-secondary);
+  --color-surface: var(--md-surface-container-lowest);
+  --color-text-primary: var(--md-on-surface);
+  --color-text-secondary: var(--md-on-surface-variant);
+  --color-border: var(--md-outline-variant);
+  --color-error: var(--md-error);
+  --color-success: #{colors.$color-success};
+
+  --bs-primary: #{colors.$md-primary};
+  --bs-primary-rgb: 0, 15, 118;
+  --bs-secondary: #{colors.$md-secondary};
+  --bs-secondary-rgb: 0, 105, 112;
+  --bs-success: #{colors.$color-success};
+  --bs-info: #{colors.$color-info};
+  --bs-warning: #{colors.$color-warning};
+  --bs-danger: #{colors.$md-error};
+  --bs-light: #{colors.$md-surface-container-low};
+  --bs-dark: #{colors.$md-on-surface};
+}

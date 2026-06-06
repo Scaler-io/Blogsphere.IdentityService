@@ -1,0 +1,59 @@
+// M3 design tokens — aligned with Blogsphere Management Webapp
+
+// Primary (cobalt)
+$md-primary: #000f76;
+$md-on-primary: #ffffff;
+$md-primary-container: #001cb0;
+$md-on-primary-container: #8d9aff;
+
+// Secondary (teal)
+$md-secondary: #006970;
+$md-on-secondary: #ffffff;
+$md-secondary-container: #37f0fe;
+$md-on-secondary-container: #006a71;
+$md-secondary-fixed-dim: #00dbe9;
+
+// Surfaces
+$md-surface: #f9f9fb;
+$md-surface-container-lowest: #ffffff;
+$md-surface-container-low: #f3f3f5;
+$md-surface-container: #edeef0;
+
+// On-surface + outline
+$md-on-surface: #1a1c1d;
+$md-on-surface-variant: #454654;
+$md-outline: #757686;
+$md-outline-variant: #c5c5d7;
+
+// Error / status
+$md-error: #ba1a1a;
+$md-on-error: #ffffff;
+$md-error-container: #ffdad6;
+$md-on-error-container: #93000a;
+$color-success: #10b981;
+$color-warning: #ff8f00;
+$color-info: #0288d1;
+
+// Semantic aliases (legacy names used across page SCSS)
+$color-primary: $md-primary;
+$color-primary-container: $md-primary-container;
+$color-accent: $md-secondary;
+$color-accent-yellow: $md-secondary-container; // repointed from yellow
+$color-accent-highlight: $md-secondary-container;
+$color-background: $md-primary-container;
+$color-surface: $md-surface-container-lowest;
+$color-button: $md-primary;
+$color-text-primary: $md-on-surface;
+$color-text-secondary: $md-on-surface-variant;
+$color-border: $md-outline-variant;
+$color-error: $md-error;
+$color-info: $color-info;
+
+// Gradients
+$gradient-hero: linear-gradient(135deg, $md-primary 0%, $md-secondary 100%);
+$gradient-primary: linear-gradient(180deg, $md-primary 0%, $md-primary-container 100%);
+
+// Elevation
+$md-elevation-card: 0 4px 20px rgba(0, 0, 0, 0.05);
+$md-elevation-card-hover: 0 8px 28px rgba(0, 0, 0, 0.08);
+$md-elevation-overlay: 0 12px 40px rgba(0, 15, 118, 0.12);
