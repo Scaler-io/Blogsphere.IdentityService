@@ -1,7 +1,7 @@
 @use "sass:color";
-@use "../_colors" as colors;
-@use "../_variables" as vars;
-@use "../_mixins" as mixins;
+@use "../tokens/colors" as colors;
+@use "../foundations/variables" as vars;
+@use "../foundations/mixins" as mixins;
 
 // Login page container
 .login-container {
@@ -25,8 +25,8 @@
             bottom: 0;
             background: linear-gradient(
                 45deg,
-                rgba(255, 230, 0, 0.1) 0%,
-                rgba(0, 51, 204, 0.1) 100%
+                rgba(55, 240, 254, 0.1) 0%,
+                rgba(0, 15, 118, 0.1) 100%
             );
         }
 

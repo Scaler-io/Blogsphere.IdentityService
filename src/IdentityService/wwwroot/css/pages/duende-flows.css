@@ -155,3 +155,49 @@
   opacity: 0.5;
   margin-bottom: 1rem;
 }
+
+.page-consent .card,
+.consent-page .card,
+.device-page .card,
+.ciba-page .card {
+  border: 1px solid #c5c5d7;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+  overflow: hidden;
+  margin-top: 1.25rem;
+  padding: 1rem;
+}
+.page-consent .permission,
+.consent-page .permission,
+.device-page .permission,
+.ciba-page .permission {
+  margin-bottom: 1rem;
+}
+.page-consent .btn-primary,
+.consent-page .btn-primary,
+.device-page .btn-primary,
+.ciba-page .btn-primary {
+  margin-right: 0.5rem;
+}
+
+.grants-page .card {
+  margin-top: 1.25rem;
+  border: 1px solid #c5c5d7;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  background: #ffffff;
+}
+.grants-page .card .card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #000f76;
+}
+.grants-page .card .card-title img {
+  width: 64px;
+  height: 64px;
+}
+.grants-page .card label {
+  font-weight: 600;
+  color: #454654;
+}

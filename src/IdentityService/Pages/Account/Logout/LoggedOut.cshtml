@@ -106,6 +106,10 @@
     <iframe width="0" height="0" class="signout" src="@Model.View.SignOutIframeUrl"></iframe>
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/account-flows.css?v=@DateTime.Now.Ticks" />
+}
+
 @section scripts
 {
     @if (Model.View.AutomaticRedirectAfterSignOut)

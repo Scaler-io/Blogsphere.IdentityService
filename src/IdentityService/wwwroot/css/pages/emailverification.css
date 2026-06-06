@@ -6,7 +6,7 @@
 }
 .email-verification-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
+  background: linear-gradient(135deg, #000f76 0%, #006970 100%);
   font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   display: flex;
   align-items: center;
@@ -26,14 +26,14 @@
 
 /* Verification Success Card */
 .verification-success-card {
-  border: none;
+  border: 1px solid #c5c5d7;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   background: #ffffff;
   overflow: hidden;
-  border-radius: 25px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 51, 204, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 15, 118, 0.1);
   max-width: 600px;
   width: 100%;
   text-align: center;
@@ -47,14 +47,14 @@
 }
 @media (max-width: 480px) {
   .verification-success-card {
-    border-radius: 8px;
+    border-radius: 4px;
     max-width: 100%;
   }
 }
 .verification-success-card .success-header {
   padding: 2rem 2.5rem 1.5rem 2.5rem;
   background: linear-gradient(135deg, #ffffff 0%, rgb(242.25, 242.25, 242.25) 100%);
-  border-bottom: 1px solid rgba(0, 51, 204, 0.08);
+  border-bottom: 1px solid rgba(0, 15, 118, 0.08);
 }
 @media (max-width: 768px) {
   .verification-success-card .success-header {
@@ -76,36 +76,36 @@
   height: 64px;
 }
 .verification-success-card .success-header h1 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #00205b;
+  color: #1a1c1d;
   margin: 0 0 0.5rem 0;
   line-height: 1.2;
 }
 @media (max-width: 768px) {
   .verification-success-card .success-header h1 {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 }
 @media (max-width: 480px) {
   .verification-success-card .success-header h1 {
-    font-size: 1.5rem;
+    font-size: 1.125rem;
   }
 }
 .verification-success-card .success-header .success-subtitle {
   color: #10b981;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 0;
   font-weight: 500;
 }
 @media (max-width: 768px) {
   .verification-success-card .success-header .success-subtitle {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 }
 @media (max-width: 480px) {
   .verification-success-card .success-header .success-subtitle {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 }
 .verification-success-card .verification-details {
@@ -125,30 +125,30 @@
   margin-bottom: 1.5rem;
 }
 .verification-success-card .verification-details .email-display .verified-text {
-  color: #0033cc;
-  font-size: 1.1rem;
+  color: #454654;
+  font-size: 1rem;
   margin: 0.5rem 0;
   font-weight: 400;
 }
 @media (max-width: 480px) {
   .verification-success-card .verification-details .email-display .verified-text {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 }
 .verification-success-card .verification-details .email-display .email-address {
-  color: #0033cc;
-  font-size: 1.5rem;
+  color: #000f76;
+  font-size: 1.125rem;
   font-weight: 600;
   margin: 1rem 0;
   padding: 1rem 1.5rem;
-  background: rgba(0, 51, 204, 0.05);
+  background: rgba(0, 15, 118, 0.05);
   border-radius: 12px;
-  border: 1px solid rgba(0, 51, 204, 0.1);
+  border: 1px solid rgba(0, 15, 118, 0.1);
   word-break: break-word;
 }
 @media (max-width: 480px) {
   .verification-success-card .verification-details .email-display .email-address {
-    font-size: 1.1rem;
+    font-size: 1rem;
     padding: 0.5rem 1rem;
   }
 }
@@ -273,7 +273,7 @@
 }
 .verification-success-card .error-actions {
   padding: 1.5rem 2.5rem 2rem 2.5rem;
-  border-top: 1px solid #e0e0e0;
+  border-top: 1px solid #c5c5d7;
   margin: 0 1rem;
 }
 @media (max-width: 768px) {
@@ -318,8 +318,8 @@
   gap: 0.75rem;
   margin: 1.5rem 0;
   padding: 1.25rem 2rem;
-  background: linear-gradient(135deg, rgba(0, 51, 204, 0.05) 0%, rgba(0, 118, 255, 0.05) 100%);
-  border: 2px solid rgba(0, 51, 204, 0.15);
+  background: linear-gradient(135deg, rgba(0, 15, 118, 0.05) 0%, rgba(0, 118, 255, 0.05) 100%);
+  border: 2px solid rgba(0, 15, 118, 0.15);
   border-radius: 16px;
   transition: all 0.3s ease;
 }
@@ -331,8 +331,8 @@
   }
 }
 .verification-success-card .error-actions .support-contact .phone-number:hover {
-  background: linear-gradient(135deg, rgba(0, 51, 204, 0.08) 0%, rgba(0, 118, 255, 0.08) 100%);
-  border-color: rgba(0, 51, 204, 0.25);
+  background: linear-gradient(135deg, rgba(0, 15, 118, 0.08) 0%, rgba(0, 118, 255, 0.08) 100%);
+  border-color: rgba(0, 15, 118, 0.25);
 }
 .verification-success-card .error-actions .support-contact .phone-number svg {
   flex-shrink: 0;
@@ -344,7 +344,7 @@
   }
 }
 .verification-success-card .error-actions .support-contact .phone-number .phone-link {
-  color: #0033cc;
+  color: #000f76;
   font-size: 1.3rem;
   font-weight: 700;
   text-decoration: none;
@@ -356,14 +356,14 @@
   }
 }
 .verification-success-card .error-actions .support-contact .phone-number .phone-link:hover {
-  color: #0076ff;
+  color: #001cb0;
   text-decoration: none;
 }
 .verification-success-card .error-actions .support-contact .support-hours {
   font-size: 0.95rem;
   margin: 1rem 0 0 0;
   font-weight: 500;
-  color: #0033cc;
+  color: #000f76;
 }
 @media (max-width: 480px) {
   .verification-success-card .error-actions .support-contact .support-hours {
@@ -372,7 +372,7 @@
 }
 .verification-success-card .next-steps {
   padding: 1.5rem 2.5rem 2rem 2.5rem;
-  border-top: 1px solid rgba(0, 51, 204, 0.08);
+  border-top: 1px solid rgba(0, 15, 118, 0.08);
   background: linear-gradient(135deg, #fafbff 0%, #f5f8ff 100%);
 }
 @media (max-width: 768px) {
@@ -400,7 +400,7 @@
 .verification-success-card .next-steps .btn-continue {
   display: inline-block;
   padding: 16px 32px;
-  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
+  background: linear-gradient(135deg, #000f76 0%, #001cb0 100%);
   color: #ffffff;
   text-decoration: none;
   border-radius: 12px;
@@ -408,7 +408,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 6px 16px rgba(0, 51, 204, 0.25);
+  box-shadow: 0 6px 16px rgba(0, 15, 118, 0.25);
 }
 @media (max-width: 480px) {
   .verification-success-card .next-steps .btn-continue {
@@ -418,7 +418,7 @@
 }
 .verification-success-card .next-steps .btn-continue:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 51, 204, 0.35);
+  box-shadow: 0 10px 25px rgba(0, 15, 118, 0.35);
   text-decoration: none;
   color: #ffffff;
 }

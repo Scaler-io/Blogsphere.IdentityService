@@ -1,8 +1,8 @@
 /* Logout & Logged Out Pages Styles - Blogsphere Theme */
 @use "sass:color";
-@use "../_colors" as colors;
-@use "../_variables" as vars;
-@use "../_mixins" as mixins;
+@use "../tokens/colors" as colors;
+@use "../foundations/variables" as vars;
+@use "../foundations/mixins" as mixins;
 
 // Page wrapper styles
 .container.logout-container,
