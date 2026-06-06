@@ -1,0 +1,62 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.container.body-container {
+  flex: 1 0 auto;
+  background: colors.$md-surface;
+  padding: 0 vars.$spacing-xl;
+  width: 100%;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: colors.$md-surface-container-lowest !important;
+  color: colors.$color-text-secondary;
+  text-align: center;
+  padding: vars.$spacing-md;
+  min-height: 48px;
+  border-top: 1px solid colors.$md-outline-variant;
+}
+
+.logged-out-page iframe {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.welcome-page .logo {
+  width: 64px;
+}
+
+.welcome-page li {
+  list-style: none;
+  padding: 4px;
+}
+
+.message-container {
+  position: fixed;
+  top: vars.$spacing-lg;
+  right: vars.$spacing-lg;
+  z-index: vars.$z-index-tooltip;
+  max-width: 400px;
+
+  .alert {
+    @include mixins.alert;
+    animation: slideIn 0.3s ease forwards;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

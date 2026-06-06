@@ -1,0 +1,130 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.navbar {
+  background: colors.$md-surface-container-lowest !important;
+  color: colors.$color-primary !important;
+  border-bottom: 1px solid colors.$md-outline-variant;
+  box-shadow: none;
+  padding: vars.$spacing-sm vars.$spacing-lg;
+
+  .navbar-brand {
+    a {
+      text-decoration: none !important;
+      display: flex;
+      align-items: center;
+      gap: vars.$spacing-sm;
+      color: colors.$color-text-primary !important;
+      font-family: vars.$font-family-heading;
+      font-weight: vars.$font-weight-bold;
+      font-size: vars.$font-size-lg;
+
+      &:hover {
+        color: colors.$md-primary !important;
+      }
+
+      &:focus-visible {
+        @include mixins.focus-ring;
+        border-radius: vars.$border-radius-base;
+      }
+    }
+
+    img {
+      height: 32px;
+      width: 32px;
+    }
+  }
+
+  .nav-link,
+  .navbar-nav .nav-link {
+    color: colors.$color-text-primary !important;
+    font-weight: vars.$font-weight-medium;
+
+    &:hover {
+      color: colors.$md-secondary !important;
+    }
+
+    &:focus-visible {
+      @include mixins.focus-ring;
+    }
+  }
+
+  .dropdown-menu {
+    background: colors.$color-surface;
+    border: 1px solid colors.$md-outline-variant;
+    border-radius: vars.$border-radius-base;
+    box-shadow: colors.$md-elevation-card;
+
+    .dropdown-item {
+      color: colors.$color-text-primary;
+
+      &:hover,
+      &:focus {
+        background: colors.$md-surface-container-low;
+        color: colors.$md-primary;
+      }
+
+      &:focus-visible {
+        @include mixins.focus-ring;
+      }
+    }
+  }
+}
+
+.hero-section.bg-primary {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  .lead,
+  .text-white {
+    color: colors.$md-on-primary !important;
+  }
+}
+
+.landing-hero {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+
+.landing-lead {
+  font-size: 1.15rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+.btn-hero-primary {
+  @include mixins.button-base;
+  background: colors.$md-on-primary;
+  color: colors.$md-primary;
+  font-weight: vars.$font-weight-semibold;
+  padding: vars.$spacing-md vars.$spacing-xl;
+
+  &:hover {
+    background: colors.$md-surface-container-low;
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring(colors.$md-on-primary);
+  }
+}
+
+.btn-hero-secondary {
+  @include mixins.button-base;
+  background: transparent;
+  color: colors.$md-on-primary;
+  border: 1px solid rgba(colors.$md-on-primary, 0.85);
+
+  &:hover {
+    background: rgba(colors.$md-on-primary, 0.12);
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring(colors.$md-on-primary);
+  }
+}

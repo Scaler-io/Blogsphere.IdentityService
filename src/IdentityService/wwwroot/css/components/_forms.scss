@@ -1,0 +1,102 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.form-control {
+  @include mixins.form-input;
+}
+
+.form-group {
+  margin-bottom: vars.$spacing-lg;
+}
+
+.input-validation-error,
+.field-validation-error {
+  @include mixins.validation-error;
+}
+
+.validation-summary-errors {
+  color: colors.$color-error;
+  background: colors.$md-error-container;
+  border: 1px solid rgba(colors.$md-error, 0.2);
+  border-radius: vars.$border-radius-base;
+  padding: vars.$spacing-md;
+  margin-bottom: vars.$spacing-lg;
+  font-size: vars.$font-size-sm;
+}
+
+.banner {
+  border-radius: vars.$border-radius-md !important;
+
+  &--info {
+    background: rgba(colors.$color-info, 0.12);
+    color: colors.$color-info;
+  }
+
+  &--success {
+    background: rgba(colors.$color-success, 0.12);
+    color: colors.$color-success;
+  }
+
+  &--error {
+    background: rgba(colors.$md-error, 0.12);
+    color: colors.$md-error;
+  }
+}
+
+.alert-success {
+  background: rgba(colors.$color-success, 0.12) !important;
+  border: 1px solid rgba(colors.$color-success, 0.25) !important;
+  color: colors.$md-on-surface !important;
+}
+
+.alert-danger {
+  background: colors.$md-error-container !important;
+  color: colors.$md-on-error-container !important;
+}
+
+.blogsphere-text-primary {
+  color: colors.$color-primary;
+}
+
+.blogsphere-text-error {
+  color: colors.$color-error;
+}
+
+.blogsphere-text-accent {
+  color: colors.$md-secondary;
+}
+
+.text-primary {
+  color: colors.$color-primary !important;
+}
+
+.text-secondary,
+.text-muted {
+  color: colors.$color-text-secondary !important;
+}
+
+.bg-primary {
+  background: colors.$gradient-hero !important;
+}
+
+.bg-light {
+  background-color: colors.$md-surface-container-low !important;
+}
+
+.font-xs {
+  font-size: vars.$font-size-xs;
+}
+.font-sm {
+  font-size: vars.$font-size-sm;
+}
+.font-md {
+  font-size: vars.$font-size-md;
+}
+.font-lg {
+  font-size: vars.$font-size-lg;
+}
+
+.spinner {
+  @include mixins.spinner;
+}

@@ -1,0 +1,61 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.blogsphere-link,
+.text-blogsphere,
+a.text-decoration-none.text-blogsphere {
+  color: colors.$md-secondary;
+  text-decoration: none;
+  font-weight: vars.$font-weight-semibold;
+  transition: color vars.$transition-fast;
+
+  &:hover {
+    color: colors.$md-primary;
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+    border-radius: vars.$border-radius-sm;
+  }
+}
+
+.back-nav-link {
+  color: colors.$md-primary;
+  text-decoration: none;
+  font-weight: vars.$font-weight-semibold;
+  font-size: vars.$font-size-sm;
+  display: inline-flex;
+  align-items: center;
+  padding: vars.$spacing-sm vars.$spacing-md;
+  border-radius: vars.$border-radius-full;
+  background: rgba(colors.$md-primary, 0.08);
+  transition: background-color vars.$transition-fast;
+
+  &:hover {
+    background: rgba(colors.$md-primary, 0.14);
+    text-decoration: none;
+    color: colors.$md-primary-container;
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+  }
+}
+
+.back-nav {
+  margin-bottom: vars.$spacing-md;
+}
+
+.footer a,
+.navbar a {
+  &:focus-visible {
+    @include mixins.focus-ring;
+    border-radius: vars.$border-radius-sm;
+  }
+}

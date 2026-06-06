@@ -1,0 +1,46 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: vars.$font-family-body;
+  font-size: vars.$font-size-md;
+  line-height: 1.5;
+  color: colors.$color-text-primary;
+  background: colors.$md-surface;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: vars.$font-family-heading;
+  font-weight: vars.$font-weight-bold;
+  color: colors.$color-text-primary;
+}
+
+a {
+  color: colors.$md-primary;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
