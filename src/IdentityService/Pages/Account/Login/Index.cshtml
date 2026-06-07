@@ -8,8 +8,9 @@
     ViewData["PageSubtitle"] = "Please sign in to your account";
 }
 
-<form asp-page="/Account/Login/Index" class="account-form" novalidate>
+<form asp-page="/Account/Login/Index" method="post" class="account-form" novalidate>
     <input type="hidden" asp-for="Input.ReturnUrl" />
+    <input type="hidden" asp-for="Input.Button" value="login" />
 
     <div class="form-group">
         <input type="email"
@@ -41,7 +42,7 @@
     }
 
     <div class="form-actions">
-        <button name="Input.Button" value="login" class="btn-continue" type="submit">
+        <button type="submit" class="btn-continue">
             Continue
         </button>
     </div>
@@ -80,4 +81,3 @@
         </div>
     }
 </form>
-

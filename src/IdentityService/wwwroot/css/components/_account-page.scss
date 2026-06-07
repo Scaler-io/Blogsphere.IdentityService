@@ -15,14 +15,7 @@
   box-sizing: border-box;
 
   &__brand {
-    margin-bottom: vars.$spacing-lg;
-    text-align: center;
-
-    img {
-      display: block;
-      height: auto;
-      max-width: 140px;
-    }
+    display: none;
   }
 
   &__card {
@@ -43,15 +36,15 @@
   }
 
   &__illustration {
-    max-height: 168px;
+    max-height: 120px;
     width: auto;
-    max-width: 100%;
+    max-width: 200px;
     object-fit: contain;
   }
 
   &__header {
     text-align: center;
-    margin-bottom: vars.$spacing-xl;
+    margin-bottom: vars.$spacing-lg;
   }
 
   &__title {
@@ -125,7 +118,7 @@
   }
 
   .remember-section {
-    margin-bottom: vars.$spacing-xl;
+    margin-bottom: vars.$spacing-lg;
 
     .remember-checkbox {
       display: flex;
@@ -133,6 +126,7 @@
       cursor: pointer;
       font-size: vars.$font-size-sm;
       color: colors.$color-text-secondary;
+      user-select: none;
 
       input[type='checkbox'] {
         display: none;
@@ -181,6 +175,11 @@
       height: 48px;
       font-size: vars.$font-size-md;
       letter-spacing: 0.5px;
+
+      &--busy {
+        opacity: 0.75;
+        cursor: wait;
+      }
 
       &--danger {
         @include mixins.button-danger;

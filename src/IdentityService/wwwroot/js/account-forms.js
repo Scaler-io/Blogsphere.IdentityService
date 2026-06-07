@@ -10,11 +10,9 @@
   };
 
   const onPageShow = (event) => {
-    if (event.persisted) {
-      document.querySelectorAll('.account-form button[type="submit"]').forEach((button) => {
-        setSubmitBusy(button, false);
-      });
-    }
+    document.querySelectorAll('.account-form button[type="submit"]').forEach((button) => {
+      setSubmitBusy(button, false);
+    });
   };
 
   const enhanceForm = (form) => {
@@ -55,7 +53,7 @@
       if (submitter && submitter.type === 'submit') {
         setSubmitBusy(submitter, true);
       }
-    });
+    }, { capture: false });
   };
 
   const validateField = ($form, field) => {
@@ -207,13 +205,12 @@
   const setSubmitBusy = (button, isBusy) => {
     if (isBusy) {
       button.setAttribute('aria-busy', 'true');
-      button.disabled = true;
-      button.dataset.originalText = button.dataset.originalText || button.textContent.trim();
+      button.classList.add('btn-continue--busy');
       return;
     }
 
     button.removeAttribute('aria-busy');
-    button.disabled = false;
+    button.classList.remove('btn-continue--busy');
   };
 
   if (document.readyState === 'loading') {

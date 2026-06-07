@@ -17,6 +17,11 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/lib/bootstrap4-glyphicons/css/bootstrap-glyphicons.css" />
     <link rel="stylesheet" href="~/css/site.css?v=@DateTime.Now.Ticks" />
+
+    @if (ViewData["UseAccountPageAssets"] is true)
+    {
+        <link rel="stylesheet" href="~/css/pages/account-flows.css?v=@DateTime.Now.Ticks" />
+    }
     
     @RenderSection("Styles", required: false)
 
@@ -27,6 +32,11 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
+    @if (ViewData["UseAccountPageAssets"] is true)
+    {
+        <partial name="_ValidationScriptsPartial" />
+    }
+
     @RenderSection("scripts", required: false)
 </body>
-</html> 
+</html>

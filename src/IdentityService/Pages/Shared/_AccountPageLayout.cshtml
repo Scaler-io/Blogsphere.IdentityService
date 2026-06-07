@@ -1,8 +1,10 @@
 @{
     Layout = "_SinglePageLayout";
+    ViewData["UseAccountPageAssets"] = true;
+
     var illustrationPath = ViewData["IllustrationPath"] as string;
-    var illustrationWidth = ViewData["IllustrationWidth"] as int? ?? 240;
-    var illustrationHeight = ViewData["IllustrationHeight"] as int? ?? 168;
+    var illustrationWidth = ViewData["IllustrationWidth"] as int? ?? 200;
+    var illustrationHeight = ViewData["IllustrationHeight"] as int? ?? 140;
     var pageTitle = ViewData["PageTitle"] as string;
     var pageSubtitle = ViewData["PageSubtitle"] as string;
     var wideCard = ViewData["WideCard"] is true;
@@ -10,16 +12,7 @@
     var hideIllustration = ViewData["HideIllustration"] is true;
 }
 
-@section Styles {
-    <link rel="stylesheet" href="~/css/pages/account-flows.css?v=@DateTime.Now.Ticks" />
-    @await RenderSectionAsync("Styles", required: false)
-}
-
 <div class="account-page">
-    <header class="account-page__brand">
-        <img src="~/svgs/brand/blogsphere.logo.svg" alt="Blogsphere" width="140" height="32" />
-    </header>
-
     <div class="account-page__card @(wideCard ? "account-page__card--wide" : "")">
         @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
         {
@@ -59,8 +52,3 @@
         </div>
     </div>
 </div>
-
-@section scripts {
-    <partial name="_ValidationScriptsPartial" />
-    @await RenderSectionAsync("scripts", required: false)
-}

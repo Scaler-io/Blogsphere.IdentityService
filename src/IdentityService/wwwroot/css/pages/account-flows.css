@@ -18,13 +18,7 @@
   box-sizing: border-box;
 }
 .account-page__brand {
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-.account-page__brand img {
-  display: block;
-  height: auto;
-  max-width: 140px;
+  display: none;
 }
 .account-page__card {
   border: 1px solid #c5c5d7;
@@ -45,14 +39,14 @@
   padding-bottom: 1rem;
 }
 .account-page__illustration {
-  max-height: 168px;
+  max-height: 120px;
   width: auto;
-  max-width: 100%;
+  max-width: 200px;
   object-fit: contain;
 }
 .account-page__header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 .account-page__title {
   font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
@@ -149,7 +143,7 @@
   font-size: 0.875rem;
 }
 .account-form .remember-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 .account-form .remember-section .remember-checkbox {
   display: flex;
@@ -157,6 +151,7 @@
   cursor: pointer;
   font-size: 0.875rem;
   color: #454654;
+  user-select: none;
 }
 .account-form .remember-section .remember-checkbox input[type=checkbox] {
   display: none;
@@ -236,6 +231,10 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+.account-form .form-actions .btn-continue--busy {
+  opacity: 0.75;
+  cursor: wait;
 }
 .account-form .form-actions .btn-continue--danger {
   display: inline-flex;
