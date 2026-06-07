@@ -1,0 +1,66 @@
+@{
+    Layout = "_SinglePageLayout";
+    var illustrationPath = ViewData["IllustrationPath"] as string;
+    var illustrationWidth = ViewData["IllustrationWidth"] as int? ?? 240;
+    var illustrationHeight = ViewData["IllustrationHeight"] as int? ?? 168;
+    var pageTitle = ViewData["PageTitle"] as string;
+    var pageSubtitle = ViewData["PageSubtitle"] as string;
+    var wideCard = ViewData["WideCard"] is true;
+    var hideHeader = ViewData["HideCardHeader"] is true;
+    var hideIllustration = ViewData["HideIllustration"] is true;
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/account-flows.css?v=@DateTime.Now.Ticks" />
+    @await RenderSectionAsync("Styles", required: false)
+}
+
+<div class="account-page">
+    <header class="account-page__brand">
+        <img src="~/svgs/brand/blogsphere.logo.svg" alt="Blogsphere" width="140" height="32" />
+    </header>
+
+    <div class="account-page__card @(wideCard ? "account-page__card--wide" : "")">
+        @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
+        {
+            <div class="account-page__card-art">
+                <img src="@Url.Content(illustrationPath)"
+                     alt=""
+                     width="@illustrationWidth"
+                     height="@illustrationHeight"
+                     class="auth-illustration account-page__illustration"
+                     aria-hidden="true" />
+            </div>
+        }
+
+        @if (IsSectionDefined("BackNav"))
+        {
+            <div class="account-page__back-nav">
+                @RenderSection("BackNav", required: false)
+            </div>
+        }
+
+        @if (!hideHeader && (!string.IsNullOrEmpty(pageTitle) || !string.IsNullOrEmpty(pageSubtitle)))
+        {
+            <div class="account-page__header">
+                @if (!string.IsNullOrEmpty(pageTitle))
+                {
+                    <h1 class="account-page__title">@pageTitle</h1>
+                }
+                @if (!string.IsNullOrEmpty(pageSubtitle))
+                {
+                    <p class="account-page__subtitle">@Html.Raw(pageSubtitle)</p>
+                }
+            </div>
+        }
+
+        <div class="account-page__body">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <partial name="_ValidationScriptsPartial" />
+    @await RenderSectionAsync("scripts", required: false)
+}

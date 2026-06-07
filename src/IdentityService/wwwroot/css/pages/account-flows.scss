@@ -1,3 +1,5 @@
+@use '../components/account-page';
+@use 'login';
 @use 'forgotpassword';
 @use 'resetpassword';
 @use 'twofactor';
