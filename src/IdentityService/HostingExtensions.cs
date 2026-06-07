@@ -4,6 +4,7 @@ using IdentityService.Entities;
 using IdentityService.Models;
 using IdentityService.Security;
 using IdentityService.Services;
+using IdentityService.Services.Account;
 using IdentityService.Management.Data;
 using IdentityService.Management.Entities;
 using IdentityService.Management.Security;
@@ -25,6 +26,8 @@ internal static class HostingExtensions
 {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Services.Configure<AuthSpaOptions>(builder.Configuration.GetSection(AuthSpaOptions.SectionName));
+
         // Configure Razor Pages with JSON serialization
         builder.Services.AddRazorPages()
             .AddNewtonsoftJson(config =>
@@ -32,6 +35,21 @@ internal static class HostingExtensions
                 config.UseCamelCasing(true);
                 config.SerializerSettings.Converters.Add(new StringEnumConverter());
             });
+
+        builder.Services.AddControllers()
+            .AddNewtonsoftJson(config =>
+            {
+                config.UseCamelCasing(true);
+                config.SerializerSettings.Converters.Add(new StringEnumConverter());
+            });
+
+        builder.Services.AddMemoryCache();
+        builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddAntiforgery(options =>
+        {
+            options.HeaderName = "X-XSRF-TOKEN";
+        });
 
         // Configure Database Contexts
         ConfigureDatabaseContexts(builder);
@@ -160,6 +178,7 @@ internal static class HostingExtensions
     private static void ConfigureIdentityServer(WebApplicationBuilder builder)
     {
         var certificateSettings = builder.Configuration.GetSection(CertificateSettings.OptionName).Get<CertificateSettings>();
+        var authSpaOptions = builder.Configuration.GetSection(AuthSpaOptions.SectionName).Get<AuthSpaOptions>() ?? new AuthSpaOptions();
 
         var cert = new X509Certificate2(
             Path.Combine(builder.Environment.ContentRootPath, certificateSettings.Path),
@@ -183,6 +202,16 @@ internal static class HostingExtensions
 
             // Disable automatic key management (requires license, using developer credential instead)
             options.KeyManagement.Enabled = false;
+
+            if (authSpaOptions.Enabled && !string.IsNullOrWhiteSpace(authSpaOptions.BaseUrl))
+            {
+                var spaBaseUrl = authSpaOptions.BaseUrl.TrimEnd('/');
+                options.UserInteraction.LoginUrl = $"{spaBaseUrl}/login";
+                options.UserInteraction.LogoutUrl = $"{spaBaseUrl}/logout";
+                options.UserInteraction.ConsentUrl = $"{spaBaseUrl}/consent";
+                options.UserInteraction.ErrorUrl = $"{spaBaseUrl}/error";
+                options.UserInteraction.DeviceVerificationUrl = $"{spaBaseUrl}/device";
+            }
         })
         .AddInMemoryIdentityResources(Config.IdentityResources)
         .AddInMemoryApiScopes(Config.ApiScopes)
@@ -225,6 +254,16 @@ internal static class HostingExtensions
         // Authentication services
         builder.Services.AddScoped<IApplicationUserAuthenticationService, ApplicationUserAuthenticationService>();
         builder.Services.AddScoped<IManagementUserAuthenticationService, ManagementUserAuthenticationService>();
+
+        // Account API flow services
+        builder.Services.AddSingleton<ITwoFactorPendingStore, TwoFactorPendingStore>();
+        builder.Services.AddScoped<ILoginFlowService, LoginFlowService>();
+        builder.Services.AddScoped<ITwoFactorFlowService, TwoFactorFlowService>();
+        builder.Services.AddScoped<IPasswordFlowService, PasswordFlowService>();
+        builder.Services.AddScoped<ILogoutFlowService, LogoutFlowService>();
+        builder.Services.AddScoped<IConsentFlowService, ConsentFlowService>();
+        builder.Services.AddScoped<IDeviceFlowService, DeviceFlowService>();
+        builder.Services.AddScoped<IGrantsFlowService, GrantsFlowService>();
     }
 
     private static void ConfigureExternalServices(WebApplicationBuilder builder)
@@ -250,7 +289,7 @@ internal static class HostingExtensions
         builder.Services.AddCors(options =>
         {
             options.AddPolicy(Constants.AppCorsPolicy, policy =>
-                policy.WithOrigins("http://localhost:4200")
+                policy.WithOrigins("http://localhost:4200", "http://localhost:4201")
                       .AllowAnyHeader()
                       .AllowAnyMethod()
                       .AllowCredentials());
@@ -279,6 +318,7 @@ internal static class HostingExtensions
         app.MapGet("/account/session/check", () => Results.Ok())
             .RequireAuthorization()
             .RequireCors(Constants.AppCorsPolicy);
+        app.MapControllers();
         app.MapRazorPages().RequireAuthorization();
 
         return app;
