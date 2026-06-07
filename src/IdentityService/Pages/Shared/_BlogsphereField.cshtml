@@ -1,0 +1,31 @@
+@{
+    var label = ViewData["Label"] as string;
+    var inputId = ViewData["InputId"] as string;
+    var iconPath = ViewData["IconPath"] as string;
+    var inputType = ViewData["InputType"] as string ?? "text";
+    var placeholder = ViewData["Placeholder"] as string;
+    var autocomplete = ViewData["Autocomplete"] as string;
+    var showPasswordToggle = ViewData["ShowPasswordToggle"] is true;
+    var extraClass = ViewData["InputCssClass"] as string ?? "";
+}
+
+<div class="blogsphere-field">
+    @if (!string.IsNullOrEmpty(label))
+    {
+        <label class="blogsphere-field__label" for="@inputId">@label</label>
+    }
+    <div class="blogsphere-field__control-wrap">
+        @if (!string.IsNullOrEmpty(iconPath))
+        {
+            <img src="@Url.Content(iconPath)" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+        }
+        @RenderBody()
+        @if (showPasswordToggle)
+        {
+            <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+            </button>
+        }
+    </div>
+</div>

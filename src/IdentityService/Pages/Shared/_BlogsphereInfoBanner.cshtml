@@ -1,0 +1,8 @@
+@{
+    var message = ViewData["InfoMessage"] as string ?? "For your security, please do not share this code with anyone.";
+}
+
+<div class="blogsphere-info-banner" role="note">
+    <img src="~/svgs/icons/ui/info-circle.svg" alt="" class="blogsphere-info-banner__icon" width="20" height="20" aria-hidden="true" />
+    <span>@message</span>
+</div>

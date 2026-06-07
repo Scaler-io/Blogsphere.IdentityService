@@ -5,13 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
-    <title>Blogsphere Identity</title>
+    <title>@(ViewData["Title"] ?? "Blogsphere Identity")</title>
     
-    <!-- Modern favicon support -->
     <link rel="icon" type="image/svg+xml" href="~/favicon.svg?v=@DateTime.Now.Ticks" />
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png?v=@DateTime.Now.Ticks" />
     
-    <!-- Local font fallback -->
     <link rel="stylesheet" href="~/fonts/titillium-web/titillium-web.css" />
     <link rel="stylesheet" href="~/fonts/open-sans/open-sans.css" />
     
@@ -20,16 +18,15 @@
     <link rel="stylesheet" href="~/css/site.css?v=@DateTime.Now.Ticks" />
     @RenderSection("Styles", required: false)
 </head>
-<body>
-    <partial name="_Nav" />
+<body class="blogsphere-page">
+    <partial name="_BlogsphereNav" />
    
-    <div class="container body-container">
+    <main class="blogsphere-page__main container body-container" role="main">
         @RenderBody()
-    </div>
+    </main>
 
-    <footer class="footer">
-        <p>&copy; @DateTime.Now.Year Blogsphere. All rights reserved.</p>
-    </footer> 
+    <partial name="_BlogsphereFooter" />
+
     <script src="~/lib/jquery/dist/jquery.slim.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
 
