@@ -45,7 +45,8 @@
                 align-items: center;
                 gap: vars.$spacing-sm;
 
-                svg {
+                svg,
+                img {
                     width: 24px;
                     height: 24px;
                 }

@@ -3,10 +3,10 @@
     transform: rotate(360deg);
   }
 }
-.reset-password-container .back-nav {
+.account-page .back-nav {
   margin-bottom: 0.5rem;
 }
-.reset-password-container .back-nav-link {
+.account-page .back-nav-link {
   color: #000f76;
   text-decoration: none;
   font-weight: 600;
@@ -17,11 +17,11 @@
   border-radius: 999px;
   background: rgba(0, 15, 118, 0.08);
 }
-.reset-password-container .back-nav-link:hover {
+.account-page .back-nav-link:hover {
   background: rgba(0, 15, 118, 0.14);
   text-decoration: none;
 }
-.reset-password-container .manage-status-message {
+.account-page .manage-status-message {
   background: rgba(0, 15, 118, 0.08);
   color: #000f76;
   padding: 0.625rem 0.875rem;
@@ -30,12 +30,12 @@
   font-weight: 500;
   margin-bottom: 1.5rem;
 }
-.reset-password-container .manage-card-list {
+.account-page .manage-card-list {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
 }
-.reset-password-container .manage-card {
+.account-page .manage-card {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -48,13 +48,13 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
   cursor: pointer;
 }
-.reset-password-container .manage-card:hover {
+.account-page .manage-card:hover {
   border-color: rgba(0, 15, 118, 0.3);
   box-shadow: 0 2px 8px rgba(0, 15, 118, 0.08);
   text-decoration: none;
   color: inherit;
 }
-.reset-password-container .manage-card-icon {
+.account-page .manage-card-icon {
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
@@ -65,18 +65,18 @@
   border-radius: 0.625rem;
   color: #000f76;
 }
-.reset-password-container .manage-card-body {
+.account-page .manage-card-body {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
 }
-.reset-password-container .manage-card-title {
+.account-page .manage-card-title {
   font-weight: 600;
   font-size: 0.95rem;
   color: #1a1c1d;
 }
-.reset-password-container .manage-card-desc {
+.account-page .manage-card-desc {
   font-size: 0.82rem;
   color: rgba(26, 28, 29, 0.6);
   display: flex;
@@ -84,12 +84,12 @@
   flex-wrap: wrap;
   gap: 0.5rem;
 }
-.reset-password-container .manage-card-arrow {
+.account-page .manage-card-arrow {
   font-size: 1.5rem;
   color: rgba(26, 28, 29, 0.35);
   font-weight: 300;
 }
-.reset-password-container .manage-badge {
+.account-page .manage-badge {
   display: inline-block;
   padding: 0.125rem 0.5rem;
   border-radius: 999px;
@@ -98,54 +98,54 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.reset-password-container .manage-badge--on {
+.account-page .manage-badge--on {
   background: rgba(16, 185, 129, 0.12);
   color: #10b981;
 }
-.reset-password-container .manage-badge--off {
+.account-page .manage-badge--off {
   background: rgba(186, 26, 26, 0.1);
   color: rgb(159.1528301887, 22.2471698113, 22.2471698113);
 }
-.reset-password-container .manage-hint {
+.account-page .manage-hint {
   color: rgba(26, 28, 29, 0.5);
   font-style: italic;
 }
-.reset-password-container .tfa-info-box {
+.account-page .tfa-info-box {
   background: rgba(0, 15, 118, 0.05);
   border: 1px solid rgba(0, 15, 118, 0.12);
   border-radius: 4px;
   padding: 1rem 1.5rem;
   margin-bottom: 1.5rem;
 }
-.reset-password-container .tfa-info-box p {
+.account-page .tfa-info-box p {
   margin: 0;
   font-size: 0.75rem;
   color: rgba(26, 28, 29, 0.75);
   line-height: 1.5;
 }
-.reset-password-container .tfa-info-box--warn {
+.account-page .tfa-info-box--warn {
   background: rgba(186, 26, 26, 0.04);
   border-color: rgba(186, 26, 26, 0.12);
 }
-.reset-password-container .tfa-info-box--warn p {
+.account-page .tfa-info-box--warn p {
   color: rgba(26, 28, 29, 0.8);
 }
-.reset-password-container .text-success {
+.account-page .text-success {
   color: #10b981;
 }
-.reset-password-container .text-danger {
+.account-page .text-danger {
   color: rgb(150.2037735849, 20.9962264151, 20.9962264151);
 }
-.reset-password-container .btn-continue--danger {
+.account-page .btn-continue--danger {
   background: #ba1a1a !important;
   border-color: #ba1a1a !important;
   color: #ffffff !important;
 }
-.reset-password-container .btn-continue--danger:hover {
+.account-page .btn-continue--danger:hover {
   background: rgb(150.2037735849, 20.9962264151, 20.9962264151) !important;
   border-color: rgb(150.2037735849, 20.9962264151, 20.9962264151) !important;
 }
-.reset-password-container .btn-resend {
+.account-page .btn-resend {
   width: 100%;
   padding: 0.625rem 1.25rem;
   border: 1px solid rgba(0, 15, 118, 0.2);
@@ -157,10 +157,10 @@
   cursor: pointer;
   transition: background 0.2s ease;
 }
-.reset-password-container .btn-resend:hover {
+.account-page .btn-resend:hover {
   background: rgba(0, 15, 118, 0.06);
 }
-.reset-password-container .phone-current {
+.account-page .phone-current {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -171,12 +171,12 @@
   border-radius: 4px;
   margin-bottom: 1.5rem;
 }
-.reset-password-container .phone-input-group {
+.account-page .phone-input-group {
   display: flex;
   align-items: stretch;
   width: 100%;
 }
-.reset-password-container .phone-input-group .phone-input-prefix {
+.account-page .phone-input-group .phone-input-prefix {
   display: inline-flex;
   align-items: center;
   padding: 1.5rem 1.5rem;
@@ -189,29 +189,29 @@
   font-size: 0.875rem;
   letter-spacing: 0.02em;
 }
-.reset-password-container .phone-input-group .phone-input-control {
+.account-page .phone-input-group .phone-input-control {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
-.reset-password-container .phone-current-label {
+.account-page .phone-current-label {
   font-size: 0.82rem;
   color: rgba(26, 28, 29, 0.55);
   font-weight: 500;
 }
-.reset-password-container .phone-current-value {
+.account-page .phone-current-value {
   font-family: monospace;
   font-size: 0.95rem;
   font-weight: 600;
   color: #1a1c1d;
   letter-spacing: 0.05em;
 }
-.reset-password-container .phone-verify-link {
+.account-page .phone-verify-link {
   font-size: 0.82rem;
   font-weight: 600;
   color: #000f76;
   text-decoration: none;
   margin-left: auto;
 }
-.reset-password-container .phone-verify-link:hover {
+.account-page .phone-verify-link:hover {
   text-decoration: underline;
 }

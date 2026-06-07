@@ -1,0 +1,10 @@
+<!-- Blogsphere M3: white on hero gradient -->
+<svg width="280" height="200" viewBox="0 0 280 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="140" cy="100" r="80" fill="rgba(255,255,255,0.08)"/>
+  <circle cx="140" cy="100" r="60" fill="rgba(255,255,255,0.05)"/>
+  <path d="M140 40L90 62V98C90 128 112 152 140 158C168 152 190 128 190 98V62L140 40Z" fill="rgba(255,255,255,0.95)" stroke="#fff" stroke-width="2"/>
+  <path d="M120 98L132 110L160 82" stroke="#37F0FE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="70" cy="70" r="4" fill="#37F0FE" opacity="0.4"/>
+  <circle cx="210" cy="85" r="3" fill="#37F0FE" opacity="0.3"/>
+  <circle cx="75" cy="145" r="5" fill="#37F0FE" opacity="0.25"/>
+</svg>

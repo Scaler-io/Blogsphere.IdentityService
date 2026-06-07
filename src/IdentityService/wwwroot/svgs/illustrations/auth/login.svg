@@ -1,0 +1,15 @@
+<!-- Blogsphere M3: primary #000F76, secondary #37F0FE -->
+<svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="160" cy="140" r="120" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="160" cy="140" r="90" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="95" cy="95" r="5" fill="#37F0FE" opacity="0.35"/>
+  <circle cx="225" cy="110" r="4" fill="#37F0FE" opacity="0.25"/>
+  <circle cx="85" cy="195" r="6" fill="#37F0FE" opacity="0.2"/>
+  <circle cx="235" cy="185" r="4" fill="#37F0FE" opacity="0.3"/>
+  <path d="M160 48L118 68V118C118 146 135 168 160 174C185 168 202 146 202 118V68L160 48Z" fill="rgba(255,255,255,0.95)" stroke="#fff" stroke-width="2"/>
+  <rect x="148" y="108" width="24" height="28" rx="3" fill="#000F76"/>
+  <path d="M144 108V102C144 94 151 88 160 88C169 88 176 94 176 102V108" stroke="#000F76" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="160" cy="120" r="3" fill="#37F0FE"/>
+  <path d="M100 100L160 140L220 120" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <path d="M85 185L160 140L235 180" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="4,4"/>
+</svg>
