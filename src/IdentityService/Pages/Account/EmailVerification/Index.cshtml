@@ -3,77 +3,67 @@
 @{
     ViewData["Title"] = "Email Verification";
     Layout = "_AccountPageLayout";
-    ViewData["HideCardHeader"] = true;
 
     if (Model.EmailVerificationCompleted)
     {
+        ViewData["LayoutVariant"] = "hero";
         ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/email-verification-success.svg";
+        ViewData["IllustrationWidth"] = 320;
+        ViewData["IllustrationHeight"] = 160;
+        ViewData["PageTitle"] = "Email Verified Successfully!";
+        ViewData["PageSubtitle"] = "Your email has been verified.";
+        ViewData["HideCardHeader"] = false;
     }
     else if (Model.EmailVerificationFailed)
     {
+        ViewData["LayoutVariant"] = "hero";
         ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/email-verification-error.svg";
+        ViewData["PageTitle"] = "Email Verification Failed";
+        ViewData["PageSubtitle"] = "Unable to verify your email address";
     }
     else
     {
+        ViewData["LayoutVariant"] = "card";
         ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/email-verification-pending.svg";
+        ViewData["PageTitle"] = "Email Verification";
+        ViewData["PageSubtitle"] = "Verifying your email address...";
     }
 }
 
 @if (Model.EmailVerificationCompleted)
 {
-    <div class="verification-result">
-        <div class="verification-result__icon">
-            <img src="~/svgs/icons/ui/check-circle.svg" alt="" width="64" height="64" class="status-icon status-icon--lg" aria-hidden="true" />
-        </div>
-        <h1 class="account-page__title">Email Verified Successfully!</h1>
-        <p class="account-page__subtitle verification-result__status verification-result__status--success">Your account is now active</p>
+    <div class="email-readout">
+        <img src="~/svgs/icons/ui/envelope.svg" alt="" width="20" height="20" aria-hidden="true" />
+        <span>@Model.UserEmail</span>
+    </div>
 
-        <div class="verification-details">
-            <p class="verified-text">The following email address has been verified:</p>
-            <div class="email-address">@Model.UserEmail</div>
-            <div class="decorative-elements">
-                <img src="~/svgs/illustrations/auth/email-verification-decoration.svg" alt="" width="240" height="80" class="decoration-svg" aria-hidden="true" />
-            </div>
-        </div>
-
-        <div class="verification-actions">
-            <p class="next-text">You can now access all features of your Blogsphere account.</p>
-            <a href="/Account/Login" class="btn-continue">Continue to Blogsphere</a>
-        </div>
+    <div class="form-actions">
+        <a href="/Account/Login" class="btn-continue">Continue to Blogsphere</a>
     </div>
 }
 
 @if (Model.EmailVerificationFailed)
 {
-    <div class="verification-result">
-        <div class="verification-result__icon">
-            <img src="~/svgs/icons/ui/error-circle.svg" alt="" width="64" height="64" class="status-icon status-icon--lg" aria-hidden="true" />
-        </div>
-        <h1 class="account-page__title">Email Verification Failed</h1>
-        <p class="account-page__subtitle verification-result__status verification-result__status--error">Unable to verify your email address</p>
+    <div class="verification-details">
+        <p class="error-text">
+            The verification link may have expired or is invalid. This can happen if:
+        </p>
+        <ul class="error-reasons">
+            <li>The link is older than 24 hours</li>
+            <li>The link has already been used</li>
+            <li>The email address has been changed</li>
+        </ul>
+    </div>
 
-        <div class="verification-details">
-            <p class="error-text">
-                The verification link may have expired or is invalid. This can happen if:
-            </p>
-            <ul class="error-reasons">
-                <li>The link is older than 24 hours</li>
-                <li>The link has already been used</li>
-                <li>The email address has been changed</li>
-            </ul>
-        </div>
-
-        <div class="verification-actions verification-actions--error">
-            <p class="retry-text">Don't worry! Our support team is here to help you.</p>
-            <div class="support-contact">
-                <p class="contact-text">Please contact Blogsphere Support:</p>
-                <div class="phone-number">
-                    <img src="~/svgs/icons/ui/phone.svg" alt="" width="20" height="20" class="status-icon status-icon--sm" aria-hidden="true" />
-                    <a href="tel:+1-800-BLOGSPHERE" class="phone-link">+1 (800) BLOG-SPHERE</a>
-                </div>
-                <p class="support-hours">Available 24/7 for technical support</p>
+    <div class="verification-actions verification-actions--error">
+        <p class="retry-text">Don't worry! Our support team is here to help you.</p>
+        <div class="support-contact">
+            <p class="contact-text">Please contact Blogsphere Support:</p>
+            <div class="phone-number">
+                <img src="~/svgs/icons/ui/phone.svg" alt="" width="20" height="20" class="status-icon status-icon--sm" aria-hidden="true" />
+                <a href="tel:+1-800-BLOGSPHERE" class="phone-link">+1 (800) BLOG-SPHERE</a>
             </div>
+            <p class="support-hours">Available 24/7 for technical support</p>
         </div>
     </div>
 }
-

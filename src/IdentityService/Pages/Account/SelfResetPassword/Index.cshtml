@@ -1,40 +1,46 @@
-@page
-@model IdentityService.Pages.Account.SelfResetPassword.Index
-@{
-    ViewData["Title"] = "Reset Password";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/self-reset-password.svg";
-    ViewData["PageTitle"] = "Choose Reset Method";
-    ViewData["PageSubtitle"] = "Select how you want to proceed.";
-}
-
-@section BackNav {
-    <a class="account-page__back-link" href="@Model.Input.ReturnUrl">&larr; Back</a>
-}
-
-<div class="form-group">
-    <input type="email"
-           class="form-control"
-           asp-for="Input.Email"
-           readonly
-           tabindex="-1"
-           aria-readonly="true" />
-</div>
-
-<form method="get" asp-page="/Account/SelfResetPassword/ChangePassword/Index" class="account-form">
-    <input type="hidden" name="mode" value="current" />
-    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
-    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
-    <div class="form-actions">
-        <button type="submit" class="btn-continue">Use Current Password</button>
-    </div>
-</form>
-
-<form method="get" asp-page="/Account/SelfResetPassword/VerifyCode/Index" class="account-form">
-    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
-    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
-    <div class="form-actions">
-        <button type="submit" class="btn-continue">Use One-Time Code</button>
-    </div>
-</form>
-
+@page
+@model IdentityService.Pages.Account.SelfResetPassword.Index
+@{
+    ViewData["Title"] = "Reset Password";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/self-reset-password.svg";
+    ViewData["PageTitle"] = "Choose Reset Method";
+    ViewData["PageSubtitle"] = "Select how you want to proceed.";
+}
+
+@section BackNav {
+    <a class="account-page__back-link" href="@Model.Input.ReturnUrl">&larr; Back</a>
+}
+
+<div class="blogsphere-field">
+    <label class="blogsphere-field__label" for="Input_Email">Email</label>
+    <div class="blogsphere-field__control-wrap">
+        <img src="~/svgs/icons/ui/envelope.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+        <input type="email"
+               id="Input_Email"
+               class="blogsphere-field__input"
+               asp-for="Input.Email"
+               readonly
+               tabindex="-1"
+               aria-readonly="true" />
+    </div>
+</div>
+
+<form method="get" asp-page="/Account/SelfResetPassword/ChangePassword/Index" class="account-form">
+    <input type="hidden" name="mode" value="current" />
+    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
+    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
+    <div class="form-actions">
+        <button type="submit" class="btn-continue">Use Current Password</button>
+    </div>
+</form>
+
+<form method="get" asp-page="/Account/SelfResetPassword/VerifyCode/Index" class="account-form">
+    <input type="hidden" name="returnUrl" value="@Model.Input.ReturnUrl" />
+    <input type="hidden" name="clientId" value="@Model.Input.ClientId" />
+    <div class="form-actions">
+        <button type="submit" class="btn-continue">Use One-Time Code</button>
+    </div>
+</form>
+

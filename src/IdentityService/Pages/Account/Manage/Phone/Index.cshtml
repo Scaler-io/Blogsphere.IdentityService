@@ -1,70 +1,74 @@
-@page
-@model IdentityService.Pages.Account.Manage.Phone.Index
-@{
-    ViewData["Title"] = "Recovery Phone";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/phone.svg";
-    ViewData["PageTitle"] = "Recovery Phone";
-    ViewData["PageSubtitle"] = "Add or update the phone number associated with your account.";
-}
-
-@section BackNav {
-    <a class="account-page__back-link"
-       asp-page="/Account/Manage/Index"
-       asp-route-returnUrl="@Model.Input.ReturnUrl"
-       asp-route-clientId="@Model.Input.ClientId">&larr; Back</a>
-}
-
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="manage-status-message">@Model.StatusMessage</div>
-}
-
-@if (!string.IsNullOrEmpty(Model.CurrentPhone))
-{
-    <div class="phone-current">
-        <span class="phone-current-label">Current phone</span>
-        <span class="phone-current-value">@Model.CurrentPhone</span>
-        @if (Model.PhoneConfirmed)
-        {
-            <span class="manage-badge manage-badge--on">Verified</span>
-        }
-        else
-        {
-            <span class="manage-badge manage-badge--off">Not verified</span>
-            <a class="phone-verify-link"
-               asp-page="/Account/Manage/Phone/VerifyCode/Index"
-               asp-route-returnUrl="@Model.Input.ReturnUrl"
-               asp-route-clientId="@Model.Input.ClientId">Verify now</a>
-        }
-    </div>
-}
-
-<form method="post" class="account-form" novalidate>
-    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
-
-    <input type="hidden" asp-for="Input.ReturnUrl" />
-    <input type="hidden" asp-for="Input.ClientId" />
-
-    <div class="form-group">
-        <div class="phone-input-group">
-            <span class="phone-input-prefix">+91</span>
-            <input type="tel"
-                   class="form-control phone-input-control"
-                   asp-for="Input.PhoneNumber"
-                   placeholder="10-digit mobile number*"
-                   autocomplete="tel-national"
-                   inputmode="numeric"
-                   maxlength="10"
-                   pattern="[6-9][0-9]{9}" />
-        </div>
-        <span asp-validation-for="Input.PhoneNumber" class="text-danger validation-error"></span>
-    </div>
-
-    <div class="form-actions">
-        <button type="submit" class="btn-continue">
-            @(string.IsNullOrEmpty(Model.CurrentPhone) ? "Add Phone Number" : "Update Phone Number")
-        </button>
-    </div>
-</form>
-
+@page
+@model IdentityService.Pages.Account.Manage.Phone.Index
+@{
+    ViewData["Title"] = "Recovery Phone";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/phone.svg";
+    ViewData["PageTitle"] = "Recovery Phone";
+    ViewData["PageSubtitle"] = "Add or update the phone number associated with your account.";
+}
+
+@section BackNav {
+    <a class="account-page__back-link"
+       asp-page="/Account/Manage/Index"
+       asp-route-returnUrl="@Model.Input.ReturnUrl"
+       asp-route-clientId="@Model.Input.ClientId">&larr; Back</a>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="manage-status-message">@Model.StatusMessage</div>
+}
+
+@if (!string.IsNullOrEmpty(Model.CurrentPhone))
+{
+    <div class="phone-current">
+        <span class="phone-current-label">Current phone</span>
+        <span class="phone-current-value">@Model.CurrentPhone</span>
+        @if (Model.PhoneConfirmed)
+        {
+            <span class="manage-badge manage-badge--on">Verified</span>
+        }
+        else
+        {
+            <span class="manage-badge manage-badge--off">Not verified</span>
+            <a class="phone-verify-link"
+               asp-page="/Account/Manage/Phone/VerifyCode/Index"
+               asp-route-returnUrl="@Model.Input.ReturnUrl"
+               asp-route-clientId="@Model.Input.ClientId">Verify now</a>
+        }
+    </div>
+}
+
+<form method="post" class="account-form" novalidate>
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
+
+    <input type="hidden" asp-for="Input.ReturnUrl" />
+    <input type="hidden" asp-for="Input.ClientId" />
+
+    <div class="blogsphere-field">
+        <label class="blogsphere-field__label" for="Input_PhoneNumber">Phone Number</label>
+        <div class="blogsphere-field__control-wrap phone-input-group">
+            <img src="~/svgs/icons/ui/phone-outline.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+            <span class="phone-input-prefix">+91</span>
+            <input type="tel"
+                   id="Input_PhoneNumber"
+                   class="blogsphere-field__input phone-input-control"
+                   asp-for="Input.PhoneNumber"
+                   placeholder="Enter 10-digit mobile number"
+                   autocomplete="tel-national"
+                   inputmode="numeric"
+                   maxlength="10"
+                   pattern="[6-9][0-9]{9}" />
+        </div>
+        <span asp-validation-for="Input.PhoneNumber" class="blogsphere-field__error validation-error"></span>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-continue">
+            @(string.IsNullOrEmpty(Model.CurrentPhone) ? "Add Phone Number" : "Update Phone Number")
+        </button>
+    </div>
+</form>
+

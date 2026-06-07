@@ -3,18 +3,13 @@
 @{
     ViewData["Title"] = "Logged Out";
     Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "open";
     ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/logged-out.svg";
+    ViewData["IllustrationWidth"] = 320;
+    ViewData["IllustrationHeight"] = 200;
     ViewData["PageTitle"] = "Successfully Signed Out";
-    ViewData["PageSubtitle"] = "You have been safely logged out of Blogsphere";
+    ViewData["PageSubtitle"] = "You have been signed out of your Blogsphere account.";
 }
-
-<p class="logout-description">
-    Your session has been securely terminated. Thank you for using Blogsphere!
-</p>
-
-<div class="decorative-elements">
-    <img src="~/svgs/illustrations/auth/logged-out-decoration.svg" alt="" width="200" height="80" class="decoration-svg" aria-hidden="true" />
-</div>
 
 @if (Model.View.PostLogoutRedirectUri != null)
 {
@@ -36,11 +31,7 @@ else
     <iframe width="0" height="0" class="signout" src="@Model.View.SignOutIframeUrl"></iframe>
 }
 
-@section scripts
+@if (Model.View.AutomaticRedirectAfterSignOut)
 {
-    @if (Model.View.AutomaticRedirectAfterSignOut)
-    {
-        <script src="~/js/signout-redirect.js"></script>
-    }
+    <script src="~/js/signout-redirect.js"></script>
 }
-

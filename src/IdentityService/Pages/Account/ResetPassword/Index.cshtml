@@ -1,73 +1,92 @@
-@page
-@model IdentityService.Pages.Account.ResetPassword.Index
-@{
-    ViewData["Title"] = "Reset Password";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/reset-password.svg";
-    if (Model.IsValidToken)
-    {
-        ViewData["PageTitle"] = "Create New Password";
-        ViewData["PageSubtitle"] = "Please enter your new password below";
-    }
-    else
-    {
-        ViewData["PageTitle"] = "Invalid or Expired Link";
-        ViewData["PageSubtitle"] = "The password reset link you clicked is no longer valid.";
-    }
-}
-
-@if (Model.IsValidToken)
-{
-    <form method="post" class="account-form" novalidate>
-        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
-
-        <div class="form-group">
-            <input type="password"
-                   class="form-control"
-                   autocomplete="new-password"
-                   placeholder="New Password*"
-                   asp-for="Input.Password" />
-            <span asp-validation-for="Input.Password" class="text-danger validation-error"></span>
-        </div>
-
-        <div class="form-group">
-            <input type="password"
-                   class="form-control"
-                   autocomplete="new-password"
-                   placeholder="Confirm Password*"
-                   asp-for="Input.ConfirmPassword" />
-            <span asp-validation-for="Input.ConfirmPassword" class="text-danger validation-error"></span>
-        </div>
-
-        <div class="form-actions">
-            <button type="submit" class="btn-continue">
-                Reset Password
-            </button>
-        </div>
-
-        <div class="form-links">
-            <p class="login-link">
-                Remember your password? <a asp-page="/Account/Login/Index" class="link-primary">Sign in</a>
-            </p>
-        </div>
-    </form>
-}
-else
-{
-    <div class="account-page__error-panel">
-        <div class="error-icon">
-            <img src="~/svgs/icons/ui/error-info.svg" alt="" width="64" height="64" class="status-icon status-icon--lg" aria-hidden="true" />
-        </div>
-        <p class="error-description">This could be because:</p>
-        <ul class="error-reasons">
-            <li>The link has expired</li>
-            <li>The link has already been used</li>
-            <li>The link was modified</li>
-        </ul>
-        <div class="error-actions">
-            <a asp-page="/Account/ForgotPassword/Index" class="btn-retry">Request New Reset Link</a>
-            <a asp-page="/Account/Login/Index" class="btn-login">Back to Login</a>
-        </div>
-    </div>
-}
-
+@page
+@model IdentityService.Pages.Account.ResetPassword.Index
+@{
+    ViewData["Title"] = "Reset Password";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/reset-password.svg";
+    if (Model.IsValidToken)
+    {
+        ViewData["PageTitle"] = "Create New Password";
+        ViewData["PageSubtitle"] = "Please enter your new password below";
+    }
+    else
+    {
+        ViewData["PageTitle"] = "Invalid or Expired Link";
+        ViewData["PageSubtitle"] = "The password reset link you clicked is no longer valid.";
+    }
+}
+
+@if (Model.IsValidToken)
+{
+    <form method="post" class="account-form" novalidate>
+        <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
+
+        <div class="blogsphere-field">
+            <label class="blogsphere-field__label" for="Input_Password">New Password</label>
+            <div class="blogsphere-field__control-wrap">
+                <img src="~/svgs/icons/ui/lock.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+                <input type="password"
+                       id="Input_Password"
+                       class="blogsphere-field__input"
+                       autocomplete="new-password"
+                       placeholder="Create a new password"
+                       asp-for="Input.Password" />
+                <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                    <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                    <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+                </button>
+            </div>
+            <span asp-validation-for="Input.Password" class="blogsphere-field__error validation-error"></span>
+        </div>
+
+        <div class="blogsphere-field">
+            <label class="blogsphere-field__label" for="Input_ConfirmPassword">Confirm Password</label>
+            <div class="blogsphere-field__control-wrap">
+                <img src="~/svgs/icons/ui/lock.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+                <input type="password"
+                       id="Input_ConfirmPassword"
+                       class="blogsphere-field__input"
+                       autocomplete="new-password"
+                       placeholder="Confirm your new password"
+                       asp-for="Input.ConfirmPassword" />
+                <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                    <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                    <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+                </button>
+            </div>
+            <span asp-validation-for="Input.ConfirmPassword" class="blogsphere-field__error validation-error"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-continue">
+                Reset Password
+            </button>
+        </div>
+
+        <div class="form-links">
+            <p class="login-link">
+                Remember your password? <a asp-page="/Account/Login/Index" class="link-primary">Sign in</a>
+            </p>
+        </div>
+    </form>
+}
+else
+{
+    <div class="account-page__error-panel">
+        <div class="error-icon">
+            <img src="~/svgs/icons/ui/error-info.svg" alt="" width="64" height="64" class="status-icon status-icon--lg" aria-hidden="true" />
+        </div>
+        <p class="error-description">This could be because:</p>
+        <ul class="error-reasons">
+            <li>The link has expired</li>
+            <li>The link has already been used</li>
+            <li>The link was modified</li>
+        </ul>
+        <div class="error-actions">
+            <a asp-page="/Account/ForgotPassword/Index" class="btn-retry">Request New Reset Link</a>
+            <a asp-page="/Account/Login/Index" class="btn-login">Back to Login</a>
+        </div>
+    </div>
+}
+

@@ -1,72 +1,72 @@
-@page
-@model IdentityService.Pages.Account.Manage.Index
-@{
-    ViewData["Title"] = "Account Settings";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/manage-account.svg";
-    ViewData["PageTitle"] = "Account Settings";
-    ViewData["PageSubtitle"] = $"Manage security and recovery for <strong>{Model.UserEmail}</strong>";
-    ViewData["WideCard"] = true;
-}
-
-@section BackNav {
-    <a class="account-page__back-link" href="@Model.ReturnUrl">&larr; Back to App</a>
-}
-
-@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
-{
-    <div class="manage-status-message">@Model.StatusMessage</div>
-}
-
-<div class="manage-card-list">
-    <a class="manage-card" asp-page="/Account/Manage/TwoFactor/Index"
-       asp-route-returnUrl="@Model.ReturnUrl" asp-route-clientId="@Model.ClientId">
-        <div class="manage-card-icon">
-            <img src="~/svgs/icons/ui/lock.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
-        </div>
-        <div class="manage-card-body">
-            <span class="manage-card-title">Two-factor authentication</span>
-            <span class="manage-card-desc">
-                @if (Model.TwoFactorEnabled)
-                {
-                    <span class="manage-badge manage-badge--on">Enabled</span>
-                }
-                else
-                {
-                    <span class="manage-badge manage-badge--off">Disabled</span>
-                }
-            </span>
-        </div>
-        <span class="manage-card-arrow">&rsaquo;</span>
-    </a>
-
-    <a class="manage-card" asp-page="/Account/Manage/Phone/Index"
-       asp-route-returnUrl="@Model.ReturnUrl" asp-route-clientId="@Model.ClientId">
-        <div class="manage-card-icon">
-            <img src="~/svgs/icons/ui/phone-outline.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
-        </div>
-        <div class="manage-card-body">
-            <span class="manage-card-title">Recovery phone</span>
-            <span class="manage-card-desc">
-                @if (!string.IsNullOrEmpty(Model.MaskedPhone))
-                {
-                    <span>@Model.MaskedPhone</span>
-                    @if (Model.PhoneConfirmed)
-                    {
-                        <span class="manage-badge manage-badge--on">Verified</span>
-                    }
-                    else
-                    {
-                        <span class="manage-badge manage-badge--off">Not verified</span>
-                    }
-                }
-                else
-                {
-                    <span class="manage-hint">Not set</span>
-                }
-            </span>
-        </div>
-        <span class="manage-card-arrow">&rsaquo;</span>
-    </a>
-</div>
-
+@page
+@model IdentityService.Pages.Account.Manage.Index
+@{
+    ViewData["Title"] = "Account Settings";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "wide-card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/manage-account.svg";
+    ViewData["PageTitle"] = "Account Settings";
+    ViewData["PageSubtitle"] = $"Manage security and recovery for <strong>{Model.UserEmail}</strong>";
+}
+
+@section BackNav {
+    <a class="account-page__back-link" href="@Model.ReturnUrl">&larr; Back to App</a>
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.StatusMessage))
+{
+    <div class="manage-status-message">@Model.StatusMessage</div>
+}
+
+<div class="manage-card-list">
+    <a class="manage-card" asp-page="/Account/Manage/TwoFactor/Index"
+       asp-route-returnUrl="@Model.ReturnUrl" asp-route-clientId="@Model.ClientId">
+        <div class="manage-card-icon">
+            <img src="~/svgs/icons/ui/lock.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
+        </div>
+        <div class="manage-card-body">
+            <span class="manage-card-title">Two-factor authentication</span>
+            <span class="manage-card-desc">
+                @if (Model.TwoFactorEnabled)
+                {
+                    <span class="manage-badge manage-badge--on">Enabled</span>
+                }
+                else
+                {
+                    <span class="manage-badge manage-badge--off">Disabled</span>
+                }
+            </span>
+        </div>
+        <span class="manage-card-arrow">&rsaquo;</span>
+    </a>
+
+    <a class="manage-card" asp-page="/Account/Manage/Phone/Index"
+       asp-route-returnUrl="@Model.ReturnUrl" asp-route-clientId="@Model.ClientId">
+        <div class="manage-card-icon">
+            <img src="~/svgs/icons/ui/phone-outline.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
+        </div>
+        <div class="manage-card-body">
+            <span class="manage-card-title">Recovery phone</span>
+            <span class="manage-card-desc">
+                @if (!string.IsNullOrEmpty(Model.MaskedPhone))
+                {
+                    <span>@Model.MaskedPhone</span>
+                    @if (Model.PhoneConfirmed)
+                    {
+                        <span class="manage-badge manage-badge--on">Verified</span>
+                    }
+                    else
+                    {
+                        <span class="manage-badge manage-badge--off">Not verified</span>
+                    }
+                }
+                else
+                {
+                    <span class="manage-hint">Not set</span>
+                }
+            </span>
+        </div>
+        <span class="manage-card-arrow">&rsaquo;</span>
+    </a>
+</div>
+

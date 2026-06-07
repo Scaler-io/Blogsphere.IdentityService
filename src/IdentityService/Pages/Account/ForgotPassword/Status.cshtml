@@ -1,16 +1,17 @@
-@page
-@model IdentityService.Pages.Account.ForgotPassword.Status
-@{
-    ViewData["Title"] = "Check Your Email";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/forgot-password-status.svg";
-    ViewData["PageTitle"] = "Check Your Email";
-    ViewData["PageSubtitle"] = "If your email address is registered and confirmed, you will receive password reset instructions shortly.";
-}
-
-<div class="account-page__status-actions">
-    <a asp-page="/Account/Login/Index" class="btn-continue">
-        Return to Login
-    </a>
-</div>
-
+@page
+@model IdentityService.Pages.Account.ForgotPassword.Status
+@{
+    ViewData["Title"] = "Check Your Email";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/forgot-password-status.svg";
+    ViewData["PageTitle"] = "Check Your Email";
+    ViewData["PageSubtitle"] = "If your email address is registered and confirmed, you will receive password reset instructions shortly.";
+}
+
+<div class="account-page__status-actions">
+    <a asp-page="/Account/Login/Index" class="btn-continue">
+        Return to Login
+    </a>
+</div>
+

@@ -1,40 +1,46 @@
-@page
-@model IdentityService.Pages.Account.ForgotPassword.Index
-@{
-    ViewData["Title"] = "Forgot Password";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/forgot-password.svg";
-    ViewData["PageTitle"] = "Reset Your Password";
-    ViewData["PageSubtitle"] = "Enter your email address and we'll send you instructions to reset your password.";
-}
-
-<form method="post" class="account-form" novalidate>
-    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
-    <input type="hidden" asp-for="ReturnUrl" />
-    <input type="hidden" asp-for="ClientId" />
-
-    <div class="form-group">
-        <input type="email"
-               class="form-control"
-               placeholder="Email*"
-               asp-for="Input.Email"
-               autocomplete="email" />
-        <span asp-validation-for="Input.Email" class="text-danger validation-error"></span>
-    </div>
-
-    <div class="form-actions">
-        <button type="submit" class="btn-continue">
-            Send Reset Instructions
-        </button>
-    </div>
-
-    <div class="form-links">
-        <p class="back-link">
-            <a asp-page="/Account/Login/Index" asp-route-returnUrl="@Model.ReturnUrl" class="link-secondary">
-                <img src="~/svgs/icons/ui/chevron-left.svg" alt="" width="16" height="16" class="status-icon status-icon--sm" aria-hidden="true" />
-                Back to Login
-            </a>
-        </p>
-    </div>
-</form>
-
+@page
+@model IdentityService.Pages.Account.ForgotPassword.Index
+@{
+    ViewData["Title"] = "Forgot Password";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/forgot-password.svg";
+    ViewData["PageTitle"] = "Reset Your Password";
+    ViewData["PageSubtitle"] = "Enter your email address and we'll send you instructions to reset your password.";
+}
+
+<form method="post" class="account-form" novalidate>
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
+    <input type="hidden" asp-for="ReturnUrl" />
+    <input type="hidden" asp-for="ClientId" />
+
+    <div class="blogsphere-field">
+        <label class="blogsphere-field__label" for="Input_Email">Email</label>
+        <div class="blogsphere-field__control-wrap">
+            <img src="~/svgs/icons/ui/envelope.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+            <input type="email"
+                   id="Input_Email"
+                   class="blogsphere-field__input"
+                   placeholder="Enter your email"
+                   asp-for="Input.Email"
+                   autocomplete="email" />
+        </div>
+        <span asp-validation-for="Input.Email" class="blogsphere-field__error validation-error"></span>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-continue">
+            Send Reset Instructions
+        </button>
+    </div>
+
+    <div class="form-links">
+        <p class="back-link">
+            <a asp-page="/Account/Login/Index" asp-route-returnUrl="@Model.ReturnUrl" class="link-secondary">
+                <img src="~/svgs/icons/ui/chevron-left.svg" alt="" width="16" height="16" class="status-icon status-icon--sm" aria-hidden="true" />
+                Back to Login
+            </a>
+        </p>
+    </div>
+</form>
+

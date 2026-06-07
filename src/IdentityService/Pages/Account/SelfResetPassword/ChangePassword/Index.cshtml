@@ -1,65 +1,97 @@
-@page
-@model IdentityService.Pages.Account.SelfResetPassword.ChangePassword.Index
-@{
-    ViewData["Title"] = "Change Password";
-    Layout = "_AccountPageLayout";
-    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/reset-password.svg";
-    ViewData["PageTitle"] = "Change Password";
-    ViewData["PageSubtitle"] = Model.IsCodeMode
-        ? "Code verified. Set your new password."
-        : "Enter your current password to continue.";
-}
-
-@section BackNav {
-    <a class="account-page__back-link"
-       href="#"
-       onclick="event.preventDefault(); if (window.history.length > 1) { window.history.back(); } else { window.location.href='@Url.Page("/Account/SelfResetPassword/Index", new { returnUrl = Model.Input.ReturnUrl, clientId = Model.Input.ClientId })'; }">&larr; Back</a>
-}
-
-<form method="post" class="account-form" novalidate>
-    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
-
-    <input type="hidden" asp-for="Input.ReturnUrl" />
-    <input type="hidden" asp-for="Input.Email" />
-    <input type="hidden" asp-for="Input.ClientId" />
-    <input type="hidden" asp-for="Input.Mode" />
-
-    <div class="form-group">
-        <input type="email" class="form-control" asp-for="Input.Email" readonly />
-    </div>
-
-    @if (!Model.IsCodeMode)
-    {
-        <div class="form-group">
-            <input type="password"
-                   class="form-control"
-                   autocomplete="current-password"
-                   placeholder="Current Password*"
-                   asp-for="Input.CurrentPassword" />
-            <span asp-validation-for="Input.CurrentPassword" class="text-danger validation-error"></span>
-        </div>
-    }
-
-    <div class="form-group">
-        <input type="password"
-               class="form-control"
-               autocomplete="new-password"
-               placeholder="New Password*"
-               asp-for="Input.NewPassword" />
-        <span asp-validation-for="Input.NewPassword" class="text-danger validation-error"></span>
-    </div>
-
-    <div class="form-group">
-        <input type="password"
-               class="form-control"
-               autocomplete="new-password"
-               placeholder="Confirm Password*"
-               asp-for="Input.ConfirmPassword" />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger validation-error"></span>
-    </div>
-
-    <div class="form-actions">
-        <button type="submit" class="btn-continue">Change Password</button>
-    </div>
-</form>
-
+@page
+@model IdentityService.Pages.Account.SelfResetPassword.ChangePassword.Index
+@{
+    ViewData["Title"] = "Change Password";
+    Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
+    ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/reset-password.svg";
+    ViewData["PageTitle"] = "Change Password";
+    ViewData["PageSubtitle"] = Model.IsCodeMode
+        ? "Code verified. Set your new password."
+        : "Enter your current password to continue.";
+}
+
+@section BackNav {
+    <a class="account-page__back-link"
+       href="#"
+       onclick="event.preventDefault(); if (window.history.length > 1) { window.history.back(); } else { window.location.href='@Url.Page("/Account/SelfResetPassword/Index", new { returnUrl = Model.Input.ReturnUrl, clientId = Model.Input.ClientId })'; }">&larr; Back</a>
+}
+
+<form method="post" class="account-form" novalidate>
+    <div asp-validation-summary="ModelOnly" class="text-danger validation-summary-errors"></div>
+
+    <input type="hidden" asp-for="Input.ReturnUrl" />
+    <input type="hidden" asp-for="Input.Email" />
+    <input type="hidden" asp-for="Input.ClientId" />
+    <input type="hidden" asp-for="Input.Mode" />
+
+    <div class="blogsphere-field">
+        <label class="blogsphere-field__label" for="Input_Email">Email</label>
+        <div class="blogsphere-field__control-wrap">
+            <img src="~/svgs/icons/ui/envelope.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+            <input type="email" id="Input_Email" class="blogsphere-field__input" asp-for="Input.Email" readonly />
+        </div>
+    </div>
+
+    @if (!Model.IsCodeMode)
+    {
+        <div class="blogsphere-field">
+            <label class="blogsphere-field__label" for="Input_CurrentPassword">Current Password</label>
+            <div class="blogsphere-field__control-wrap">
+                <img src="~/svgs/icons/ui/lock.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+                <input type="password"
+                       id="Input_CurrentPassword"
+                       class="blogsphere-field__input"
+                       autocomplete="current-password"
+                       placeholder="Enter your current password"
+                       asp-for="Input.CurrentPassword" />
+                <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                    <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                    <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+                </button>
+            </div>
+            <span asp-validation-for="Input.CurrentPassword" class="blogsphere-field__error validation-error"></span>
+        </div>
+    }
+
+    <div class="blogsphere-field">
+        <label class="blogsphere-field__label" for="Input_NewPassword">New Password</label>
+        <div class="blogsphere-field__control-wrap">
+            <img src="~/svgs/icons/ui/lock.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+            <input type="password"
+                   id="Input_NewPassword"
+                   class="blogsphere-field__input"
+                   autocomplete="new-password"
+                   placeholder="Create a new password"
+                   asp-for="Input.NewPassword" />
+            <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+            </button>
+        </div>
+        <span asp-validation-for="Input.NewPassword" class="blogsphere-field__error validation-error"></span>
+    </div>
+
+    <div class="blogsphere-field">
+        <label class="blogsphere-field__label" for="Input_ConfirmPassword">Confirm Password</label>
+        <div class="blogsphere-field__control-wrap">
+            <img src="~/svgs/icons/ui/lock.svg" alt="" class="blogsphere-field__icon" aria-hidden="true" />
+            <input type="password"
+                   id="Input_ConfirmPassword"
+                   class="blogsphere-field__input"
+                   autocomplete="new-password"
+                   placeholder="Confirm your new password"
+                   asp-for="Input.ConfirmPassword" />
+            <button type="button" class="blogsphere-field__toggle" aria-label="Toggle password visibility" data-password-toggle>
+                <img src="~/svgs/icons/ui/eye.svg" alt="" width="18" height="18" data-icon-show aria-hidden="true" />
+                <img src="~/svgs/icons/ui/eye-off.svg" alt="" width="18" height="18" data-icon-hide hidden aria-hidden="true" />
+            </button>
+        </div>
+        <span asp-validation-for="Input.ConfirmPassword" class="blogsphere-field__error validation-error"></span>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-continue">Change Password</button>
+    </div>
+</form>
+

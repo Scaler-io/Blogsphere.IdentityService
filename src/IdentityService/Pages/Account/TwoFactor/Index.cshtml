@@ -3,9 +3,12 @@
 @{
     Layout = "_AccountPageLayout";
     ViewData["Title"] = "Two-Factor Authentication";
+    ViewData["LayoutVariant"] = "card";
     ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/two-factor.svg";
+    ViewData["IllustrationWidth"] = 280;
+    ViewData["IllustrationHeight"] = 140;
     ViewData["PageTitle"] = "2FA Verification";
-    ViewData["PageSubtitle"] = "Please enter the verification code sent to your email.";
+    ViewData["PageSubtitle"] = "Enter the 6-digit code sent to your email";
 }
 
 @if (!string.IsNullOrEmpty(Model.StatusMessage))
@@ -18,14 +21,25 @@
 
 <form method="post" class="account-form account-form--otp" novalidate>
     <div class="form-group">
-        <label asp-for="Code">Verification Code</label>
+        <div class="blogsphere-otp" data-otp-input data-otp-target="Code">
+            @for (var i = 0; i < 6; i++)
+            {
+                <input type="text"
+                       class="blogsphere-otp__digit"
+                       maxlength="1"
+                       inputmode="numeric"
+                       pattern="[0-9]"
+                       autocomplete="@(i == 0 ? "one-time-code" : "off")"
+                       aria-label="Digit @(i + 1) of 6"
+                       data-otp-digit />
+            }
+        </div>
         <input type="text"
-               maxlength="6"
-               class="form-control"
-               placeholder="Enter code"
-               autocomplete="one-time-code"
-               inputmode="numeric"
-               asp-for="Code" />
+               asp-for="Code"
+               class="blogsphere-otp__hidden"
+               tabindex="-1"
+               aria-hidden="true"
+               autocomplete="one-time-code" />
         <span asp-validation-for="Code" class="text-danger validation-error"></span>
     </div>
 
@@ -36,32 +50,18 @@
     </div>
 </form>
 
-<div class="account-page__help-links">
-    <div class="notice-banner">
-        <img src="~/svgs/icons/ui/info-circle.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
-        <span>Please do not refresh or leave this page. Your verification session will expire.</span>
+@section BelowCard {
+    <partial name="_BlogsphereInfoBanner" />
+    <div class="account-page__help-links">
+        <form method="post" asp-page-handler="Resend" class="resend-form" id="resendForm">
+            <button type="submit" class="account-page__help-link resend-link" id="resendBtn" data-cooldown="30" disabled="disabled">
+                <span id="resendText">Resend Code</span>
+                <span id="resendTimer" class="resend-timer">(30s)</span>
+            </button>
+        </form>
     </div>
-
-    <ul class="account-page__help-list">
-        <li>
-            <form method="post" asp-page-handler="Resend" class="resend-form" id="resendForm">
-                <button type="submit" class="resend-link" id="resendBtn" data-cooldown="30" disabled="disabled">
-                    <img src="~/svgs/icons/ui/refresh.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
-                    <span id="resendText">Resend Code</span>
-                    <span id="resendTimer" class="resend-timer">(30s)</span>
-                </button>
-            </form>
-        </li>
-        <li>
-            <a href="mailto:support@blogsphere.com" class="account-page__help-link">
-                <img src="~/svgs/icons/ui/envelope.svg" alt="" width="24" height="24" class="status-icon status-icon--md" aria-hidden="true" />
-                Contact Support
-            </a>
-        </li>
-    </ul>
-</div>
+}
 
 @section scripts {
     <script src="~/js/twofactor-resend.js?v=@DateTime.Now.Ticks"></script>
 }
-

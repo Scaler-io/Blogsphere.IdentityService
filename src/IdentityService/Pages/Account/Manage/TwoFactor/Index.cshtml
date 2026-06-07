@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Two-Factor Authentication";
     Layout = "_AccountPageLayout";
+    ViewData["LayoutVariant"] = "card";
     ViewData["IllustrationPath"] = "~/svgs/illustrations/auth/two-factor.svg";
     ViewData["PageTitle"] = "Two-Factor Authentication";
     ViewData["PageSubtitle"] = Model.TwoFactorEnabled
@@ -60,13 +61,25 @@ else
         <input type="hidden" name="Input.Action" value="confirmDisable" />
 
         <div class="form-group">
+            <div class="blogsphere-otp" data-otp-input data-otp-target="Input_VerificationCode">
+                @for (var i = 0; i < 6; i++)
+                {
+                    <input type="text"
+                           class="blogsphere-otp__digit"
+                           maxlength="1"
+                           inputmode="numeric"
+                           pattern="[0-9]"
+                           autocomplete="@(i == 0 ? "one-time-code" : "off")"
+                           aria-label="Digit @(i + 1) of 6"
+                           data-otp-digit />
+                }
+            </div>
             <input type="text"
-                   class="form-control"
+                   class="blogsphere-otp__hidden"
                    asp-for="Input.VerificationCode"
-                   placeholder="Enter verification code"
-                   autocomplete="one-time-code"
-                   inputmode="numeric"
-                   maxlength="6" />
+                   tabindex="-1"
+                   aria-hidden="true"
+                   autocomplete="one-time-code" />
             <span asp-validation-for="Input.VerificationCode" class="text-danger validation-error"></span>
         </div>
 
