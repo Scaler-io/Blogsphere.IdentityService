@@ -1,7 +1,7 @@
 @use "sass:color";
-@use "../_colors" as colors;
-@use "../_variables" as vars;
-@use "../_mixins" as mixins;
+@use "../tokens/colors" as colors;
+@use "../foundations/variables" as vars;
+@use "../foundations/mixins" as mixins;
 
 // Error page-specific styles
 .error-page {
@@ -37,6 +37,12 @@
             margin: 0 auto vars.$spacing-xl;
             color: colors.$color-error;
             opacity: 0.9;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
 
             @media (max-width: 768px) {
                 width: 100px;

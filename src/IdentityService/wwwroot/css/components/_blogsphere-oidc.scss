@@ -1,0 +1,82 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.blogsphere-panel {
+  @include mixins.card;
+  width: 100%;
+  max-width: 720px;
+  margin: vars.$spacing-xl auto;
+  padding: vars.$spacing-xl;
+
+  &__title {
+    @include mixins.section-title;
+    font-size: vars.$font-size-2xl;
+    margin-bottom: vars.$spacing-md;
+  }
+
+  &__lead {
+    color: colors.$md-on-surface-variant;
+    font-size: vars.$font-size-md;
+    margin-bottom: vars.$spacing-lg;
+  }
+
+  &__action {
+    max-width: 200px;
+    margin-top: vars.$spacing-lg;
+  }
+}
+
+.page-consent,
+.page-device-code,
+.page-device-success,
+.page-ciba {
+  max-width: 720px;
+  margin: vars.$spacing-xl auto;
+  padding: vars.$spacing-lg;
+
+  .lead h1 {
+    @include mixins.section-title;
+    font-size: vars.$font-size-xl;
+  }
+
+  .lead p,
+  .lead small {
+    color: colors.$md-on-surface-variant;
+  }
+
+  .card {
+    @include mixins.card;
+    border: 1px solid colors.$md-outline-variant;
+
+    .card-header {
+      background: colors.$md-surface-container-low;
+      border-bottom: 1px solid colors.$md-outline-variant;
+      color: colors.$md-on-surface;
+      font-weight: vars.$font-weight-semibold;
+    }
+  }
+
+  .btn-primary {
+    background: colors.$md-primary;
+    border-color: colors.$md-primary;
+
+    &:hover {
+      background: colors.$md-primary-container;
+      border-color: colors.$md-primary-container;
+    }
+  }
+
+  .btn-secondary,
+  .btn-default {
+    color: colors.$md-primary;
+    border-color: colors.$md-outline-variant;
+    background: colors.$md-surface-container-lowest;
+  }
+}
+
+.grants-page {
+  max-width: 900px;
+  margin: vars.$spacing-xl auto;
+  padding: vars.$spacing-lg;
+}

@@ -1,0 +1,24 @@
+@{
+    var fieldName = ViewData["OtpFieldName"] as string ?? "Code";
+    var fieldId = ViewData["OtpFieldId"] as string ?? fieldName;
+}
+
+<div class="blogsphere-otp" data-otp-input data-otp-target="@fieldId">
+    @for (var i = 0; i < 6; i++)
+    {
+        <input type="text"
+               class="blogsphere-otp__digit"
+               maxlength="1"
+               inputmode="numeric"
+               pattern="[0-9]"
+               autocomplete="@(i == 0 ? "one-time-code" : "off")"
+               aria-label="Digit @(i + 1) of 6"
+               data-otp-digit />
+    }
+    <input type="text"
+           id="@fieldId"
+           name="@fieldName"
+           class="blogsphere-otp__hidden"
+           tabindex="-1"
+           aria-hidden="true" />
+</div>

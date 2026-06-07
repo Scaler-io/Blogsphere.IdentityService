@@ -1,0 +1,56 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  background: colors.$md-surface;
+  font-family: vars.$font-family-body;
+  color: colors.$md-on-surface;
+}
+
+.container.body-container {
+  flex: 1 0 auto;
+  background: colors.$md-surface;
+  padding: 0 vars.$spacing-lg vars.$spacing-xl;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.logged-out-page iframe,
+.signout {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.welcome-page .logo {
+  width: 64px;
+}
+
+.welcome-page li {
+  list-style: none;
+  padding: 4px;
+}
+
+.message-container {
+  position: fixed;
+  top: vars.$spacing-lg;
+  right: vars.$spacing-lg;
+  z-index: vars.$z-index-tooltip;
+  max-width: 400px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -1,595 +1,98 @@
-/* EmailVerification Page Styles - Blog Theme */
-@use "sass:color";
-@use "../_colors" as colors;
-@use "../_variables" as vars;
-@use "../_mixins" as mixins;
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
 
-.email-verification-container {
-    min-height: 100vh;
-    @include mixins.gradient-background;
-    font-family: "Titillium Web", -apple-system, BlinkMacSystemFont, "Segoe UI",
-        Roboto, "Helvetica Neue", Arial, sans-serif !important;
-    @include mixins.flex-center;
-    padding: vars.$spacing-xl;
-
-    @media (max-width: 768px) {
-        padding: vars.$spacing-lg;
-    }
-
-    @media (max-width: 480px) {
-        padding: vars.$spacing-md;
-    }
-}
-
-/* Verification Success Card */
-.verification-success-card {
-    @include mixins.card;
-    border-radius: vars.$border-radius-lg;
-    box-shadow: vars.$shadow-lg;
-    border: 1px solid rgba(colors.$color-primary, 0.1);
-    max-width: 600px;
-    width: 100%;
+.account-page {
+  .verification-result {
     text-align: center;
-    position: relative;
 
-    @media (max-width: 768px) {
-        border-radius: vars.$border-radius-md;
-        max-width: 500px;
+    &__icon {
+      margin-bottom: vars.$spacing-md;
     }
 
-    @media (max-width: 480px) {
-        border-radius: vars.$border-radius-sm;
-        max-width: 100%;
+    &__status {
+      &--success {
+        color: colors.$color-success;
+      }
+
+      &--error {
+        color: colors.$color-error;
+      }
+    }
+  }
+
+  .verification-details {
+    margin: vars.$spacing-lg 0;
+
+    .verified-text,
+    .error-text {
+      color: colors.$color-text-secondary;
+      font-size: vars.$font-size-sm;
+      margin-bottom: vars.$spacing-md;
     }
 
-    .success-header {
-        padding: vars.$spacing-xl vars.$spacing-2xl vars.$spacing-lg
-            vars.$spacing-2xl;
-        background: linear-gradient(
-            135deg,
-            colors.$color-surface 0%,
-            color.adjust(colors.$color-surface, $lightness: -5%) 100%
-        );
-        border-bottom: 1px solid rgba(colors.$color-primary, 0.08);
-
-        @media (max-width: 768px) {
-            padding: vars.$spacing-lg vars.$spacing-xl vars.$spacing-md
-                vars.$spacing-xl;
-        }
-
-        @media (max-width: 480px) {
-            padding: vars.$spacing-lg vars.$spacing-lg vars.$spacing-md
-                vars.$spacing-lg;
-        }
-
-        .success-icon {
-            margin-bottom: vars.$spacing-md;
-
-            svg {
-                filter: drop-shadow(0 4px 12px rgba(16, 185, 129, 0.3));
-                animation: successPulse 2s ease-in-out infinite;
-                width: 64px;
-                height: 64px;
-            }
-        }
-
-        h1 {
-            font-size: vars.$font-size-2xl;
-            font-weight: vars.$font-weight-bold;
-            color: colors.$color-text-primary;
-            margin: 0 0 vars.$spacing-sm 0;
-            line-height: 1.2;
-
-            @media (max-width: 768px) {
-                font-size: vars.$font-size-xl;
-            }
-
-            @media (max-width: 480px) {
-                font-size: vars.$font-size-lg;
-            }
-        }
-
-        .success-subtitle {
-            color: colors.$color-success;
-            font-size: vars.$font-size-md;
-            margin: 0;
-            font-weight: vars.$font-weight-medium;
-
-            @media (max-width: 768px) {
-                font-size: vars.$font-size-sm;
-            }
-
-            @media (max-width: 480px) {
-                font-size: vars.$font-size-sm;
-            }
-        }
+    .email-address {
+      color: colors.$color-primary;
+      font-size: vars.$font-size-md;
+      font-weight: vars.$font-weight-semibold;
+      padding: vars.$spacing-md;
+      background: rgba(colors.$color-primary, 0.05);
+      border-radius: vars.$border-radius-base;
+      border: 1px solid rgba(colors.$color-primary, 0.1);
+      word-break: break-word;
+      margin-bottom: vars.$spacing-md;
     }
 
-    .verification-details {
-        padding: vars.$spacing-lg vars.$spacing-2xl;
+    .error-reasons {
+      text-align: left;
+      color: colors.$color-text-secondary;
+      font-size: vars.$font-size-sm;
+      padding-left: vars.$spacing-xl;
+      margin: vars.$spacing-md 0;
+    }
+  }
 
-        @media (max-width: 768px) {
-            padding: vars.$spacing-md vars.$spacing-xl;
-        }
+  .verification-actions {
+    margin-top: vars.$spacing-xl;
+    padding-top: vars.$spacing-lg;
+    border-top: 1px solid colors.$md-outline-variant;
 
-        @media (max-width: 480px) {
-            padding: vars.$spacing-md vars.$spacing-lg;
-        }
-
-        .email-display {
-            margin-bottom: vars.$spacing-lg;
-
-            .verified-text {
-                color: colors.$color-text-secondary;
-                font-size: vars.$font-size-md;
-                margin: vars.$spacing-sm 0;
-                font-weight: vars.$font-weight-normal;
-
-                @media (max-width: 480px) {
-                    font-size: vars.$font-size-sm;
-                }
-            }
-
-            .email-address {
-                color: colors.$color-primary;
-                font-size: vars.$font-size-lg;
-                font-weight: vars.$font-weight-semibold;
-                margin: vars.$spacing-md 0;
-                padding: vars.$spacing-md vars.$spacing-lg;
-                background: rgba(colors.$color-primary, 0.05);
-                border-radius: vars.$border-radius-md;
-                border: 1px solid rgba(colors.$color-primary, 0.1);
-                word-break: break-word;
-
-                @media (max-width: 480px) {
-                    font-size: vars.$font-size-md;
-                    padding: vars.$spacing-sm vars.$spacing-md;
-                }
-            }
-        }
+    .next-text,
+    .retry-text,
+    .contact-text {
+      color: colors.$color-text-secondary;
+      font-size: vars.$font-size-sm;
+      margin-bottom: vars.$spacing-md;
     }
 
-    .decorative-elements {
-        margin: vars.$spacing-md 0;
-
-        .decoration-svg {
-            opacity: 0.8;
-            width: 200px;
-            height: 80px;
-
-            // Heart pulse animation
-            .heart-group {
-                animation: heartPulse 2s ease-in-out infinite;
-                transform-origin: center;
-            }
-
-            // Comment bubble bounce
-            .comment-group {
-                animation: commentBounce 3s ease-in-out infinite;
-            }
-
-            // Share group rotation
-            .share-group {
-                animation: shareFloat 4s ease-in-out infinite;
-            }
-
-            // Bookmark slide
-            .bookmark-group {
-                animation: bookmarkSlide 5s ease-in-out infinite;
-            }
-
-            // Connection lines flow
-            .connection-line {
-                animation: flowPulse 2.5s ease-in-out infinite;
-            }
-
-            // Sparkles twinkle
-            .sparkles {
-                animation: sparkleGlow 1.5s ease-in-out infinite alternate;
-            }
-
-            // Floating particles
-            circle[r="2"],
-            circle[r="1.5"],
-            circle[r="1"],
-            circle[r="2.5"] {
-                animation: particleFloat 4s ease-in-out infinite;
-            }
-
-            circle[cx="180"] {
-                animation-delay: -1s;
-            }
-        }
+    .btn-continue {
+      @include mixins.button-primary;
+      display: inline-flex;
+      text-decoration: none;
+      min-width: 200px;
+      height: 48px;
     }
 
-    // Error states styling
-    .error-header {
-        padding: 2rem 2.5rem 1.5rem 2.5rem;
-        background: linear-gradient(135deg, #fef2f2 0%, #fde7e7 100%);
-        border-bottom: 1px solid rgba(239, 68, 68, 0.08);
+    .phone-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: vars.$spacing-sm;
+      padding: vars.$spacing-md;
+      border: 1px solid colors.$md-outline-variant;
+      border-radius: vars.$border-radius-base;
+      margin: vars.$spacing-md 0;
 
-        @media (max-width: 768px) {
-            padding: 1.75rem 2rem 1.25rem 2rem;
-        }
-
-        @media (max-width: 480px) {
-            padding: 1.5rem 1.5rem 1rem 1.5rem;
-        }
-
-        .error-icon {
-            margin-bottom: 1rem;
-
-            svg {
-                filter: drop-shadow(0 4px 12px rgba(239, 68, 68, 0.3));
-                animation: errorPulse 2s ease-in-out infinite;
-                width: 64px;
-                height: 64px;
-            }
-        }
-
-        h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #dc2626;
-            margin: 0 0 0.5rem 0;
-            line-height: 1.2;
-
-            @media (max-width: 768px) {
-                font-size: 1.8rem;
-            }
-
-            @media (max-width: 480px) {
-                font-size: 1.6rem;
-            }
-        }
-
-        .error-subtitle {
-            color: #ef4444;
-            font-size: 1.2rem;
-            margin: 0;
-            font-weight: 500;
-
-            @media (max-width: 768px) {
-                font-size: 1.1rem;
-            }
-
-            @media (max-width: 480px) {
-                font-size: 1rem;
-            }
-        }
+      .phone-link {
+        color: colors.$color-primary;
+        font-weight: vars.$font-weight-semibold;
+        text-decoration: none;
+      }
     }
 
-    .error-message {
-        .error-text {
-            color: #6b7280;
-            font-size: 1.1rem;
-            margin: 0 0 1rem 0;
-            font-weight: 400;
-
-            @media (max-width: 480px) {
-                font-size: 1rem;
-            }
-        }
-
-        .error-reasons {
-            color: #dc2626;
-            font-size: 1rem;
-            margin: 1rem 0;
-            padding-left: 1.5rem;
-
-            li {
-                margin: 0.5rem 0;
-                list-style: none;
-                @media (max-width: 480px) {
-                    font-size: 0.95rem;
-                }
-            }
-        }
+    .support-hours {
+      font-size: vars.$font-size-xs;
+      color: colors.$color-text-secondary;
     }
-
-    .error-actions {
-        padding: 1.5rem 2.5rem 2rem 2.5rem;
-        border-top: 1px solid colors.$color-border;
-        margin: 0 1rem;
-
-        @media (max-width: 768px) {
-            padding: 1.25rem 2rem 1.75rem 2rem;
-        }
-
-        @media (max-width: 480px) {
-            padding: 1rem 1.5rem 1.5rem 1.5rem;
-        }
-
-        .retry-text {
-            color: #6b7280;
-            font-size: 1rem;
-            margin: 0 0 1.5rem 0;
-            font-weight: 400;
-
-            @media (max-width: 480px) {
-                font-size: 0.95rem;
-            }
-        }
-
-        .support-contact {
-            text-align: center;
-
-            .contact-text {
-                color: #6b7280;
-                font-size: 1.1rem;
-                margin: 0 0 1rem 0;
-                font-weight: 500;
-
-                @media (max-width: 480px) {
-                    font-size: 1rem;
-                }
-            }
-
-            .phone-number {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.75rem;
-                margin: 1.5rem 0;
-                padding: 1.25rem 2rem;
-                background: linear-gradient(
-                    135deg,
-                    rgba(0, 51, 204, 0.05) 0%,
-                    rgba(0, 118, 255, 0.05) 100%
-                );
-                border: 2px solid rgba(0, 51, 204, 0.15);
-                border-radius: 16px;
-                transition: all 0.3s ease;
-
-                @media (max-width: 480px) {
-                    padding: 1rem 1.5rem;
-                    flex-direction: column;
-                    gap: 0.5rem;
-                }
-
-                &:hover {
-                    background: linear-gradient(
-                        135deg,
-                        rgba(0, 51, 204, 0.08) 0%,
-                        rgba(0, 118, 255, 0.08) 100%
-                    );
-                    border-color: rgba(0, 51, 204, 0.25);
-                }
-
-                svg {
-                    flex-shrink: 0;
-
-                    @media (max-width: 480px) {
-                        width: 18px;
-                        height: 18px;
-                    }
-                }
-
-                .phone-link {
-                    color: colors.$color-primary;
-                    font-size: 1.3rem;
-                    font-weight: 700;
-                    text-decoration: none;
-                    transition: color 0.3s ease;
-
-                    @media (max-width: 480px) {
-                        font-size: 1.2rem;
-                    }
-
-                    &:hover {
-                        color: colors.$color-background;
-                        text-decoration: none;
-                    }
-                }
-            }
-
-            .support-hours {
-                font-size: 0.95rem;
-                margin: 1rem 0 0 0;
-                font-weight: 500;
-                color: colors.$color-primary;
-                @media (max-width: 480px) {
-                    font-size: 0.9rem;
-                }
-            }
-        }
-    }
-
-    .next-steps {
-        padding: 1.5rem 2.5rem 2rem 2.5rem;
-        border-top: 1px solid rgba(0, 51, 204, 0.08);
-        background: linear-gradient(135deg, #fafbff 0%, #f5f8ff 100%);
-
-        @media (max-width: 768px) {
-            padding: 1.25rem 2rem 1.75rem 2rem;
-        }
-
-        @media (max-width: 480px) {
-            padding: 1rem 1.5rem 1.5rem 1.5rem;
-        }
-
-        .next-text {
-            color: #6b7280;
-            font-size: 1rem;
-            margin: 0 0 1rem 0;
-            font-weight: 400;
-
-            @media (max-width: 480px) {
-                font-size: 0.95rem;
-                margin: 0 0 1rem 0;
-            }
-        }
-
-        .btn-continue {
-            display: inline-block;
-            padding: 16px 32px;
-            background: linear-gradient(
-                135deg,
-                colors.$color-primary 0%,
-                colors.$color-background 100%
-            );
-            color: colors.$color-surface;
-            text-decoration: none;
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 6px 16px rgba(0, 51, 204, 0.25);
-
-            @media (max-width: 480px) {
-                padding: 14px 28px;
-                font-size: 1rem;
-            }
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 25px rgba(0, 51, 204, 0.35);
-                text-decoration: none;
-                color: colors.$color-surface;
-            }
-
-            &:active {
-                transform: translateY(-1px);
-            }
-        }
-    }
-}
-
-/* Animations */
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    100% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes heartbeat {
-    0%,
-    100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.15);
-    }
-}
-
-@keyframes successPulse {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
-}
-
-// New advanced animations for decorative SVG
-@keyframes heartPulse {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.8;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-    }
-}
-
-@keyframes commentBounce {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    25% {
-        transform: translateY(-8px);
-    }
-    75% {
-        transform: translateY(-4px);
-    }
-}
-
-@keyframes shareFloat {
-    0%,
-    100% {
-        transform: translateX(0) rotate(0deg);
-    }
-    33% {
-        transform: translateX(5px) rotate(10deg);
-    }
-    66% {
-        transform: translateX(-5px) rotate(-10deg);
-    }
-}
-
-@keyframes bookmarkSlide {
-    0%,
-    100% {
-        transform: translateY(0);
-        opacity: 0.8;
-    }
-    50% {
-        transform: translateY(-10px);
-        opacity: 1;
-    }
-}
-
-@keyframes flowPulse {
-    0%,
-    100% {
-        stroke-dashoffset: 0;
-        opacity: 0.3;
-    }
-    50% {
-        stroke-dashoffset: 10;
-        opacity: 0.6;
-    }
-}
-
-@keyframes sparkleGlow {
-    0% {
-        opacity: 0.4;
-        transform: scale(0.8);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1.2);
-    }
-}
-
-@keyframes particleFloat {
-    0%,
-    100% {
-        transform: translateY(0) translateX(0);
-        opacity: 0.2;
-    }
-    25% {
-        transform: translateY(-15px) translateX(5px);
-        opacity: 0.4;
-    }
-    50% {
-        transform: translateY(-8px) translateX(-3px);
-        opacity: 0.5;
-    }
-    75% {
-        transform: translateY(-12px) translateX(8px);
-        opacity: 0.3;
-    }
-}
-
-@keyframes errorPulse {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
+  }
 }

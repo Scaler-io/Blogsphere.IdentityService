@@ -1,0 +1,83 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.btn-primary,
+.btn-continue,
+.btn-confirm,
+.btn-redirect {
+  @include mixins.button-primary;
+}
+
+.btn-secondary,
+.btn-home,
+.btn-login {
+  @include mixins.button-secondary;
+}
+
+.btn-danger,
+.btn-continue--danger {
+  @include mixins.button-danger;
+}
+
+.btn-outline-primary {
+  @include mixins.button-secondary;
+  color: colors.$color-primary;
+  border-color: colors.$color-primary;
+
+  &:hover {
+    background: rgba(colors.$md-primary, 0.06);
+    border-color: colors.$md-primary-container;
+    color: colors.$md-primary-container;
+  }
+}
+
+.btn-outline-info {
+  @include mixins.button-secondary;
+  color: colors.$md-secondary;
+  border-color: colors.$md-secondary;
+
+  &:hover {
+    background: rgba(colors.$md-secondary, 0.08);
+  }
+}
+
+.btn-light {
+  @include mixins.button-base;
+  background: colors.$md-on-primary;
+  color: colors.$md-primary;
+
+  &:hover {
+    background: colors.$md-surface-container-low;
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+  }
+}
+
+.btn-outline-light {
+  @include mixins.button-base;
+  background: transparent;
+  color: colors.$md-on-primary;
+  border: 1px solid rgba(colors.$md-on-primary, 0.8);
+
+  &:hover {
+    background: rgba(colors.$md-on-primary, 0.12);
+  }
+}
+
+.btn {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    @include mixins.focus-ring;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

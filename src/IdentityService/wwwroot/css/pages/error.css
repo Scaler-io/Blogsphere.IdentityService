@@ -9,17 +9,17 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(0, 51, 204, 0.02) 0%, rgba(255, 230, 0, 0.02) 100%);
+  background: linear-gradient(135deg, rgba(0, 15, 118, 0.02) 0%, rgba(55, 240, 254, 0.02) 100%);
 }
 .error-page .error-card {
-  border: none;
+  border: 1px solid #c5c5d7;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   background: #ffffff;
   overflow: hidden;
-  border-radius: 25px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 51, 204, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 15, 118, 0.1);
   max-width: 600px;
   width: 100%;
   text-align: center;
@@ -37,8 +37,13 @@
   width: 120px;
   height: 120px;
   margin: 0 auto 2rem;
-  color: #ff5252;
+  color: #ba1a1a;
   opacity: 0.9;
+}
+.error-page .error-card .error-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 @media (max-width: 768px) {
   .error-page .error-card .error-icon {
@@ -47,88 +52,93 @@
   }
 }
 .error-page .error-card .error-title {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #00205b;
+  color: #1a1c1d;
   margin-bottom: 1rem;
 }
 @media (max-width: 768px) {
   .error-page .error-card .error-title {
-    font-size: 2rem;
+    font-size: 1.25rem;
   }
 }
 .error-page .error-card .error-message {
-  font-size: 1.1rem;
-  color: #0033cc;
+  font-size: 1rem;
+  color: #454654;
   margin-bottom: 2rem;
   padding: 0 1rem;
 }
 .error-page .error-card .error-message em {
-  color: #ff5252;
+  color: #ba1a1a;
   font-style: normal;
   font-weight: 600;
 }
 .error-page .error-card .error-description {
-  font-size: 1rem;
-  color: #0033cc;
+  font-size: 0.875rem;
+  color: #454654;
   margin-bottom: 2rem;
   opacity: 0.9;
 }
 .error-page .error-card .request-id {
-  font-size: 0.875rem;
-  color: #0033cc;
+  font-size: 0.75rem;
+  color: #454654;
   opacity: 0.7;
   margin-top: 2rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(0, 51, 204, 0.1);
+  border-top: 1px solid rgba(0, 15, 118, 0.1);
 }
 .error-page .error-card .error-actions {
   margin-top: 2rem;
 }
 .error-page .error-card .error-actions .btn-home {
-  background: #0033cc;
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: #000f76;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   padding: 1rem 2.5rem;
   border-radius: 12px;
-  font-size: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 .error-page .error-card .error-actions .btn-home:hover {
-  background: rgb(0, 44.625, 178.5);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgb(0, 20.186440678, 158.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 .error-page .error-card .error-actions .btn-home:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #001cb0;
 }
 .error-page .error-card .error-actions .btn-home:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.error-page .error-card .error-actions .btn-home:focus-visible {
+  outline: 2px solid #37f0fe;
+  outline-offset: 2px;
 }
 .error-page .error-card .error-actions .btn-home:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 .error-page .error-card .error-actions .btn-home:hover {
-  background: #0057b8;
+  background: #000f76;
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 .error-page .error-card .error-actions .btn-home:active {
   transform: translateY(0);

@@ -1,9 +1,9 @@
 @use "sass:color";
-@use "../_colors" as colors;
-@use "../_variables" as vars;
-@use "../_mixins" as mixins;
+@use "../tokens/colors" as colors;
+@use "../foundations/variables" as vars;
+@use "../foundations/mixins" as mixins;
 
-.reset-password-container {
+.account-page {
     .back-nav {
         margin-bottom: vars.$spacing-sm;
     }

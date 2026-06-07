@@ -12,15 +12,16 @@
   margin-bottom: 2rem;
 }
 .grants-page .lead h1 {
-  font-size: 2rem;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #0033cc;
+  color: #000f76;
   margin-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
 .grants-page .lead p {
-  color: #0033cc;
-  font-size: 1.1rem;
+  color: #454654;
+  font-size: 1rem;
   line-height: 1.6;
 }
 .grants-page .grants-container {
@@ -28,9 +29,9 @@
   margin: 0 auto;
 }
 .grants-page .grants-container .grant-item {
-  border: none;
+  border: 1px solid #c5c5d7;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   background: #ffffff;
   overflow: hidden;
   margin-bottom: 1.5rem;
@@ -44,8 +45,8 @@
 .grants-page .grants-container .grant-item .grant-info .client-logo {
   width: 64px;
   height: 64px;
-  border-radius: 8px;
-  background: rgba(0, 51, 204, 0.1);
+  border-radius: 4px;
+  background: rgba(0, 15, 118, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -58,14 +59,14 @@
   flex: 1;
 }
 .grants-page .grants-container .grant-item .grant-info .grant-details .client-name {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #00205b;
+  color: #1a1c1d;
   margin-bottom: 0.5rem;
 }
 .grants-page .grants-container .grant-item .grant-info .grant-details .grant-description {
-  font-size: 1rem;
-  color: #0033cc;
+  font-size: 0.875rem;
+  color: #454654;
   margin-bottom: 1rem;
 }
 .grants-page .grants-container .grant-item .grant-info .grant-details .grant-scopes {
@@ -74,78 +75,83 @@
 .grants-page .grants-container .grant-item .grant-info .grant-details .grant-scopes .scope-item {
   display: inline-flex;
   align-items: center;
-  background: rgba(0, 51, 204, 0.05);
+  background: rgba(0, 15, 118, 0.05);
   padding: 0.25rem 0.5rem;
-  border-radius: 8px;
+  border-radius: 4px;
   margin: 0 0.25rem 0.25rem 0;
-  font-size: 0.875rem;
-  color: #0033cc;
+  font-size: 0.75rem;
+  color: #000f76;
 }
 .grants-page .grants-container .grant-item .grant-info .grant-details .grant-scopes .scope-item:hover {
-  background: rgba(0, 51, 204, 0.1);
+  background: rgba(0, 15, 118, 0.1);
 }
 .grants-page .grants-container .grant-item .grant-info .grant-details .grant-date {
-  font-size: 0.875rem;
-  color: #0033cc;
+  font-size: 0.75rem;
+  color: #454654;
   opacity: 0.7;
 }
 .grants-page .grants-container .grant-item .grant-actions {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid rgba(0, 51, 204, 0.1);
+  border-top: 1px solid rgba(0, 15, 118, 0.1);
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke {
-  background: #0033cc;
-  color: #ffffff;
-  border: none;
-  border-radius: 25px;
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #ff5252 !important;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: #000f76;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  background-color: #ba1a1a !important;
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke:hover {
-  background: rgb(0, 44.625, 178.5);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  background: rgb(0, 20.186440678, 158.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #001cb0;
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 51, 204, 0.3);
+}
+.grants-page .grants-container .grant-item .grant-actions .btn-revoke:focus-visible {
+  outline: 2px solid #37f0fe;
+  outline-offset: 2px;
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke:disabled {
-  opacity: 0.7;
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 .grants-page .grants-container .grant-item .grant-actions .btn-revoke:hover {
-  background-color: #ff1f1f !important;
+  background-color: rgb(141.2547169811, 19.7452830189, 19.7452830189) !important;
 }
 .grants-page .grants-container .no-grants {
   text-align: center;
   padding: 2.5rem;
-  color: #0033cc;
-  font-size: 1.1rem;
+  color: #454654;
+  font-size: 1rem;
 }
 .grants-page .grants-container .no-grants .empty-icon {
-  font-size: 2.5rem;
-  color: #0033cc;
+  font-size: 1.5rem;
+  color: #000f76;
   opacity: 0.5;
   margin-bottom: 1rem;
 }

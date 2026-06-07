@@ -1,0 +1,73 @@
+@use '../tokens/colors' as colors;
+@use '../foundations/variables' as vars;
+@use '../foundations/mixins' as mixins;
+
+.landing-page {
+  .hero-section,
+  .landing-hero {
+    background: colors.$gradient-hero !important;
+    border-radius: 0;
+  }
+
+  .text-primary {
+    color: colors.$md-primary !important;
+  }
+
+  .btn-hero-primary {
+    background: colors.$md-on-primary;
+    color: colors.$md-primary;
+    border: none;
+    font-weight: vars.$font-weight-semibold;
+
+    &:hover {
+      background: colors.$md-surface-container-low;
+    }
+  }
+
+  .btn-hero-secondary {
+    background: transparent;
+    color: colors.$md-on-primary;
+    border: 1px solid rgba(colors.$md-on-primary, 0.6);
+
+    &:hover {
+      background: rgba(colors.$md-on-primary, 0.1);
+      color: colors.$md-on-primary;
+    }
+  }
+
+  .feature-card,
+  .quick-access-card {
+    border: 1px solid colors.$md-outline-variant;
+    border-radius: vars.$border-radius-md;
+    box-shadow: colors.$md-elevation-card;
+    background: colors.$md-surface-container-lowest;
+  }
+}
+
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+  padding: vars.$spacing-xl;
+
+  .error-card {
+    @include mixins.card;
+    padding: vars.$spacing-2xl;
+    text-align: center;
+    max-width: 480px;
+  }
+
+  .error-title {
+    color: colors.$md-primary;
+    font-family: vars.$font-family-heading;
+  }
+
+  .btn-home {
+    @include mixins.button-primary;
+    display: inline-flex;
+    margin-top: vars.$spacing-lg;
+    text-decoration: none;
+    padding: vars.$spacing-sm vars.$spacing-xl;
+  }
+}

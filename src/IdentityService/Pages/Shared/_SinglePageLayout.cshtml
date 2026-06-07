@@ -7,25 +7,40 @@
 
     <title>@ViewData["Title"] - Blogsphere Identity</title>
     
-    <!-- Modern favicon support -->
     <link rel="icon" type="image/svg+xml" href="~/favicon.svg?v=@DateTime.Now.Ticks" />
     <link rel="icon" type="image/png" sizes="32x32" href="~/favicon-32x32.png?v=@DateTime.Now.Ticks" />
     
-    <!-- Local font fallback -->
     <link rel="stylesheet" href="~/fonts/titillium-web/titillium-web.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/bootstrap4-glyphicons/css/bootstrap-glyphicons.min.css" />
+    <link rel="stylesheet" href="~/fonts/open-sans/open-sans.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap4-glyphicons/css/bootstrap-glyphicons.css" />
     <link rel="stylesheet" href="~/css/site.css?v=@DateTime.Now.Ticks" />
+
+    @if (ViewData["UseAccountPageAssets"] is true)
+    {
+        <link rel="stylesheet" href="~/css/pages/account-flows.css?v=@DateTime.Now.Ticks" />
+    }
     
     @RenderSection("Styles", required: false)
-
 </head>
-<body>
-    @RenderBody()
+<body class="blogsphere-page @(ViewData["BodyClass"] as string)">
+    <partial name="_BlogsphereNav" />
 
-    <script src="~/lib/jquery/dist/jquery.slim.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <main class="blogsphere-page__main" role="main">
+        @RenderBody()
+    </main>
+
+    <partial name="_BlogsphereFooter" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script>
+
+    @if (ViewData["UseAccountPageAssets"] is true)
+    {
+        <partial name="_ValidationScriptsPartial" />
+        <script src="~/js/otp-input.js?v=@DateTime.Now.Ticks"></script>
+    }
 
     @RenderSection("scripts", required: false)
 </body>
-</html> 
+</html>

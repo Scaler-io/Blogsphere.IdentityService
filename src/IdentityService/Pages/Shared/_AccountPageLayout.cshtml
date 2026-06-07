@@ -1,0 +1,190 @@
+@{
+    Layout = "_SinglePageLayout";
+    ViewData["UseAccountPageAssets"] = true;
+    ViewData["NavVariant"] = "account";
+    ViewData["BodyClass"] = "blogsphere-page--account";
+
+    var layoutVariant = ViewData["LayoutVariant"] as string ?? "card";
+    var illustrationPath = ViewData["IllustrationPath"] as string;
+    var illustrationWidth = ViewData["IllustrationWidth"] as int? ?? 280;
+    var illustrationHeight = ViewData["IllustrationHeight"] as int? ?? 160;
+    var pageTitle = ViewData["PageTitle"] as string;
+    var pageSubtitle = ViewData["PageSubtitle"] as string;
+    var wideCard = ViewData["WideCard"] is true || layoutVariant == "wide-card";
+    var hideHeader = ViewData["HideCardHeader"] is true;
+    var hideIllustration = ViewData["HideIllustration"] is true;
+}
+
+<div class="account-page account-page--@layoutVariant">
+    @if (layoutVariant == "hero")
+    {
+        <div class="account-page__hero-wrap">
+            @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
+            {
+                <div class="account-page__hero">
+                    <img src="@Url.Content(illustrationPath)"
+                         alt=""
+                         width="@illustrationWidth"
+                         height="@illustrationHeight"
+                         class="auth-illustration account-page__illustration"
+                         aria-hidden="true" />
+                </div>
+            }
+            <div class="account-page__hero-body">
+                @if (IsSectionDefined("BackNav"))
+                {
+                    <div class="account-page__back-nav">
+                        @RenderSection("BackNav", required: false)
+                    </div>
+                }
+                @if (!hideHeader && (!string.IsNullOrEmpty(pageTitle) || !string.IsNullOrEmpty(pageSubtitle)))
+                {
+                    <div class="account-page__header">
+                        @if (!string.IsNullOrEmpty(pageTitle))
+                        {
+                            <h1 class="account-page__title">@pageTitle</h1>
+                        }
+                        @if (!string.IsNullOrEmpty(pageSubtitle))
+                        {
+                            <p class="account-page__subtitle">@Html.Raw(pageSubtitle)</p>
+                        }
+                    </div>
+                }
+                <div class="account-page__body">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    }
+    else if (layoutVariant == "open")
+    {
+        <div class="account-page__open-content">
+            @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
+            {
+                <img src="@Url.Content(illustrationPath)"
+                     alt=""
+                     width="@illustrationWidth"
+                     height="@illustrationHeight"
+                     class="auth-illustration account-page__illustration"
+                     aria-hidden="true" />
+            }
+            @if (!hideHeader && (!string.IsNullOrEmpty(pageTitle) || !string.IsNullOrEmpty(pageSubtitle)))
+            {
+                <div class="account-page__header">
+                    @if (!string.IsNullOrEmpty(pageTitle))
+                    {
+                        <h1 class="account-page__title">@pageTitle</h1>
+                    }
+                    @if (!string.IsNullOrEmpty(pageSubtitle))
+                    {
+                        <p class="account-page__subtitle">@Html.Raw(pageSubtitle)</p>
+                    }
+                </div>
+            }
+            <div class="account-page__body">
+                @RenderBody()
+            </div>
+        </div>
+    }
+    else
+    {
+        var cardClass = "account-page__card";
+        if (wideCard) { cardClass += " account-page__card--wide"; }
+        if (layoutVariant == "split-card") { cardClass += " account-page__card--split"; }
+
+        <div class="@cardClass">
+            @if (layoutVariant == "split-card")
+            {
+                @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
+                {
+                    <div class="account-page__card-art">
+                        <img src="@Url.Content(illustrationPath)"
+                             alt=""
+                             width="@illustrationWidth"
+                             height="@illustrationHeight"
+                             class="auth-illustration account-page__illustration"
+                             aria-hidden="true" />
+                    </div>
+                }
+                <div class="account-page__card-content">
+                    @if (IsSectionDefined("BackNav"))
+                    {
+                        <div class="account-page__back-nav">
+                            @RenderSection("BackNav", required: false)
+                        </div>
+                    }
+                    @if (!hideHeader && (!string.IsNullOrEmpty(pageTitle) || !string.IsNullOrEmpty(pageSubtitle)))
+                    {
+                        <div class="account-page__header">
+                            @if (!string.IsNullOrEmpty(pageTitle))
+                            {
+                                <h1 class="account-page__title">@pageTitle</h1>
+                            }
+                            @if (!string.IsNullOrEmpty(pageSubtitle))
+                            {
+                                <p class="account-page__subtitle">@Html.Raw(pageSubtitle)</p>
+                            }
+                        </div>
+                    }
+                    <div class="account-page__body">
+                        @RenderBody()
+                    </div>
+                </div>
+            }
+            else
+            {
+                @if (!hideIllustration && !string.IsNullOrEmpty(illustrationPath))
+                {
+                    <div class="account-page__card-art">
+                        <img src="@Url.Content(illustrationPath)"
+                             alt=""
+                             width="@illustrationWidth"
+                             height="@illustrationHeight"
+                             class="auth-illustration account-page__illustration"
+                             aria-hidden="true" />
+                    </div>
+                }
+
+                @if (IsSectionDefined("BackNav"))
+                {
+                    <div class="account-page__back-nav">
+                        @RenderSection("BackNav", required: false)
+                    </div>
+                }
+
+                @if (!hideHeader && (!string.IsNullOrEmpty(pageTitle) || !string.IsNullOrEmpty(pageSubtitle)))
+                {
+                    <div class="account-page__header">
+                        @if (!string.IsNullOrEmpty(pageTitle))
+                        {
+                            <h1 class="account-page__title">@pageTitle</h1>
+                        }
+                        @if (!string.IsNullOrEmpty(pageSubtitle))
+                        {
+                            <p class="account-page__subtitle">@Html.Raw(pageSubtitle)</p>
+                        }
+                    </div>
+                }
+
+                <div class="account-page__body">
+                    @RenderBody()
+                </div>
+            }
+        </div>
+    }
+
+    @if (IsSectionDefined("BelowCard"))
+    {
+        <div class="account-page__below-card">
+            @RenderSection("BelowCard", required: false)
+        </div>
+    }
+</div>
+
+@section Styles {
+    @RenderSection("Styles", required: false)
+}
+
+@section scripts {
+    @RenderSection("scripts", required: false)
+}

@@ -1,0 +1,32 @@
+<!-- Blogsphere M3: primary #000F76, secondary #37F0FE, success #10B981 -->
+<svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="160" cy="140" r="120" fill="rgba(0,15,118,0.06)"/>
+  <circle cx="160" cy="140" r="90" fill="rgba(0,15,118,0.04)"/>
+  <circle cx="94" cy="94" r="5" fill="#37F0FE" opacity="0.35"/>
+  <circle cx="228" cy="188" r="4" fill="#37F0FE" opacity="0.28"/>
+  <path d="M96 122L160 150L224 130" stroke="rgba(0,15,118,0.18)" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- Device -->
+  <rect x="122" y="68" width="76" height="152" rx="16" fill="rgba(0,15,118,0.10)" stroke="#000F76" stroke-width="2"/>
+  <rect x="148" y="76" width="24" height="4" rx="2" fill="rgba(0,15,118,0.15)"/>
+  <rect x="130" y="86" width="60" height="112" rx="8" fill="rgba(0,15,118,0.07)"/>
+
+  <!-- SMS bubble (inside screen) -->
+  <rect x="136" y="102" width="48" height="56" rx="10" fill="#ffffff" stroke="#000F76" stroke-width="1.5" opacity="0.95"/>
+  <path d="M148 158L142 166L152 158H148Z" fill="#ffffff" stroke="#000F76" stroke-width="1.5" stroke-linejoin="round"/>
+
+  <!-- 4-digit code slots -->
+  <rect x="139" y="114" width="8" height="14" rx="2.5" fill="#000F76"/>
+  <rect x="150" y="114" width="8" height="14" rx="2.5" fill="#000F76"/>
+  <rect x="161" y="114" width="8" height="14" rx="2.5" fill="#000F76"/>
+  <rect x="172" y="114" width="8" height="14" rx="2.5" fill="rgba(0,15,118,0.22)"/>
+
+  <rect x="142" y="134" width="36" height="3" rx="1.5" fill="rgba(0,15,118,0.2)"/>
+  <rect x="142" y="141" width="28" height="3" rx="1.5" fill="rgba(0,15,118,0.12)"/>
+
+  <rect x="148" y="186" width="24" height="4" rx="2" fill="rgba(0,15,118,0.2)"/>
+
+  <!-- Verified badge -->
+  <circle cx="196" cy="96" r="14" fill="#10B981" stroke="#000F76" stroke-width="2"/>
+  <path d="M189 96L194 101L203 92" stroke="#000F76" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

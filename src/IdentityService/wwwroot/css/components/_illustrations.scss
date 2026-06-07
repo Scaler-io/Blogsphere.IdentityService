@@ -1,0 +1,70 @@
+@use '../foundations/variables' as vars;
+
+.auth-illustration {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.landing-icon {
+  display: inline-block;
+  object-fit: contain;
+
+  &--hero {
+    width: 280px;
+    height: auto;
+    max-width: 100%;
+  }
+
+  &--feature {
+    width: 64px;
+    height: 64px;
+  }
+
+  &--quick {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+  }
+}
+
+.status-icon {
+  display: inline-block;
+  object-fit: contain;
+
+  &--lg {
+    width: 64px;
+    height: 64px;
+  }
+
+  &--md {
+    width: 24px;
+    height: 24px;
+  }
+
+  &--sm {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+  }
+}
+
+.decoration-svg {
+  display: block;
+  margin: 0 auto;
+  animation: illustrationFloat 4s ease-in-out infinite;
+}
+
+@keyframes illustrationFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}

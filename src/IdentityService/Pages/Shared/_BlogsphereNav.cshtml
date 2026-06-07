@@ -1,0 +1,70 @@
+@using Duende.IdentityServer.Extensions
+@{
+    #nullable enable
+    var navVariant = ViewData["NavVariant"] as string ?? "full";
+    string? displayName = null;
+    if (navVariant != "account" && !true.Equals(ViewData["signed-out"]))
+    {
+        displayName = Context.User?.GetDisplayName();
+    }
+}
+
+<header class="blogsphere-nav @(navVariant == "account" ? "blogsphere-nav--account" : "")" role="banner">
+    <div class="blogsphere-nav__inner">
+        <a class="blogsphere-nav__brand" href="~/">
+            <img src="~/svgs/brand/blogsphere.logo.svg?v=@DateTime.Now.Ticks"
+                 alt=""
+                 class="blogsphere-nav__logo"
+                 width="32"
+                 height="32"
+                 aria-hidden="true" />
+            <span class="blogsphere-nav__wordmark">Blogsphere</span>
+        </a>
+
+        @if (navVariant != "account")
+        {
+            <nav aria-label="Main">
+                <ul class="blogsphere-nav__links">
+                    <li><a class="blogsphere-nav__link" href="https://blogsphere.com">Home</a></li>
+                    <li><a class="blogsphere-nav__link" href="https://blogsphere.com/blogs">Blogs</a></li>
+                    <li><a class="blogsphere-nav__link" href="https://blogsphere.com/categories">Categories</a></li>
+                    <li><a class="blogsphere-nav__link" href="https://blogsphere.com/about">About</a></li>
+                    <li><a class="blogsphere-nav__link" href="https://blogsphere.com/contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="blogsphere-nav__actions">
+                <a class="blogsphere-nav__icon-btn" href="https://blogsphere.com/search" aria-label="Search">
+                    <img src="~/svgs/icons/ui/search.svg?v=@DateTime.Now.Ticks" alt="" width="20" height="20" aria-hidden="true" />
+                </a>
+                <a class="blogsphere-nav__icon-btn" href="https://blogsphere.com/notifications" aria-label="Notifications">
+                    <img src="~/svgs/icons/ui/bell.svg?v=@DateTime.Now.Ticks" alt="" width="20" height="20" aria-hidden="true" />
+                </a>
+                @if (!string.IsNullOrWhiteSpace(displayName))
+                {
+                    <div class="blogsphere-nav__user dropdown">
+                        <button class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="~/svgs/icons/ui/user-circle.svg?v=@DateTime.Now.Ticks" alt="" width="20" height="20" aria-hidden="true" />
+                            <span>@displayName</span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" asp-page="/Account/Logout/Index">Logout</a>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <a class="blogsphere-nav__icon-btn" asp-page="/Account/Login/Index" aria-label="Profile">
+                        <img src="~/svgs/icons/ui/user-circle.svg?v=@DateTime.Now.Ticks" alt="" width="20" height="20" aria-hidden="true" />
+                    </a>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="blogsphere-nav__account-help">
+                <a class="blogsphere-nav__help-link" href="mailto:support@blogsphere.com">Need help signing in?</a>
+            </div>
+        }
+    </div>
+</header>

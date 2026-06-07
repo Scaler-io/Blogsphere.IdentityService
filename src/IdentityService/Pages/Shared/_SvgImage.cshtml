@@ -1,0 +1,7 @@
+@model (string Path, int Width, int Height, string CssClass)
+<img src="~/svgs/@Model.Path"
+     alt=""
+     width="@Model.Width"
+     height="@Model.Height"
+     class="@Model.CssClass"
+     aria-hidden="true" />

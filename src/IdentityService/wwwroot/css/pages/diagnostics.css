@@ -12,43 +12,45 @@
   margin-bottom: 2rem;
 }
 .diagnostics-page .lead h1 {
-  font-size: 2rem;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.5rem;
   font-weight: 700;
-  color: #0033cc;
+  color: #000f76;
   margin-bottom: 0.5rem;
   margin-bottom: 1rem;
 }
 .diagnostics-page .lead p {
-  color: #0033cc;
-  font-size: 1.1rem;
+  color: #454654;
+  font-size: 1rem;
 }
 .diagnostics-page .row {
   margin: 0 auto;
   max-width: 1200px;
 }
 .diagnostics-page .card {
-  border: none;
+  border: 1px solid #c5c5d7;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   background: #ffffff;
   overflow: hidden;
   margin-bottom: 2rem;
   height: 100%;
 }
 .diagnostics-page .card .card-header {
-  background: linear-gradient(135deg, #0033cc 0%, #0076ff 100%);
+  background: linear-gradient(135deg, #000f76 0%, #006970 100%);
   border: none;
   padding: 1.5rem;
 }
 .diagnostics-page .card .card-header h2 {
   color: #ffffff;
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   margin: 0;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-.diagnostics-page .card .card-header h2 svg {
+.diagnostics-page .card .card-header h2 svg,
+.diagnostics-page .card .card-header h2 img {
   width: 24px;
   height: 24px;
 }
@@ -64,7 +66,7 @@
   align-items: baseline;
 }
 .diagnostics-page .card .card-body dl dt {
-  color: #0033cc;
+  color: #454654;
   font-weight: 600;
   position: relative;
   padding-left: 1rem;
@@ -78,11 +80,11 @@
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: #0033cc;
+  background-color: #000f76;
 }
 .diagnostics-page .card .card-body dl dd {
-  color: #00205b;
+  color: #1a1c1d;
   margin: 0;
   word-break: break-all;
-  font-size: 1rem;
+  font-size: 0.875rem;
 }
