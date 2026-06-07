@@ -4,60 +4,109 @@
 @use '../foundations/mixins' as mixins;
 
 .account-page {
-  @include mixins.full-height-container;
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: vars.$spacing-xl vars.$spacing-lg;
+  padding: vars.$spacing-md vars.$spacing-lg;
   background: colors.$md-surface;
   box-sizing: border-box;
-
-  &__brand {
-    display: none;
-  }
+  width: 100%;
+  min-height: 0;
 
   &__card {
     @include mixins.card;
     width: 100%;
     max-width: 440px;
-    padding: vars.$spacing-xl vars.$spacing-xl vars.$spacing-2xl;
+    padding: vars.$spacing-lg vars.$spacing-lg vars.$spacing-xl;
 
     &--wide {
       max-width: 520px;
+    }
+
+    &--split {
+      max-width: 640px;
+      display: flex;
+      flex-direction: row;
+      padding: 0;
+      overflow: hidden;
+
+      @media (max-width: 640px) {
+        flex-direction: column;
+      }
     }
   }
 
   &__card-art {
     display: flex;
     justify-content: center;
-    padding-bottom: vars.$spacing-md;
+    align-items: center;
+    background: colors.$md-surface-container-low;
+    padding: vars.$spacing-md vars.$spacing-lg;
+    min-height: 100px;
+    margin: (- vars.$spacing-lg) (- vars.$spacing-lg) vars.$spacing-md;
+
+    .account-page__card--split & {
+      flex: 0 0 45%;
+      min-height: 220px;
+      margin: 0;
+      padding: vars.$spacing-lg;
+    }
+  }
+
+  &__card-content {
+    padding: vars.$spacing-xl vars.$spacing-xl vars.$spacing-2xl;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+    .account-page__card--split & {
+      justify-content: space-between;
+    }
   }
 
   &__illustration {
-    max-height: 120px;
+    max-height: 96px;
     width: auto;
-    max-width: 200px;
+    max-width: 220px;
     object-fit: contain;
+
+    .account-page--open & {
+      max-height: 200px;
+      max-width: 320px;
+    }
+
+    .account-page__card--split & {
+      max-height: 180px;
+      max-width: 240px;
+    }
   }
 
   &__header {
     text-align: center;
-    margin-bottom: vars.$spacing-lg;
+    margin-bottom: vars.$spacing-sm;
+
+    .account-page__card--split & {
+      text-align: left;
+    }
+
+    .account-page--hero & {
+      margin-bottom: vars.$spacing-md;
+    }
   }
 
   &__title {
     @include mixins.section-title;
-    margin-bottom: vars.$spacing-sm;
-    font-size: vars.$font-size-xl;
+    margin-bottom: vars.$spacing-xs;
+    font-size: vars.$font-size-lg;
   }
 
   &__subtitle {
     @include mixins.section-subtitle;
     margin-bottom: 0;
-    font-size: vars.$font-size-sm;
-    line-height: 1.5;
+    font-size: vars.$font-size-xs;
+    line-height: 1.4;
   }
 
   &__back-nav {
@@ -67,6 +116,137 @@
 
   &__body {
     width: 100%;
+  }
+
+  &__hero {
+    width: 100%;
+    max-width: 640px;
+    background: colors.$md-surface-container;
+    border-radius: vars.$border-radius-md vars.$border-radius-md 0 0;
+    padding: vars.$spacing-2xl vars.$spacing-lg;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 220px;
+  }
+
+  &__hero-wrap {
+    width: 100%;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__hero-body {
+    width: 100%;
+    max-width: 440px;
+    padding: vars.$spacing-xl vars.$spacing-lg vars.$spacing-2xl;
+    text-align: center;
+  }
+
+  &__below-card {
+    width: 100%;
+    max-width: 440px;
+    margin-top: vars.$spacing-md;
+  }
+
+  &__help-links {
+    width: 100%;
+    max-width: 440px;
+    margin-top: vars.$spacing-md;
+    text-align: center;
+  }
+
+  &__help-list {
+    list-style: none;
+    padding: 0;
+    margin: vars.$spacing-md 0 0;
+  }
+
+  &__help-link,
+  .resend-link {
+    display: inline-flex;
+    align-items: center;
+    gap: vars.$spacing-xs;
+    color: colors.$md-primary;
+    font-size: vars.$font-size-sm;
+    font-weight: vars.$font-weight-medium;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    padding: vars.$spacing-xs 0;
+
+    &:hover:not(:disabled) {
+      text-decoration: underline;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &--open {
+    justify-content: center;
+    padding: vars.$spacing-lg;
+
+    .account-page__open-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      padding: vars.$spacing-md 0;
+    }
+
+    .account-page__title {
+      font-size: vars.$font-size-xl;
+      margin-bottom: vars.$spacing-sm;
+    }
+
+    .account-page__subtitle {
+      font-size: vars.$font-size-sm;
+      line-height: 1.5;
+    }
+
+    .account-page__header {
+      margin-bottom: vars.$spacing-lg;
+    }
+
+    .account-page__illustration {
+      max-height: 200px;
+      max-width: 320px;
+      margin-bottom: vars.$spacing-lg;
+    }
+
+    .logged-out-actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: vars.$spacing-md;
+      margin-top: vars.$spacing-xl;
+      width: 100%;
+
+      .btn-continue,
+      .btn-cancel {
+        flex: 0 1 auto;
+        min-width: 168px;
+        width: auto;
+        height: 44px;
+        min-height: 44px;
+        font-size: vars.$font-size-sm;
+        padding: 0 vars.$spacing-lg;
+      }
+    }
+  }
+
+  &--hero {
+    justify-content: flex-start;
+    padding-top: vars.$spacing-2xl;
   }
 }
 
@@ -91,10 +271,21 @@
 
 .account-form {
   .form-group {
-    margin-bottom: vars.$spacing-lg;
+    margin-bottom: vars.$spacing-sm;
+
+    label {
+      display: block;
+      margin-bottom: 0.125rem;
+      font-size: vars.$font-size-xs;
+      font-weight: vars.$font-weight-medium;
+      color: colors.$md-on-surface;
+    }
 
     .form-control {
       @include mixins.form-input;
+      min-height: 40px;
+      padding: 0.5rem 0.75rem;
+      font-size: vars.$font-size-sm;
     }
 
     .validation-error,
@@ -118,13 +309,13 @@
   }
 
   .remember-section {
-    margin-bottom: vars.$spacing-lg;
+    margin-bottom: vars.$spacing-sm;
 
     .remember-checkbox {
       display: flex;
       align-items: center;
       cursor: pointer;
-      font-size: vars.$font-size-sm;
+      font-size: vars.$font-size-xs;
       color: colors.$color-text-secondary;
       user-select: none;
 
@@ -133,25 +324,26 @@
       }
 
       .checkmark {
-        width: 18px;
-        height: 18px;
+        flex-shrink: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
         border: 1px solid colors.$color-border;
         border-radius: vars.$border-radius-sm;
         margin-right: vars.$spacing-sm;
-        position: relative;
         transition: all vars.$transition-fast;
 
         &:after {
           content: '';
-          position: absolute;
           display: none;
-          left: 6px;
-          top: 2px;
-          width: 5px;
-          height: 10px;
+          width: 4px;
+          height: 8px;
           border: solid colors.$color-surface;
           border-width: 0 2px 2px 0;
           transform: rotate(45deg);
+          margin-top: -1px;
         }
       }
 
@@ -167,14 +359,16 @@
   }
 
   .form-actions {
-    margin-bottom: vars.$spacing-lg;
+    margin-bottom: vars.$spacing-sm;
 
-    .btn-continue {
+    .btn-continue,
+    .btn-blogsphere-primary {
       @include mixins.button-primary;
       width: 100%;
-      height: 48px;
-      font-size: vars.$font-size-md;
-      letter-spacing: 0.5px;
+      height: 40px;
+      min-height: 40px;
+      font-size: vars.$font-size-sm;
+      letter-spacing: 0.25px;
 
       &--busy {
         opacity: 0.75;
@@ -184,7 +378,8 @@
       &--danger {
         @include mixins.button-danger;
         width: 100%;
-        height: 48px;
+        height: 40px;
+        min-height: 40px;
       }
     }
 
@@ -201,8 +396,8 @@
     .forgot-link,
     .back-link,
     .login-link {
-      margin: vars.$spacing-sm 0;
-      font-size: vars.$font-size-sm;
+      margin: vars.$spacing-xs 0;
+      font-size: vars.$font-size-xs;
       color: colors.$color-text-secondary;
 
       a {
@@ -260,8 +455,9 @@
       .btn-external {
         @include mixins.button-secondary;
         width: 100%;
-        height: 48px;
-        font-size: vars.$font-size-md;
+        height: 40px;
+        min-height: 40px;
+        font-size: vars.$font-size-sm;
       }
     }
   }
@@ -289,7 +485,8 @@
     @include mixins.button-primary;
     display: inline-flex;
     min-width: 200px;
-    height: 48px;
+    height: 40px;
+    min-height: 40px;
     text-decoration: none;
   }
 }
@@ -330,15 +527,103 @@
     .btn-retry {
       @include mixins.button-primary;
       text-decoration: none;
-      height: 48px;
+      height: 40px;
+      min-height: 40px;
     }
 
     .btn-login {
       @include mixins.button-secondary;
       text-decoration: none;
-      height: 48px;
+      height: 40px;
+      min-height: 40px;
     }
   }
+}
+
+.logout-description {
+  color: colors.$md-on-surface-variant;
+  font-size: vars.$font-size-sm;
+  line-height: 1.6;
+  margin-bottom: vars.$spacing-lg;
+}
+
+.logout-button-group,
+.logged-out-actions {
+  display: flex;
+  gap: vars.$spacing-md;
+  margin-top: vars.$spacing-lg;
+
+  .account-page__card--split & {
+    justify-content: flex-end;
+  }
+
+  .btn-continue {
+    @include mixins.button-primary;
+    flex: 1;
+    height: 40px;
+    min-height: 40px;
+    font-size: vars.$font-size-sm;
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .btn-cancel,
+  .btn-blogsphere-secondary {
+    @include mixins.button-secondary;
+    flex: 1;
+    height: 40px;
+    min-height: 40px;
+    font-size: vars.$font-size-sm;
+    text-decoration: none;
+    text-align: center;
+    color: colors.$md-primary;
+    border-color: colors.$md-primary;
+  }
+}
+
+.account-page--open .logged-out-actions {
+  justify-content: center;
+  max-width: 480px;
+  width: 100%;
+}
+
+.email-readout {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  padding: vars.$spacing-md vars.$spacing-lg;
+  border: 1px solid colors.$md-outline-variant;
+  border-radius: vars.$border-radius-base;
+  background: colors.$md-surface-container-low;
+  color: colors.$md-on-surface;
+  font-size: vars.$font-size-sm;
+  margin: vars.$spacing-lg 0;
+  text-align: left;
+}
+
+.resend-form {
+  display: inline;
+}
+
+.resend-timer {
+  color: colors.$md-outline;
+  font-size: vars.$font-size-xs;
+}
+
+.notice-banner {
+  display: none;
+}
+
+.alert-success-banner {
+  display: flex;
+  align-items: center;
+  gap: vars.$spacing-sm;
+  padding: vars.$spacing-md;
+  margin-bottom: vars.$spacing-lg;
+  border-radius: vars.$border-radius-base;
+  background: rgba(colors.$color-success, 0.12);
+  color: colors.$md-on-surface;
+  font-size: vars.$font-size-sm;
 }
 
 @keyframes accountFormShake {
@@ -362,12 +647,32 @@
     justify-content: flex-start;
     padding-top: vars.$spacing-2xl;
 
-    &__card {
+    &__card-content {
       padding: vars.$spacing-lg;
     }
 
     &__illustration {
-      max-height: 140px;
+      max-height: 120px;
+    }
+
+    &--open {
+      .account-page__illustration {
+        max-height: 160px;
+      }
+
+      .logged-out-actions {
+        flex-direction: column;
+
+        .btn-continue,
+        .btn-cancel {
+          width: 100%;
+        }
+      }
+    }
+
+    .logout-button-group,
+    .logged-out-actions {
+      flex-direction: column;
     }
   }
 }

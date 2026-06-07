@@ -4,21 +4,16 @@
   }
 }
 .account-page {
-  min-height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
+  padding: 1rem 1.5rem;
   background: #f9f9fb;
   box-sizing: border-box;
-}
-.account-page__brand {
-  display: none;
+  width: 100%;
+  min-height: 0;
 }
 .account-page__card {
   border: 1px solid #c5c5d7;
@@ -28,25 +23,70 @@
   overflow: hidden;
   width: 100%;
   max-width: 440px;
-  padding: 2rem 2rem 2.5rem;
+  padding: 1.5rem 1.5rem 2rem;
 }
 .account-page__card--wide {
   max-width: 520px;
 }
+.account-page__card--split {
+  max-width: 640px;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  overflow: hidden;
+}
+@media (max-width: 640px) {
+  .account-page__card--split {
+    flex-direction: column;
+  }
+}
 .account-page__card-art {
   display: flex;
   justify-content: center;
-  padding-bottom: 1rem;
+  align-items: center;
+  background: #f3f3f5;
+  padding: 1rem 1.5rem;
+  min-height: 100px;
+  margin: -1.5rem -1.5rem 1rem;
+}
+.account-page__card--split .account-page__card-art {
+  flex: 0 0 45%;
+  min-height: 220px;
+  margin: 0;
+  padding: 1.5rem;
+}
+.account-page__card-content {
+  padding: 2rem 2rem 2.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.account-page__card--split .account-page__card-content {
+  justify-content: space-between;
 }
 .account-page__illustration {
-  max-height: 120px;
+  max-height: 96px;
   width: auto;
-  max-width: 200px;
+  max-width: 220px;
   object-fit: contain;
+}
+.account-page--open .account-page__illustration {
+  max-height: 200px;
+  max-width: 320px;
+}
+.account-page__card--split .account-page__illustration {
+  max-height: 180px;
+  max-width: 240px;
 }
 .account-page__header {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.account-page__card--split .account-page__header {
+  text-align: left;
+}
+.account-page--hero .account-page__header {
+  margin-bottom: 1rem;
 }
 .account-page__title {
   font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
@@ -54,16 +94,16 @@
   font-weight: 700;
   color: #000f76;
   margin-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  font-size: 1.125rem;
 }
 .account-page__subtitle {
   font-size: 1rem;
   color: #454654;
   margin-bottom: 1.5rem;
   margin-bottom: 0;
-  font-size: 0.875rem;
-  line-height: 1.5;
+  font-size: 0.75rem;
+  line-height: 1.4;
 }
 .account-page__back-nav {
   text-align: left;
@@ -71,6 +111,121 @@
 }
 .account-page__body {
   width: 100%;
+}
+.account-page__hero {
+  width: 100%;
+  max-width: 640px;
+  background: #edeef0;
+  border-radius: 12px 12px 0 0;
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 220px;
+}
+.account-page__hero-wrap {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.account-page__hero-body {
+  width: 100%;
+  max-width: 440px;
+  padding: 2rem 1.5rem 2.5rem;
+  text-align: center;
+}
+.account-page__below-card {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 1rem;
+}
+.account-page__help-links {
+  width: 100%;
+  max-width: 440px;
+  margin-top: 1rem;
+  text-align: center;
+}
+.account-page__help-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+}
+.account-page__help-link,
+.account-page .resend-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: #000f76;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0.25rem 0;
+}
+.account-page__help-link:hover:not(:disabled),
+.account-page .resend-link:hover:not(:disabled) {
+  text-decoration: underline;
+}
+.account-page__help-link:disabled,
+.account-page .resend-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.account-page--open {
+  justify-content: center;
+  padding: 1.5rem;
+}
+.account-page--open .account-page__open-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 480px;
+  width: 100%;
+  padding: 1rem 0;
+}
+.account-page--open .account-page__title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.account-page--open .account-page__subtitle {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.account-page--open .account-page__header {
+  margin-bottom: 1.5rem;
+}
+.account-page--open .account-page__illustration {
+  max-height: 200px;
+  max-width: 320px;
+  margin-bottom: 1.5rem;
+}
+.account-page--open .logged-out-actions {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 100%;
+}
+.account-page--open .logged-out-actions .btn-continue,
+.account-page--open .logged-out-actions .btn-cancel {
+  flex: 0 1 auto;
+  min-width: 168px;
+  width: auto;
+  height: 44px;
+  min-height: 44px;
+  font-size: 0.875rem;
+  padding: 0 1.5rem;
+}
+.account-page--hero {
+  justify-content: flex-start;
+  padding-top: 2.5rem;
 }
 
 .account-page__back-link {
@@ -92,7 +247,14 @@
 }
 
 .account-form .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.account-form .form-group label {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1a1c1d;
 }
 .account-form .form-group .form-control {
   width: 100%;
@@ -105,6 +267,9 @@
   background: #ffffff;
   color: #1a1c1d;
   min-height: 44px;
+  min-height: 40px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
 }
 .account-form .form-group .form-control::placeholder {
   color: #454654;
@@ -143,13 +308,13 @@
   font-size: 0.875rem;
 }
 .account-form .remember-section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 .account-form .remember-section .remember-checkbox {
   display: flex;
   align-items: center;
   cursor: pointer;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   color: #454654;
   user-select: none;
 }
@@ -157,25 +322,26 @@
   display: none;
 }
 .account-form .remember-section .remember-checkbox .checkmark {
-  width: 18px;
-  height: 18px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
   border: 1px solid #c5c5d7;
   border-radius: 4px;
   margin-right: 0.5rem;
-  position: relative;
   transition: all 0.2s ease;
 }
 .account-form .remember-section .remember-checkbox .checkmark:after {
   content: "";
-  position: absolute;
   display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
+  width: 4px;
+  height: 8px;
   border: solid #ffffff;
   border-width: 0 2px 2px 0;
   transform: rotate(45deg);
+  margin-top: -1px;
 }
 .account-form .remember-section .remember-checkbox input[type=checkbox]:checked + .checkmark {
   background: #000f76;
@@ -185,9 +351,10 @@
   display: block;
 }
 .account-form .form-actions {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
-.account-form .form-actions .btn-continue {
+.account-form .form-actions .btn-continue,
+.account-form .form-actions .btn-blogsphere-primary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -207,36 +374,44 @@
   color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   width: 100%;
-  height: 48px;
-  font-size: 1rem;
-  letter-spacing: 0.5px;
+  height: 40px;
+  min-height: 40px;
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
 }
-.account-form .form-actions .btn-continue:hover {
+.account-form .form-actions .btn-continue:hover,
+.account-form .form-actions .btn-blogsphere-primary:hover {
   background: rgb(0, 20.186440678, 158.8);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
-.account-form .form-actions .btn-continue:active {
+.account-form .form-actions .btn-continue:active,
+.account-form .form-actions .btn-blogsphere-primary:active {
   transform: translateY(0);
   background: #001cb0;
 }
-.account-form .form-actions .btn-continue:focus {
+.account-form .form-actions .btn-continue:focus,
+.account-form .form-actions .btn-blogsphere-primary:focus {
   outline: none;
 }
-.account-form .form-actions .btn-continue:focus-visible {
+.account-form .form-actions .btn-continue:focus-visible,
+.account-form .form-actions .btn-blogsphere-primary:focus-visible {
   outline: 2px solid #37f0fe;
   outline-offset: 2px;
 }
-.account-form .form-actions .btn-continue:disabled {
+.account-form .form-actions .btn-continue:disabled,
+.account-form .form-actions .btn-blogsphere-primary:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
-.account-form .form-actions .btn-continue--busy {
+.account-form .form-actions .btn-continue--busy,
+.account-form .form-actions .btn-blogsphere-primary--busy {
   opacity: 0.75;
   cursor: wait;
 }
-.account-form .form-actions .btn-continue--danger {
+.account-form .form-actions .btn-continue--danger,
+.account-form .form-actions .btn-blogsphere-primary--danger {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -255,12 +430,15 @@
   background: #ba1a1a;
   color: #ffffff;
   width: 100%;
-  height: 48px;
+  height: 40px;
+  min-height: 40px;
 }
-.account-form .form-actions .btn-continue--danger:hover {
+.account-form .form-actions .btn-continue--danger:hover,
+.account-form .form-actions .btn-blogsphere-primary--danger:hover {
   background: rgb(163.6273584906, 22.8726415094, 22.8726415094);
 }
-.account-form .form-actions .btn-continue--danger:focus-visible {
+.account-form .form-actions .btn-continue--danger:focus-visible,
+.account-form .form-actions .btn-blogsphere-primary--danger:focus-visible {
   outline: 2px solid #ba1a1a;
   outline-offset: 2px;
 }
@@ -308,8 +486,8 @@
 .account-form .form-links .forgot-link,
 .account-form .form-links .back-link,
 .account-form .form-links .login-link {
-  margin: 0.5rem 0;
-  font-size: 0.875rem;
+  margin: 0.25rem 0;
+  font-size: 0.75rem;
   color: #454654;
 }
 .account-form .form-links .signup-link a,
@@ -380,8 +558,9 @@
   border: 1px solid #c5c5d7;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   width: 100%;
-  height: 48px;
-  font-size: 1rem;
+  height: 40px;
+  min-height: 40px;
+  font-size: 0.875rem;
 }
 .account-form .external-providers .external-buttons .btn-external:hover {
   background: #f3f3f5;
@@ -435,7 +614,8 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   display: inline-flex;
   min-width: 200px;
-  height: 48px;
+  height: 40px;
+  min-height: 40px;
   text-decoration: none;
 }
 .account-page__status-actions .btn-continue:hover {
@@ -513,7 +693,8 @@
   color: #ffffff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   text-decoration: none;
-  height: 48px;
+  height: 40px;
+  min-height: 40px;
 }
 .account-page__error-panel .error-actions .btn-retry:hover {
   background: rgb(0, 20.186440678, 158.8);
@@ -557,7 +738,8 @@
   border: 1px solid #c5c5d7;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
   text-decoration: none;
-  height: 48px;
+  height: 40px;
+  min-height: 40px;
 }
 .account-page__error-panel .error-actions .btn-login:hover {
   background: #f3f3f5;
@@ -573,6 +755,181 @@
 .account-page__error-panel .error-actions .btn-login:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.logout-description {
+  color: #454654;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.logout-button-group,
+.logged-out-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.account-page__card--split .logout-button-group,
+.account-page__card--split .logged-out-actions {
+  justify-content: flex-end;
+}
+.logout-button-group .btn-continue,
+.logged-out-actions .btn-continue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: #000f76;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  flex: 1;
+  height: 40px;
+  min-height: 40px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  text-align: center;
+}
+.logout-button-group .btn-continue:hover,
+.logged-out-actions .btn-continue:hover {
+  background: rgb(0, 20.186440678, 158.8);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+.logout-button-group .btn-continue:active,
+.logged-out-actions .btn-continue:active {
+  transform: translateY(0);
+  background: #001cb0;
+}
+.logout-button-group .btn-continue:focus,
+.logged-out-actions .btn-continue:focus {
+  outline: none;
+}
+.logout-button-group .btn-continue:focus-visible,
+.logged-out-actions .btn-continue:focus-visible {
+  outline: 2px solid #37f0fe;
+  outline-offset: 2px;
+}
+.logout-button-group .btn-continue:disabled,
+.logged-out-actions .btn-continue:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.logout-button-group .btn-cancel,
+.logout-button-group .btn-blogsphere-secondary,
+.logged-out-actions .btn-cancel,
+.logged-out-actions .btn-blogsphere-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1.5rem;
+  border-radius: 8px;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: #ffffff;
+  color: #1a1c1d;
+  border: 1px solid #c5c5d7;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  flex: 1;
+  height: 40px;
+  min-height: 40px;
+  font-size: 0.875rem;
+  text-decoration: none;
+  text-align: center;
+  color: #000f76;
+  border-color: #000f76;
+}
+.logout-button-group .btn-cancel:hover,
+.logout-button-group .btn-blogsphere-secondary:hover,
+.logged-out-actions .btn-cancel:hover,
+.logged-out-actions .btn-blogsphere-secondary:hover {
+  background: #f3f3f5;
+  border-color: #757686;
+}
+.logout-button-group .btn-cancel:focus,
+.logout-button-group .btn-blogsphere-secondary:focus,
+.logged-out-actions .btn-cancel:focus,
+.logged-out-actions .btn-blogsphere-secondary:focus {
+  outline: none;
+}
+.logout-button-group .btn-cancel:focus-visible,
+.logout-button-group .btn-blogsphere-secondary:focus-visible,
+.logged-out-actions .btn-cancel:focus-visible,
+.logged-out-actions .btn-blogsphere-secondary:focus-visible {
+  outline: 2px solid #000f76;
+  outline-offset: 2px;
+}
+.logout-button-group .btn-cancel:disabled,
+.logout-button-group .btn-blogsphere-secondary:disabled,
+.logged-out-actions .btn-cancel:disabled,
+.logged-out-actions .btn-blogsphere-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.account-page--open .logged-out-actions {
+  justify-content: center;
+  max-width: 480px;
+  width: 100%;
+}
+
+.email-readout {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  border: 1px solid #c5c5d7;
+  border-radius: 8px;
+  background: #f3f3f5;
+  color: #1a1c1d;
+  font-size: 0.875rem;
+  margin: 1.5rem 0;
+  text-align: left;
+}
+
+.resend-form {
+  display: inline;
+}
+
+.resend-timer {
+  color: #757686;
+  font-size: 0.75rem;
+}
+
+.notice-banner {
+  display: none;
+}
+
+.alert-success-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  background: rgba(16, 185, 129, 0.12);
+  color: #1a1c1d;
+  font-size: 0.875rem;
 }
 
 @keyframes accountFormShake {
@@ -592,13 +949,210 @@
     justify-content: flex-start;
     padding-top: 2.5rem;
   }
-  .account-page__card {
+  .account-page__card-content {
     padding: 1.5rem;
   }
   .account-page__illustration {
-    max-height: 140px;
+    max-height: 120px;
+  }
+  .account-page--open .account-page__illustration {
+    max-height: 160px;
+  }
+  .account-page--open .logged-out-actions {
+    flex-direction: column;
+  }
+  .account-page--open .logged-out-actions .btn-continue,
+  .account-page--open .logged-out-actions .btn-cancel {
+    width: 100%;
+  }
+  .account-page .logout-button-group,
+  .account-page .logged-out-actions {
+    flex-direction: column;
   }
 }
+.blogsphere-otp {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+.blogsphere-otp__digit {
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a1c1d;
+  border: 1px solid #c5c5d7;
+  border-radius: 8px;
+  background: #ffffff;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.blogsphere-otp__digit:focus {
+  outline: none;
+  border-color: #000f76;
+  box-shadow: 0 0 0 3px rgba(0, 15, 118, 0.15);
+}
+.blogsphere-otp__digit.input-validation-error {
+  border-color: #ba1a1a;
+}
+.blogsphere-otp__hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.blogsphere-info-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  max-width: 440px;
+  width: 100%;
+  margin: 1rem auto 0;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: #e1f5fe;
+  color: #1a1c1d;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.blogsphere-info-banner__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
+.blogsphere-field {
+  margin-bottom: 0.5rem;
+}
+.blogsphere-field__label {
+  display: block;
+  margin-bottom: 0.125rem;
+  font-family: "Open Sans", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #1a1c1d;
+}
+.blogsphere-field__control-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.blogsphere-field__icon {
+  position: absolute;
+  left: 0.625rem;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  opacity: 0.7;
+}
+.blogsphere-field__input {
+  width: 100%;
+  padding: 0.5rem 2rem 0.5rem 2.125rem;
+  border: 1px solid #c5c5d7;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: "Open Sans", "Roboto", "Helvetica Neue", sans-serif;
+  background: #ffffff;
+  color: #1a1c1d;
+  min-height: 40px;
+  line-height: 1.25;
+}
+.blogsphere-field__input:focus {
+  outline: none;
+  border-color: #000f76;
+  box-shadow: 0 0 0 3px rgba(0, 15, 118, 0.15);
+}
+.blogsphere-field__input.input-validation-error {
+  border-color: #ba1a1a;
+  margin-top: 0;
+  font-size: 0.875rem;
+  color: #1a1c1d;
+}
+.blogsphere-field__toggle {
+  position: absolute;
+  right: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 9999px;
+}
+.blogsphere-field__toggle:hover {
+  background: #f3f3f5;
+}
+.blogsphere-field__toggle img {
+  width: 16px;
+  height: 16px;
+}
+.blogsphere-field__error {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #ba1a1a;
+}
+
+.btn-blogsphere-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: #000f76;
+  color: #ffffff;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.2s ease;
+}
+.btn-blogsphere-primary:hover {
+  background: #001cb0;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.btn-blogsphere-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #000f76;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #000f76;
+  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn-blogsphere-secondary:hover {
+  background: #f3f3f5;
+  color: #000f76;
+  text-decoration: none;
+}
+
 .forgot-status-message {
   text-align: center;
   color: #454654;
@@ -1032,119 +1586,11 @@
   text-align: center;
   margin-bottom: 1.5rem;
 }
-.account-page .decorative-elements {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-.account-page .logout-button-group,
-.account-page .logged-out-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-.account-page .logout-button-group .btn-continue,
-.account-page .logged-out-actions .btn-continue {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.5rem 1.5rem;
-  border-radius: 8px;
-  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.25;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  background: #000f76;
-  color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-  width: 100%;
-  height: 48px;
-  text-decoration: none;
-  text-align: center;
-}
-.account-page .logout-button-group .btn-continue:hover,
-.account-page .logged-out-actions .btn-continue:hover {
-  background: rgb(0, 20.186440678, 158.8);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-}
-.account-page .logout-button-group .btn-continue:active,
-.account-page .logged-out-actions .btn-continue:active {
-  transform: translateY(0);
-  background: #001cb0;
-}
-.account-page .logout-button-group .btn-continue:focus,
-.account-page .logged-out-actions .btn-continue:focus {
-  outline: none;
-}
-.account-page .logout-button-group .btn-continue:focus-visible,
-.account-page .logged-out-actions .btn-continue:focus-visible {
-  outline: 2px solid #37f0fe;
-  outline-offset: 2px;
-}
-.account-page .logout-button-group .btn-continue:disabled,
-.account-page .logged-out-actions .btn-continue:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
-}
-.account-page .logout-button-group .btn-cancel,
-.account-page .logged-out-actions .btn-cancel {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  min-height: 44px;
-  padding: 0.5rem 1.5rem;
-  border-radius: 8px;
-  font-family: "Titillium Web", "Roboto", "Helvetica Neue", sans-serif;
-  font-size: 0.875rem;
-  font-weight: 600;
-  line-height: 1.25;
-  text-decoration: none;
-  cursor: pointer;
-  border: none;
-  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-  background: #ffffff;
-  color: #1a1c1d;
-  border: 1px solid #c5c5d7;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-  width: 100%;
-  height: 48px;
-  text-decoration: none;
-  text-align: center;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.account-page .logout-button-group .btn-cancel:hover,
-.account-page .logged-out-actions .btn-cancel:hover {
-  background: #f3f3f5;
-  border-color: #757686;
-}
-.account-page .logout-button-group .btn-cancel:focus,
-.account-page .logged-out-actions .btn-cancel:focus {
-  outline: none;
-}
-.account-page .logout-button-group .btn-cancel:focus-visible,
-.account-page .logged-out-actions .btn-cancel:focus-visible {
-  outline: 2px solid #000f76;
-  outline-offset: 2px;
-}
-.account-page .logout-button-group .btn-cancel:disabled,
-.account-page .logged-out-actions .btn-cancel:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 .account-page .redirect-text {
   text-align: center;
   color: #454654;
   font-size: 0.875rem;
   margin-bottom: 1rem;
 }
+
+/*# sourceMappingURL=account-flows.css.map */

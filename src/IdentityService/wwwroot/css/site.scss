@@ -3,7 +3,10 @@
 @use 'components/buttons';
 @use 'components/links';
 @use 'components/forms';
-@use 'components/navbar';
+@use 'components/blogsphere-nav';
+@use 'components/blogsphere-forms';
+@use 'components/blogsphere-oidc';
+@use 'components/blogsphere-landing';
 @use 'components/illustrations';
 @use 'layouts/shell';
 

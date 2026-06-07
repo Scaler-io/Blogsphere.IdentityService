@@ -18,6 +18,8 @@ $md-surface: #f9f9fb;
 $md-surface-container-lowest: #ffffff;
 $md-surface-container-low: #f3f3f5;
 $md-surface-container: #edeef0;
+$md-surface-container-high: #e8e8ea;
+$md-surface-container-highest: #e2e2e4;
 
 // On-surface + outline
 $md-on-surface: #1a1c1d;
@@ -33,12 +35,13 @@ $md-on-error-container: #93000a;
 $color-success: #10b981;
 $color-warning: #ff8f00;
 $color-info: #0288d1;
+$color-info-container: #e1f5fe;
 
 // Semantic aliases (legacy names used across page SCSS)
 $color-primary: $md-primary;
 $color-primary-container: $md-primary-container;
 $color-accent: $md-secondary;
-$color-accent-yellow: $md-secondary-container; // repointed from yellow
+$color-accent-yellow: $md-secondary-container;
 $color-accent-highlight: $md-secondary-container;
 $color-background: $md-primary-container;
 $color-surface: $md-surface-container-lowest;
@@ -47,7 +50,6 @@ $color-text-primary: $md-on-surface;
 $color-text-secondary: $md-on-surface-variant;
 $color-border: $md-outline-variant;
 $color-error: $md-error;
-$color-info: $color-info;
 
 // Gradients
 $gradient-hero: linear-gradient(135deg, $md-primary 0%, $md-secondary 100%);

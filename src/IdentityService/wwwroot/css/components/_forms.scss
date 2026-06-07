@@ -10,8 +10,8 @@
   margin-bottom: vars.$spacing-lg;
 }
 
-.input-validation-error,
-.field-validation-error {
+.field-validation-error,
+.validation-error {
   @include mixins.validation-error;
 }
 

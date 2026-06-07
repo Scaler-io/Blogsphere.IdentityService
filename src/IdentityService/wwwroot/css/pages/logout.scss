@@ -2,6 +2,8 @@
 @use '../foundations/variables' as vars;
 @use '../foundations/mixins' as mixins;
 
+// Logout-specific styles — open layout buttons styled in _account-page.scss (--open)
+
 .account-page {
   .logout-description {
     color: colors.$color-text-secondary;
@@ -9,38 +11,6 @@
     line-height: 1.6;
     text-align: center;
     margin-bottom: vars.$spacing-lg;
-  }
-
-  .decorative-elements {
-    display: flex;
-    justify-content: center;
-    margin-bottom: vars.$spacing-xl;
-  }
-
-  .logout-button-group,
-  .logged-out-actions {
-    display: flex;
-    flex-direction: column;
-    gap: vars.$spacing-md;
-
-    .btn-continue {
-      @include mixins.button-primary;
-      width: 100%;
-      height: 48px;
-      text-decoration: none;
-      text-align: center;
-    }
-
-    .btn-cancel {
-      @include mixins.button-secondary;
-      width: 100%;
-      height: 48px;
-      text-decoration: none;
-      text-align: center;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
   }
 
   .redirect-text {

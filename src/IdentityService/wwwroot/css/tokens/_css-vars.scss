@@ -14,6 +14,7 @@
   --md-surface-container-lowest: #{colors.$md-surface-container-lowest};
   --md-surface-container-low: #{colors.$md-surface-container-low};
   --md-surface-container: #{colors.$md-surface-container};
+  --md-surface-container-high: #{colors.$md-surface-container-high};
   --md-on-surface: #{colors.$md-on-surface};
   --md-on-surface-variant: #{colors.$md-on-surface-variant};
   --md-outline: #{colors.$md-outline};
@@ -33,6 +34,8 @@
   --color-border: var(--md-outline-variant);
   --color-error: var(--md-error);
   --color-success: #{colors.$color-success};
+  --color-info: #{colors.$color-info};
+  --color-info-container: #{colors.$color-info-container};
 
   --bs-primary: #{colors.$md-primary};
   --bs-primary-rgb: 0, 15, 118;
