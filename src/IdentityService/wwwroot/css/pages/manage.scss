@@ -3,7 +3,7 @@
 @use "../foundations/variables" as vars;
 @use "../foundations/mixins" as mixins;
 
-.reset-password-container {
+.account-page {
     .back-nav {
         margin-bottom: vars.$spacing-sm;
     }
