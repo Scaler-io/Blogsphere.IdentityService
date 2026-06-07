@@ -1,13 +1,13 @@
 <!-- Blogsphere M3: primary #000F76, secondary #37F0FE -->
 <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <circle cx="160" cy="140" r="120" fill="rgba(255,255,255,0.1)"/>
-  <circle cx="160" cy="140" r="90" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="160" cy="140" r="120" fill="rgba(0,15,118,0.06)"/>
+  <circle cx="160" cy="140" r="90" fill="rgba(0,15,118,0.04)"/>
   <circle cx="94" cy="92" r="5" fill="#37F0FE" opacity="0.35"/>
   <circle cx="228" cy="108" r="4" fill="#37F0FE" opacity="0.28"/>
-  <path d="M98 118L160 148L222 128" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <path d="M98 118L160 148L222 128" stroke="rgba(0,15,118,0.18)" stroke-width="1.5" stroke-dasharray="4,4"/>
 
   <!-- Authenticator device -->
-  <rect x="118" y="72" width="84" height="148" rx="14" fill="rgba(255,255,255,0.96)" stroke="#fff" stroke-width="2"/>
+  <rect x="118" y="72" width="84" height="148" rx="14" fill="rgba(0,15,118,0.10)" stroke="#000F76" stroke-width="2"/>
   <rect x="144" y="80" width="32" height="4" rx="2" fill="rgba(0,15,118,0.15)"/>
   <rect x="126" y="90" width="68" height="116" rx="8" fill="rgba(0,15,118,0.07)"/>
 
@@ -16,7 +16,7 @@
   <path d="M136 78L148 78L152 84L168 84L172 78L184 78" stroke="#000F76" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
 
   <!-- 6-digit code display -->
-  <rect x="132" y="118" width="56" height="28" rx="6" fill="#fff" stroke="#000F76" stroke-width="1.5"/>
+  <rect x="132" y="118" width="56" height="28" rx="6" fill="#ffffff" stroke="#000F76" stroke-width="1.5"/>
   <rect x="138" y="126" width="8" height="12" rx="2" fill="#000F76"/>
   <rect x="150" y="126" width="8" height="12" rx="2" fill="#000F76"/>
   <rect x="162" y="126" width="8" height="12" rx="2" fill="#37F0FE"/>
@@ -31,6 +31,6 @@
   <rect x="148" y="198" width="24" height="4" rx="2" fill="rgba(0,15,118,0.2)"/>
 
   <!-- Shield badge -->
-  <path d="M196 88L184 94V108C184 116 190 122 196 124C202 122 208 116 208 108V94L196 88Z" fill="#000F76" stroke="#fff" stroke-width="1.5"/>
+  <path d="M196 88L184 94V108C184 116 190 122 196 124C202 122 208 116 208 108V94L196 88Z" fill="#000F76" stroke="#000F76" stroke-width="1.5"/>
   <path d="M192 108L195 111L200 106" stroke="#37F0FE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

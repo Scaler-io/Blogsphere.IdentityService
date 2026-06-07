@@ -1,14 +1,14 @@
 <!-- Blogsphere M3: primary #000F76, secondary #37F0FE -->
 <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <circle cx="160" cy="140" r="120" fill="rgba(255,255,255,0.1)"/>
-  <circle cx="160" cy="140" r="90" fill="rgba(255,255,255,0.05)"/>
+  <circle cx="160" cy="140" r="120" fill="rgba(0,15,118,0.06)"/>
+  <circle cx="160" cy="140" r="90" fill="rgba(0,15,118,0.04)"/>
   <circle cx="92" cy="92" r="5" fill="#37F0FE" opacity="0.35"/>
   <circle cx="232" cy="108" r="4" fill="#37F0FE" opacity="0.28"/>
   <circle cx="88" cy="198" r="6" fill="#37F0FE" opacity="0.22"/>
-  <path d="M98 118L160 148L222 128" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <path d="M98 118L160 148L222 128" stroke="rgba(0,15,118,0.18)" stroke-width="1.5" stroke-dasharray="4,4"/>
 
   <!-- Device -->
-  <rect x="122" y="68" width="76" height="152" rx="16" fill="rgba(255,255,255,0.96)" stroke="#fff" stroke-width="2"/>
+  <rect x="122" y="68" width="76" height="152" rx="16" fill="rgba(0,15,118,0.10)" stroke="#000F76" stroke-width="2"/>
   <rect x="148" y="76" width="24" height="4" rx="2" fill="rgba(0,15,118,0.15)"/>
   <rect x="130" y="86" width="60" height="112" rx="8" fill="rgba(0,15,118,0.07)"/>
 
@@ -22,7 +22,7 @@
   <rect x="148" y="186" width="24" height="4" rx="2" fill="rgba(0,15,118,0.2)"/>
 
   <!-- Signal waves -->
-  <path d="M208 98C214 93 214 85 208 80" stroke="rgba(255,255,255,0.75)" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M218 104C228 96 228 80 218 72" stroke="rgba(255,255,255,0.5)" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M228 110C242 98 242 74 228 64" stroke="rgba(255,255,255,0.35)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M208 98C214 93 214 85 208 80" stroke="rgba(0,15,118,0.35)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M218 104C228 96 228 80 218 72" stroke="rgba(0,15,118,0.25)" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M228 110C242 98 242 74 228 64" stroke="rgba(0,15,118,0.18)" stroke-width="2.5" stroke-linecap="round"/>
 </svg>

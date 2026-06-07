@@ -1,10 +1,10 @@
 <!-- Blogsphere M3: success #10B981 -->
 <svg width="320" height="280" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <circle cx="160" cy="140" r="120" fill="rgba(255,255,255,0.1)"/>
-  <circle cx="160" cy="140" r="90" fill="rgba(255,255,255,0.05)"/>
-  <circle cx="160" cy="140" r="48" fill="rgba(255,255,255,0.95)" stroke="#fff" stroke-width="2"/>
+  <circle cx="160" cy="140" r="120" fill="rgba(0,15,118,0.06)"/>
+  <circle cx="160" cy="140" r="90" fill="rgba(0,15,118,0.04)"/>
+  <circle cx="160" cy="140" r="48" fill="rgba(0,15,118,0.10)" stroke="#000F76" stroke-width="2"/>
   <circle cx="160" cy="140" r="32" fill="#10B981"/>
-  <path d="M148 140L156 148L172 132" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M148 140L156 148L172 132" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="95" cy="95" r="5" fill="#37F0FE" opacity="0.35"/>
   <circle cx="235" cy="185" r="4" fill="#37F0FE" opacity="0.3"/>
 </svg>

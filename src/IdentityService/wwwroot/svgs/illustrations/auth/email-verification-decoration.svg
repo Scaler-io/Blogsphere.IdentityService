@@ -1,9 +1,9 @@
 <!-- Blogsphere M3 decoration strip -->
 <svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <rect x="70" y="20" width="100" height="40" rx="8" fill="#fff" stroke="#000F76" stroke-width="1.5" opacity="0.95"/>
+  <rect x="70" y="20" width="100" height="40" rx="8" fill="#ffffff" stroke="#000F76" stroke-width="1.5" opacity="0.95"/>
   <path d="M70 28L120 48L170 28" stroke="#000F76" stroke-width="2" fill="none"/>
   <circle cx="175" cy="28" r="14" fill="#10B981"/>
-  <path d="M168 28L173 33L182 24" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M168 28L173 33L182 24" stroke="#000F76" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
   <circle cx="30" cy="40" r="4" fill="#37F0FE" opacity="0.4"/>
   <circle cx="210" cy="55" r="3" fill="#37F0FE" opacity="0.3"/>
 </svg>
