@@ -174,8 +174,8 @@ public static class ManagementSeedData
         
         var users = new[]
         {
-            new ManagementUser("Super", "Admin", "superadmin@blogsphere.com", "IT") { JobTitle = "System Administrator", EmployeeId = IdGenerator.NewManagementUserId("IT", "ADM") },
-            new ManagementUser("Admin", "User", "admin@blogsphere.com", "IT") { JobTitle = "Administrator", EmployeeId = IdGenerator.NewManagementUserId("IT", "ADM") }
+            new ManagementUser("Super", "Admin", "superadmin@blogsphere.com", "IT") { JobTitle = "System Administrator", EmployeeId = IdGenerator.NewManagementUserId("IT", nameof(ManagementRoles.SuperAdmin)) },
+            new ManagementUser("Admin", "User", "admin@blogsphere.com", "IT") { JobTitle = "Administrator", EmployeeId = IdGenerator.NewManagementUserId("IT", nameof(ManagementRoles.Admin)) }
         };
 
         foreach (var user in users)
