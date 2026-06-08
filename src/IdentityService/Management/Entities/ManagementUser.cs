@@ -64,10 +64,10 @@ public class ManagementUser : IdentityUser
     public string DisplayName => $"{FullName} ({Department})";
     
     /// <summary>
-    /// Generates a management-specific employee ID
+    /// Generates a management-specific employee ID from department and role name or abbreviation.
     /// </summary>
-    /// <param name="department">Department code</param>
-    /// <param name="role">Role abbreviation</param>
+    /// <param name="department">Department code (e.g. IT, OPS)</param>
+    /// <param name="role">Management role name or abbreviation (e.g. Manager, MGR)</param>
     public void GenerateEmployeeId(string department, string role)
     {
         EmployeeId = IdGenerator.NewManagementUserId(department, role);
